@@ -21,24 +21,7 @@ function toggleServices() {
   arrow.classList.toggle("rotate-180");
 }
 
-//   Carousel Functionality
-const slides = document.querySelectorAll(".carousel-slide");
-const dots = document.querySelectorAll(".dot");
-let current = 0;
-
-function showSlide(index) {
-  slides.forEach((slide, i) => {
-    slide.classList.toggle("opacity-100", i === index);
-    slide.classList.toggle("opacity-0", i !== index);
-    dots[i].classList.toggle("opacity-100", i === index);
-    dots[i].classList.toggle("opacity-40", i !== index);
-  });
-}
-
-setInterval(() => {
-  current = (current + 1) % slides.length;
-  showSlide(current);
-}, 4000);
+// Carousel logic moved to dynamic API fetch in index.html
 
 //   Gallery slides
 const images = [

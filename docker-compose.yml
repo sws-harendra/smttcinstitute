@@ -5,10 +5,10 @@ services:
     container_name: smttc_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: smttc_db
-      MYSQL_USER: dbuser
-      MYSQL_PASSWORD: dbpassword
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3309:3306"
     volumes:
@@ -26,5 +26,17 @@ services:
     depends_on:
       - db
 
+  backend:
+    build: ./admin/backend
+    container_name: smttc_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - ./admin/backend/uploads:/app/uploads
 volumes:
   db_data:

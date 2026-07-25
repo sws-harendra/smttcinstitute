@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - SMTTC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg flex items-center justify-center min-h-screen p-4">
+    
+    <div class="glass-card p-10 rounded-2xl w-full max-w-lg relative overflow-hidden">
+        
+        <!-- Decorative subtle circle -->
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-[#FACA0A] rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+
+        <div class="relative z-10">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
+                <p class="text-slate-500 text-sm">Please sign in to your admin dashboard</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Username</label>
+                    <input type="text" id="username" required placeholder="Enter your username"
+                        class="block w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FACA0A] focus:border-transparent transition-all duration-200">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password"
+                        class="block w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FACA0A] focus:border-transparent transition-all duration-200">
+                </div>
+
+                <button type="submit" id="loginBtn"
+                    class="w-full bg-slate-900 text-white font-semibold py-4 rounded-xl shadow-lg hover:bg-[#FACA0A] hover:text-slate-900 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+                    Sign In
+                </button>
+            </form>
+            
+            <div id="message" class="mt-6 hidden p-4 rounded-xl text-center text-sm font-medium transition-all"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            loginBtn.innerText = 'Signing in...';
+            loginBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('adminToken', data.token); // Save token
+                    window.location.href = 'index.html'; // Redirect to dashboard
+                } else {
+                    messageDiv.innerText = 'Invalid username or password';
+                    messageDiv.className = 'mt-6 block p-4 rounded-xl text-center text-sm font-medium bg-red-50 text-red-600 border border-red-100';
+                }
+            } catch (error) {
+                messageDiv.innerText = 'Server error. Please try again later.';
+                messageDiv.className = 'mt-6 block p-4 rounded-xl text-center text-sm font-medium bg-red-50 text-red-600 border border-red-100';
+            } finally {
+                loginBtn.innerText = 'Sign In';
+                loginBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

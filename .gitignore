@@ -1,2 +1,13 @@
+# Dependencies
 node_modules/
+admin/backend/node_modules/
+
+# Environment Variables
+.env
+
+# User Uploads (do not commit uploaded images)
+admin/backend/uploads/
+
+# OS Files
 .DS_Store
+Thumbs.db
