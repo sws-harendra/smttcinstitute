@@ -101,7 +101,7 @@
     }
 
     function showTab(tabName) {
-        const tabs = ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates'];
+        const tabs = ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'];
         
         tabs.forEach(t => {
             const el = document.getElementById('tab-' + t);

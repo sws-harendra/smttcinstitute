@@ -690,6 +690,60 @@
     </section>
 </div>
 
+<!-- ================= TAB 7: ADMISSIONS MANAGEMENT ================= -->
+<div id="tab-admissions" class="hidden space-y-8 animate-fade-in">
+    <!-- List -->
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div class="p-6 md:p-8 border-b border-slate-100 flex items-center justify-between">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-user-graduate text-indigo-500"></i> Student Admissions
+                </h2>
+                <p class="text-xs text-slate-400 font-medium mt-1">View and manage all student admission applications.</p>
+            </div>
+            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">{{ count($admissions ?? []) }} Applications</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    <tr>
+                        <th class="p-4">Enrollment No.</th>
+                        <th class="p-4">Student Name</th>
+                        <th class="p-4">Course</th>
+                        <th class="p-4">Mobile No.</th>
+                        <th class="p-4">Date</th>
+                        <th class="p-4 text-center">Photo</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                    @forelse($admissions ?? [] as $admission)
+                        <tr class="hover:bg-slate-50/80 transition duration-150">
+                            <td class="p-4 font-bold text-indigo-600">{{ $admission->enrollment_no }}</td>
+                            <td class="p-4 font-bold text-slate-900">{{ $admission->name }}</td>
+                            <td class="p-4 text-slate-600">{{ $admission->course }}</td>
+                            <td class="p-4 text-slate-600">{{ $admission->mobile_no }}</td>
+                            <td class="p-4 text-slate-600">{{ $admission->created_at ? $admission->created_at->format('M d, Y') : '-' }}</td>
+                            <td class="p-4 text-center">
+                                @if($admission->photo)
+                                    <a href="{{ asset($admission->photo) }}" target="_blank">
+                                        <img src="{{ asset($admission->photo) }}" class="w-10 h-10 rounded-full object-cover border border-slate-200 inline-block">
+                                    </a>
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-10 text-slate-400 text-sm font-medium">No admission applications received yet.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
 @endsection
 
 @section('scripts')

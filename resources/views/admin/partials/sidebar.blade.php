@@ -75,6 +75,15 @@
                 <span class="sidebar-text bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">{{ \App\Models\Certificate::count() }}</span>
             </button>
 
+            <!-- Admissions Link -->
+            <button id="nav-admissions" onclick="showTab('admissions')" title="Admissions" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-user-graduate text-lg text-slate-400 shrink-0"></i>
+                    <span class="sidebar-text truncate">Admissions</span>
+                </div>
+                <span class="sidebar-text bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">{{ \App\Models\Admission::count() }}</span>
+            </button>
+
             <div class="sidebar-text pt-6 px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Quick Actions</div>
 
             <a href="{{ route('home') }}" target="_blank" title="Live Website" class="flex items-center gap-3 px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">

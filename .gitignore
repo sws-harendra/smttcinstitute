@@ -44,3 +44,6 @@ Thumbs.db
 *.log
 *.zip
 *.tar.gz
+
+# Ignore the storage link symlink to prevent Windows Git issues
+/public/storage

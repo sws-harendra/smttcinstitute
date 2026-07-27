@@ -21,24 +21,24 @@
 
     <!-- ================= HEADER ================= -->
     <header class="bg-white shadow-md sticky top-0 z-50">
-      <div class="max-w-[1320px] mx-auto px-2 py-4 flex items-center justify-between">
+      <div class="max-w-[1320px] mx-auto px-4 py-3 flex items-center justify-between gap-2 xl:gap-4">
 
         <!-- Logo -->
-        <a class="flex items-center gap-2" href="{{ route('home') }}">
-            <img class="w-[60px]" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
-            <span class="text-2xl font-roboto font-semibold drop-shadow-md">
-              Smart Technical Training institute
+        <a class="flex items-center gap-2 shrink-0" href="{{ route('home') }}">
+            <img class="w-[50px] xl:w-[55px]" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
+            <span class="text-base lg:text-lg xl:text-xl font-roboto font-semibold drop-shadow-md leading-tight">
+              Smart Technical Training<br class="hidden lg:block xl:hidden"> Institute
             </span>
         </a>
 
         <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-gray-700">
-            <a href="{{ route('home') }}" class="hover:text-[#FACA0A] transition">Home</a>
-            <a href="{{ route('about') }}" class="hover:text-[#FACA0A] transition">About Us</a>
+        <nav class="hidden lg:flex items-center gap-3 xl:gap-5 text-[13px] xl:text-sm font-semibold text-gray-700">
+            <a href="{{ route('home') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Home</a>
+            <a href="{{ route('about') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">About Us</a>
 
             <!-- Services Dropdown -->
             <div class="relative group">
-                <button class="flex items-center gap-1 hover:text-[#FACA0A] transition">
+                <button class="flex items-center gap-1 hover:text-[#FACA0A] transition whitespace-nowrap">
                 Our Courses
                 <svg class="w-4 h-4 mt-[2px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -57,24 +57,25 @@
                 </div>
             </div>
 
-            <a href="{{ route('feestructure') }}" class="hover:text-[#FACA0A] transition">Fee Structure</a>
-            <a href="{{ route('blog.index') }}" class="hover:text-[#FACA0A] transition">Blog</a>
-            <a href="{{ route('gallery') }}" class="hover:text-[#FACA0A] transition">Gallery</a>
-            <a href="{{ route('contact') }}" class="hover:text-[#FACA0A] transition">Contact</a>
+            <a href="{{ route('feestructure') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Fee Structure</a>
+            <a href="{{ route('blog.index') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Blog</a>
+            <a href="{{ route('gallery') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Gallery</a>
+            <a href="{{ route('admission') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Student Admission</a>
+            <a href="{{ route('contact') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Contact</a>
         </nav>
 
         <!-- Right Actions -->
-        <div class="hidden md:flex items-center gap-3">
-          <a href="tel:7091756006" class="flex items-center gap-2 border border-[#FACA0A] text-[#FACA0A] px-4 py-2 rounded-full font-semibold hover:bg-[#FACA0A] hover:text-white transition">
-            📞 7091756006
+        <div class="hidden md:flex items-center gap-2 xl:gap-3 shrink-0">
+          <a href="tel:7091756006" class="flex items-center justify-center gap-2 border border-[#FACA0A] text-[#FACA0A] px-3 xl:px-4 py-1.5 xl:py-2 rounded-full font-semibold hover:bg-[#FACA0A] hover:text-white transition whitespace-nowrap shadow-sm hover:shadow-md text-[13px] xl:text-sm">
+            <i class="fa-solid fa-phone"></i> 7091756006
           </a>
-          <a href="{{ route('admin.login') }}" class="text-xs text-gray-500 hover:text-black border border-gray-300 px-2 py-1 rounded">
+          <a href="{{ route('admin.login') }}" class="text-[11px] xl:text-xs text-gray-500 hover:text-black border border-gray-300 px-2 xl:px-3 py-1 xl:py-1.5 rounded-lg hover:bg-gray-50 transition">
             Admin
           </a>
         </div>
 
         <!-- Mobile Menu Button -->
-        <button class="lg:hidden text-2xl text-[#FACA0A]" onclick="openMenu()">
+        <button class="lg:hidden text-2xl text-[#FACA0A] shrink-0" onclick="openMenu()">
           ☰
         </button>
       </div>
@@ -125,6 +126,7 @@
           <a href="{{ route('feestructure') }}" onclick="closeMenu()">Fee Structure</a>
           <a href="{{ route('blog.index') }}" onclick="closeMenu()">Blog</a>
           <a href="{{ route('gallery') }}" onclick="closeMenu()">Gallery</a>
+          <a href="{{ route('admission') }}" onclick="closeMenu()">Student Admission</a>
           <a href="{{ route('contact') }}" onclick="closeMenu()">Contact</a>
         </nav>
 
@@ -191,6 +193,7 @@
               <li><a href="{{ route('feestructure') }}" class="footer-link hover:text-[#FACA0A]">Fee Structure</a></li>
               <li><a href="{{ route('blog.index') }}" class="footer-link hover:text-[#FACA0A]">Blog</a></li>
               <li><a href="{{ route('gallery') }}" class="footer-link hover:text-[#FACA0A]">Gallery</a></li>
+              <li><a href="{{ route('admission') }}" class="footer-link hover:text-[#FACA0A]">Student Admission</a></li>
               <li><a href="{{ route('contact') }}" class="footer-link hover:text-[#FACA0A]">Contact</a></li>
               <li><a href="{{ route('sitemap') }}" class="footer-link hover:text-[#FACA0A]">Sitemap</a></li>
             </ul>

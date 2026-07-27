@@ -21,6 +21,9 @@ Route::get('/Contact.html', [PageController::class, 'contact']);
 Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 Route::get('/Gallery.html', [PageController::class, 'gallery']);
 
+Route::get('/admission', [PageController::class, 'admissionForm'])->name('admission');
+Route::post('/student/register', [PageController::class, 'storeAdmission'])->name('student.register');
+
 Route::get('/feestructure', [PageController::class, 'feestructure'])->name('feestructure');
 Route::get('/feestructure.html', [PageController::class, 'feestructure']);
 

@@ -55,8 +55,9 @@ class AdminController extends Controller
         $fees = \App\Models\FeeStructure::all();
         $galleries = \App\Models\GalleryImage::latest()->get();
         $certificates = \App\Models\Certificate::latest()->get();
+        $admissions = \App\Models\Admission::latest()->get();
 
-        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries', 'certificates'));
+        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'));
     }
 
     public function logout()
