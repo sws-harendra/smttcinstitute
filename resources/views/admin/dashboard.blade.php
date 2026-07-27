@@ -1,0 +1,347 @@
+@extends('layouts.admin')
+
+@section('title', 'Dashboard Overview - SMTTC Control Panel')
+
+@section('content')
+
+<!-- Toast Notifications -->
+@if(session('blog_success'))
+    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl text-sm font-semibold flex items-center justify-between shadow-xs mb-6">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+            <span>{{ session('blog_success') }}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-emerald-500 hover:text-emerald-700">&times;</button>
+    </div>
+@endif
+
+@if(session('slider_success'))
+    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl text-sm font-semibold flex items-center justify-between shadow-xs mb-6">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+            <span>{{ session('slider_success') }}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-emerald-500 hover:text-emerald-700">&times;</button>
+    </div>
+@endif
+
+
+<!-- ================= TAB 1: DASHBOARD OVERVIEW ================= -->
+<div id="tab-overview" class="space-y-8 animate-fade-in">
+    
+    <!-- METRIC STAT CARDS GRID -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Card 1: Total Blogs -->
+        <div onclick="showTab('blogs')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Blogs</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">{{ count($blogs) }}</h3>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 mt-1">
+                    <i class="fa-solid fa-arrow-up-right"></i> Published
+                </span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl font-bold">
+                <i class="fa-solid fa-newspaper"></i>
+            </div>
+        </div>
+
+        <!-- Card 2: Hero Sliders -->
+        <div onclick="showTab('sliders')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Hero Sliders</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">{{ count($sliders) }}</h3>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 mt-1">
+                    <i class="fa-solid fa-circle-play"></i> Active Carousel
+                </span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-bold">
+                <i class="fa-solid fa-images"></i>
+            </div>
+        </div>
+
+        <!-- Card 3: Storage & Uploads -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Media Disk</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">Public</h3>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 mt-1">
+                    <i class="fa-solid fa-hard-drive"></i> Local Storage
+                </span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-bold">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+        </div>
+
+        <!-- Card 4: System Health -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Server Health</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">100%</h3>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 mt-1">
+                    <i class="fa-solid fa-shield-halved"></i> Operational
+                </span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl font-bold">
+                <i class="fa-solid fa-server"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- QUICK ACCESS TILES -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Manage Blogs Shortcut Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-8 flex flex-col justify-between space-y-6">
+            <div class="space-y-3">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-pen-nib"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900">Manage Blog Posts</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Create, edit, and publish technical guides, announcements, and articles for institute students.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-xs font-bold text-slate-400">{{ count($blogs) }} Articles</span>
+                <button onclick="showTab('blogs')" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition shadow-sm">
+                    Open Blog Manager &rarr;
+                </button>
+            </div>
+        </div>
+
+        <!-- Manage Sliders Shortcut Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-8 flex flex-col justify-between space-y-6">
+            <div class="space-y-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900">Manage Hero Banners</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Upload new banner images or remove old images displayed on the homepage hero carousel.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-xs font-bold text-slate-400">{{ count($sliders) }} Hero Banners</span>
+                <button onclick="showTab('sliders')" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-black font-bold text-xs transition shadow-sm">
+                    Open Hero Sliders &rarr;
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RECENT ACTIVITY PREVIEWS -->
+    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left text-indigo-600"></i> Recent Articles Preview
+            </h3>
+            <button onclick="showTab('blogs')" class="text-xs font-bold text-indigo-600 hover:underline">View All &rarr;</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @forelse($blogs->take(3) as $b)
+                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/60 flex items-center gap-4">
+                    <img src="{{ $b->image_url ? (Str::startsWith($b->image_url, '/uploads') ? asset($b->image_url) : asset($b->image_url)) : asset('assets/images/default-blog.webp') }}" class="w-16 h-14 object-cover rounded-xl shrink-0">
+                    <div class="overflow-hidden">
+                        <h4 class="font-bold text-slate-900 text-xs truncate">{{ $b->title }}</h4>
+                        <p class="text-[11px] text-slate-400 mt-1">{{ $b->created_at->format('M d, Y') }}</p>
+                    </div>
+                </div>
+            @empty
+                <p class="col-span-full text-center text-xs text-slate-400 py-6">No articles found.</p>
+            @endforelse
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ================= TAB 2: BLOG POSTS MANAGEMENT ================= -->
+<div id="tab-blogs" class="hidden space-y-8 animate-fade-in">
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8 space-y-8">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-indigo-600"></i> Blog Posts Management
+                </h2>
+                <p class="text-xs text-slate-400 font-medium mt-1">Publish news, announcements, and technical guides for students.</p>
+            </div>
+            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">{{ count($blogs) }} Published</span>
+        </div>
+
+        <!-- Create Blog Form -->
+        <form action="{{ route('admin.blogs.store') }}" method="POST" enctype="multipart/form-data" class="bg-slate-50/60 p-6 md:p-8 rounded-2xl border border-slate-200 space-y-6">
+            @csrf
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Write New Article</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Article Title</label>
+                    <input type="text" name="title" placeholder="e.g. Complete AC Repairing Practical Guide 2026" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Cover Image (Optional)</label>
+                    <input type="file" name="image" accept="image/*" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-600">
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-600">Article Content / Description</label>
+                <textarea name="content" rows="5" placeholder="Write full article description here..." required class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition leading-relaxed"></textarea>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit" class="px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-100 transition duration-200 flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Publish Blog Post
+                </button>
+            </div>
+        </form>
+
+        <!-- Published Blogs Table -->
+        <div class="space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">All Published Articles</h3>
+                <input type="text" id="blogSearchInput" onkeyup="filterBlogTable()" placeholder="Search title..." class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs w-64 focus:outline-none focus:border-indigo-500">
+            </div>
+
+            <div class="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white">
+                <table id="blogsTable" class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+                            <th class="p-4">Cover</th>
+                            <th class="p-4">Title</th>
+                            <th class="p-4">Date</th>
+                            <th class="p-4 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-sm">
+                        @forelse($blogs as $blog)
+                            <tr class="blog-row hover:bg-slate-50/80 transition duration-150">
+                                <td class="p-4">
+                                    <img src="{{ $blog->image_url ? (Str::startsWith($blog->image_url, '/uploads') ? asset($blog->image_url) : asset($blog->image_url)) : asset('assets/images/default-blog.webp') }}" class="w-16 h-12 object-cover rounded-xl border border-slate-200">
+                                </td>
+                                <td class="p-4">
+                                    <h4 class="font-bold text-slate-900 leading-snug blog-title-cell">{{ $blog->title }}</h4>
+                                    <p class="text-xs text-slate-400 line-clamp-1 mt-0.5">{{ $blog->content }}</p>
+                                </td>
+                                <td class="p-4 text-xs font-semibold text-slate-500 whitespace-nowrap">
+                                    {{ $blog->created_at->format('M d, Y') }}
+                                </td>
+                                <td class="p-4 text-right whitespace-nowrap">
+                                    <form action="{{ route('admin.blogs.delete', $blog->id) }}" method="POST" onsubmit="return confirm('Delete this blog article?')" class="inline">
+                                        @csrf
+                                        <button type="submit" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5 ml-auto">
+                                            <i class="fa-solid fa-trash-can"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-10 text-slate-400 text-sm font-medium">No blog posts found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!-- ================= TAB 3: HERO SLIDERS MANAGEMENT ================= -->
+<div id="tab-sliders" class="hidden space-y-8 animate-fade-in">
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-images text-amber-500"></i> Homepage Hero Sliders
+                </h2>
+                <p class="text-xs text-slate-400 font-medium mt-1">Upload high-resolution banner images for the main website header carousel.</p>
+            </div>
+            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">{{ count($sliders) }} Images</span>
+        </div>
+
+        <!-- Upload Box -->
+        <form action="{{ route('admin.sliders.store') }}" method="POST" enctype="multipart/form-data" class="bg-slate-50 border-2 border-dashed border-slate-200 hover:border-amber-400 rounded-2xl p-6 transition duration-200">
+            @csrf
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold shrink-0">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Upload New Banner Image</h4>
+                        <p class="text-xs text-slate-400">Supported formats: JPG, PNG, WEBP (Max: 5MB)</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <input type="file" id="sliderFileInput" name="image" accept="image/*" required class="hidden" onchange="updateSliderFileName(this)">
+                    <button type="button" onclick="document.getElementById('sliderFileInput').click()" class="w-full md:w-auto px-5 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-100 transition shadow-xs">
+                        <span id="sliderFileLabel">Browse Image File</span>
+                    </button>
+                    <button type="submit" class="w-full md:w-auto px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition">
+                        Upload Slider
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Slider Images Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pt-2">
+            @forelse($sliders as $slider)
+                <div class="relative group bg-slate-100 rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300">
+                    <img src="{{ Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url) }}" class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105">
+                    
+                    <!-- Hover Overlay -->
+                    <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-xs">
+                        <form action="{{ route('admin.sliders.delete', $slider->id) }}" method="POST" onsubmit="return confirm('Delete this hero slider image?')">
+                            @csrf
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="p-3 bg-white border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                        <span>Added {{ $slider->created_at->format('M d, Y') }}</span>
+                        <span class="font-semibold text-amber-600">Active</span>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full py-12 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                    <i class="fa-solid fa-image text-3xl text-slate-300 mb-2"></i>
+                    <p class="text-slate-400 text-sm font-medium">No slider images uploaded yet.</p>
+                </div>
+            @endforelse
+        </div>
+    </section>
+</div>
+
+@endsection
+
+@section('scripts')
+<script>
+function updateSliderFileName(input) {
+    const label = document.getElementById('sliderFileLabel');
+    if (input.files && input.files[0]) {
+        label.innerText = input.files[0].name;
+    }
+}
+
+function filterBlogTable() {
+    const query = document.getElementById('blogSearchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('.blog-row');
+    rows.forEach(row => {
+        const title = row.querySelector('.blog-title-cell').innerText.toLowerCase();
+        if (title.includes(query)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+</script>
+@endsection

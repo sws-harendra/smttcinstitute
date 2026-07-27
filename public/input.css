@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com");
+
+.course-card{
+  @apply bg-gray-50 p-6 rounded-xl shadow hover:shadow-xl transition cursor-pointer;
+}
+.course-card h3{
+  @apply font-semibold text-xl mb-2;
+}
+.course-card p{
+  @apply text-gray-600;
+}
+
+.career-card{
+  @apply bg-gray-800 p-6 rounded-lg text-center hover:bg-[#FACA0A] transition;
+}
+
+.gallery-img{
+  @apply w-full h-64 object-cover rounded-xl shadow cursor-pointer
+         hover:scale-105 transition;
+}
+
+.form-input{
+  @apply w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FACA0A];
+}
+.contact-btn{
+  @apply px-6 py-3 rounded-full font-semibold hover:opacity-90 transition;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
