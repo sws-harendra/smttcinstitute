@@ -197,7 +197,8 @@
                     </h1>
                 </div>
                 <div class="text-[9px] font-bold text-[var(--slate)] uppercase tracking-[0.18em]">
-                    Near Hariji Hospital, Saguna More, Patna – 801503
+                    Near Hi-Tech Hospital saguna more Balaji Nagar new Tarachak danapur patna bihar 801503
+
                 </div>
             </div>
 
