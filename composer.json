@@ -1,0 +1,32 @@
+{
+    "name": "smttc/institute",
+    "type": "project",
+    "description": "SMTTC Technical Training Institute Laravel Website and Admin System",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "*",
+        "laravel/tinker": "^2.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        },
+        "audit": {
+            "block": false
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

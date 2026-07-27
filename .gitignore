@@ -1,13 +1,46 @@
-# Dependencies
-node_modules/
-admin/backend/node_modules/
+# Laravel Dependencies & Vendor
+/vendor/
+/node_modules/
+npm-debug.log
+yarn-error.log
 
-# Environment Variables
+# Environment Files
 .env
+.env.backup
+.env.production
+.env.staging
+.env.local
 
-# User Uploads (do not commit uploaded images)
-admin/backend/uploads/
+# Storage & Caches
+/storage/app/*
+!/storage/app/.gitignore
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/logs/*
+!/storage/logs/.gitignore
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
 
-# OS Files
+# User Uploaded Media
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# IDE & Editor Files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS & Temp Files
 .DS_Store
 Thumbs.db
+*.log
+*.zip
+*.tar.gz
