@@ -71,7 +71,7 @@
 
         <!-- Admin Footer -->
         <footer class="py-6 border-t border-slate-200 bg-white text-center text-xs font-medium text-slate-400">
-            &copy; {{ date('Y') }} SMTTC Institute Admin Panel. Built with Laravel 11 &amp; PHP 8.2.
+            &copy; {{ date('Y') }} SMTTC Institute Admin Panel.
         </footer>
     </div>
 

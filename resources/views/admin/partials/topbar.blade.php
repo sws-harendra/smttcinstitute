@@ -24,9 +24,7 @@
         <!-- Live Status Pill -->
         <div class="hidden md:flex items-center gap-2 bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-            <span>MySQL Online</span>
-            <span class="text-slate-300">|</span>
-            <span class="text-indigo-600 font-bold">Laravel v11</span>
+            <span>System Online</span>
         </div>
 
         <!-- Live Clock -->

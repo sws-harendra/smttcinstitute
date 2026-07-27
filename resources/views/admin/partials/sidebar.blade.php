@@ -23,9 +23,11 @@
             <div class="sidebar-text px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Main Navigation</div>
 
             <!-- Overview Link -->
-            <button id="nav-overview" onclick="showTab('overview')" title="Dashboard Overview" class="w-full flex items-center justify-start gap-3 px-3.5 py-3 rounded-xl font-semibold text-sm transition-all duration-200 bg-indigo-50 text-indigo-600 shadow-sm">
-                <i class="fa-solid fa-chart-pie text-lg text-indigo-600 shrink-0"></i>
-                <span class="sidebar-text truncate">Dashboard Overview</span>
+            <button id="nav-overview" onclick="showTab('overview')" title="Dashboard Overview" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm transition-all duration-200 bg-indigo-50 text-indigo-600 shadow-sm">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-chart-pie text-lg text-indigo-600 shrink-0"></i>
+                    <span class="sidebar-text truncate">Dashboard Overview</span>
+                </div>
             </button>
 
             <!-- Blog Posts Link -->

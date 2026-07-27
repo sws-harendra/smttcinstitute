@@ -90,69 +90,120 @@
             </div>
         </div>
 
-        <!-- Card 3: Storage & Uploads -->
-        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between">
+        <!-- Card 3: Gallery -->
+        <div onclick="showTab('galleries')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Media Disk</p>
-                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">Public</h3>
-                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 mt-1">
-                    <i class="fa-solid fa-hard-drive"></i> Local Storage
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Gallery Images</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">{{ count($galleries) }}</h3>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 mt-1">
+                    <i class="fa-solid fa-camera-retro"></i> Public Gallery
                 </span>
             </div>
             <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-bold">
-                <i class="fa-solid fa-folder-open"></i>
+                <i class="fa-solid fa-images"></i>
             </div>
         </div>
 
-        <!-- Card 4: System Health -->
-        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between">
+        <!-- Card 4: Certificates -->
+        <div onclick="showTab('certificates')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
             <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Server Health</p>
-                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">100%</h3>
-                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 mt-1">
-                    <i class="fa-solid fa-shield-halved"></i> Operational
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Certificates</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">{{ count($certificates ?? []) }}</h3>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-yellow-600 mt-1">
+                    <i class="fa-solid fa-award"></i> Issued
                 </span>
             </div>
-            <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl font-bold">
-                <i class="fa-solid fa-server"></i>
+            <div class="w-14 h-14 rounded-2xl bg-yellow-50 text-yellow-600 flex items-center justify-center text-2xl font-bold">
+                <i class="fa-solid fa-certificate"></i>
             </div>
         </div>
 
     </div>
 
     <!-- QUICK ACCESS TILES -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         
         <!-- Manage Blogs Shortcut Card -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-8 flex flex-col justify-between space-y-6">
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between space-y-4">
             <div class="space-y-3">
                 <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold">
                     <i class="fa-solid fa-pen-nib"></i>
                 </div>
-                <h3 class="text-xl font-extrabold text-slate-900">Manage Blog Posts</h3>
+                <h3 class="text-lg font-extrabold text-slate-900">Manage Blog Posts</h3>
                 <p class="text-xs text-slate-500 leading-relaxed">Create, edit, and publish technical guides, announcements, and articles for institute students.</p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-slate-100">
                 <span class="text-xs font-bold text-slate-400">{{ count($blogs) }} Articles</span>
-                <button onclick="showTab('blogs')" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition shadow-sm">
-                    Open Blog Manager &rarr;
+                <button onclick="showTab('blogs')" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition shadow-sm">
+                    Open Manager &rarr;
                 </button>
             </div>
         </div>
 
         <!-- Manage Sliders Shortcut Card -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-8 flex flex-col justify-between space-y-6">
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between space-y-4">
             <div class="space-y-3">
                 <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">
                     <i class="fa-solid fa-sliders"></i>
                 </div>
-                <h3 class="text-xl font-extrabold text-slate-900">Manage Hero Banners</h3>
+                <h3 class="text-lg font-extrabold text-slate-900">Manage Hero Banners</h3>
                 <p class="text-xs text-slate-500 leading-relaxed">Upload new banner images or remove old images displayed on the homepage hero carousel.</p>
             </div>
             <div class="flex items-center justify-between pt-4 border-t border-slate-100">
                 <span class="text-xs font-bold text-slate-400">{{ count($sliders) }} Hero Banners</span>
-                <button onclick="showTab('sliders')" class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-black font-bold text-xs transition shadow-sm">
-                    Open Hero Sliders &rarr;
+                <button onclick="showTab('sliders')" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-black font-bold text-xs transition shadow-sm">
+                    Open Sliders &rarr;
+                </button>
+            </div>
+        </div>
+
+        <!-- Manage Fee Structure Shortcut Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+                <h3 class="text-lg font-extrabold text-slate-900">Fee Structure</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Manage course pricing and duration details shown on the main page to students.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-xs font-bold text-slate-400">{{ count($fees) }} Courses</span>
+                <button onclick="showTab('fees')" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs transition shadow-sm">
+                    Open Fees &rarr;
+                </button>
+            </div>
+        </div>
+
+        <!-- Manage Gallery Shortcut Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+                <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-camera-retro"></i>
+                </div>
+                <h3 class="text-lg font-extrabold text-slate-900">Gallery</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Add and manage the public image gallery of the institute events and facilities.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-xs font-bold text-slate-400">{{ count($galleries) }} Images</span>
+                <button onclick="showTab('galleries')" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm">
+                    Open Gallery &rarr;
+                </button>
+            </div>
+        </div>
+
+        <!-- Certificates Shortcut Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+                <div class="w-12 h-12 rounded-2xl bg-yellow-100 text-yellow-700 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-certificate"></i>
+                </div>
+                <h3 class="text-lg font-extrabold text-slate-900">Certificates</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Generate official course completion certificates and manage student records.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-xs font-bold text-slate-400">{{ count($certificates ?? []) }} Certificates</span>
+                <button onclick="showTab('certificates')" class="px-4 py-2 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-white font-bold text-xs transition shadow-sm">
+                    Open Certificates &rarr;
                 </button>
             </div>
         </div>
