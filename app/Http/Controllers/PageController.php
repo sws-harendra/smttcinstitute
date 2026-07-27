@@ -18,12 +18,14 @@ class PageController extends Controller
 
     public function gallery()
     {
-        return view('gallery');
+        $galleries = \App\Models\GalleryImage::latest()->get();
+        return view('gallery', compact('galleries'));
     }
 
     public function feestructure()
     {
-        return view('feestructure');
+        $fees = \App\Models\FeeStructure::all();
+        return view('feestructure', compact('fees'));
     }
 
     public function sitemap()

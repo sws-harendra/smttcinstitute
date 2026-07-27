@@ -19,24 +19,15 @@
 <section class="py-20 bg-gray-50">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid md:grid-cols-3 gap-8">
+      @forelse($galleries as $gallery)
       <div class="overflow-hidden rounded-2xl shadow-lg bg-white group">
-        <img src="{{ asset('assets/images/g1.webp') }}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="Gallery Image 1">
+        <img src="{{ Str::startsWith($gallery->image_url, '/uploads') ? asset($gallery->image_url) : asset($gallery->image_url) }}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="Gallery Image">
       </div>
-      <div class="overflow-hidden rounded-2xl shadow-lg bg-white group">
-        <img src="{{ asset('assets/images/g2.webp') }}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="Gallery Image 2">
+      @empty
+      <div class="col-span-full py-12 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+        <p class="text-gray-400 text-sm font-medium">Gallery is currently being updated. Check back soon!</p>
       </div>
-      <div class="overflow-hidden rounded-2xl shadow-lg bg-white group">
-        <img src="{{ asset('assets/images/g3.webp') }}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="Gallery Image 3">
-      </div>
-      <div class="overflow-hidden rounded-2xl shadow-lg bg-white group">
-        <img src="{{ asset('assets/images/g4.webp') }}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="Gallery Image 4">
-      </div>
-      <div class="overflow-hidden rounded-2xl shadow-lg bg-white group">
-        <img src="{{ asset('assets/images/g5.webp') }}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="Gallery Image 5">
-      </div>
-      <div class="overflow-hidden rounded-2xl shadow-lg bg-white group">
-        <img src="{{ asset('assets/images/g6.webp') }}" class="w-full h-64 object-cover group-hover:scale-105 transition duration-500" alt="Gallery Image 6">
-      </div>
+      @endforelse
     </div>
   </div>
 </section>

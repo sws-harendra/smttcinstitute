@@ -25,6 +25,26 @@
     </div>
 @endif
 
+@if(session('fee_success'))
+    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl text-sm font-semibold flex items-center justify-between shadow-xs mb-6">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+            <span>{{ session('fee_success') }}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-emerald-500 hover:text-emerald-700">&times;</button>
+    </div>
+@endif
+
+@if(session('gallery_success'))
+    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl text-sm font-semibold flex items-center justify-between shadow-xs mb-6">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+            <span>{{ session('gallery_success') }}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-emerald-500 hover:text-emerald-700">&times;</button>
+    </div>
+@endif
+
 
 <!-- ================= TAB 1: DASHBOARD OVERVIEW ================= -->
 <div id="tab-overview" class="space-y-8 animate-fade-in">
@@ -320,12 +340,178 @@
     </section>
 </div>
 
+<!-- ================= TAB 4: FEE STRUCTURE MANAGEMENT ================= -->
+<div id="tab-fees" class="hidden space-y-8 animate-fade-in">
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8 space-y-8">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-indian-rupee-sign text-green-600"></i> Fee Structure Management
+                </h2>
+                <p class="text-xs text-slate-400 font-medium mt-1">Manage course pricing and duration for the main page.</p>
+            </div>
+            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">{{ count($fees) }} Courses</span>
+        </div>
+
+        <!-- Add Fee Form -->
+        <form action="{{ route('admin.fees.store') }}" method="POST" class="bg-slate-50/60 p-6 md:p-8 rounded-2xl border border-slate-200 space-y-6">
+            @csrf
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Add New Course Fee</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Course Name</label>
+                    <input type="text" name="course_name" placeholder="e.g. AC Repairing" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-green-600 focus:ring-4 focus:ring-green-50 transition">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Duration</label>
+                    <input type="text" name="duration" placeholder="e.g. 3 Months" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-green-600 focus:ring-4 focus:ring-green-50 transition">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Course Fee</label>
+                    <input type="text" name="course_fee" placeholder="e.g. ₹12,000" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-green-600 focus:ring-4 focus:ring-green-50 transition">
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Certification</label>
+                    <input type="text" name="certification" value="Yes" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-green-600 focus:ring-4 focus:ring-green-50 transition">
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button type="submit" class="px-8 py-3.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-bold text-xs shadow-md shadow-green-100 transition duration-200 flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Add Fee Structure
+                </button>
+            </div>
+        </form>
+
+        <!-- Fee Structures Table -->
+        <div class="space-y-4 pt-4">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Existing Course Fees</h3>
+
+            <div class="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+                            <th class="p-4">Course Name</th>
+                            <th class="p-4">Duration</th>
+                            <th class="p-4">Course Fee</th>
+                            <th class="p-4">Certification</th>
+                            <th class="p-4 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-sm">
+                        @forelse($fees as $fee)
+                            <tr class="hover:bg-slate-50/80 transition duration-150">
+                                <td class="p-4 font-bold text-slate-900">{{ $fee->course_name }}</td>
+                                <td class="p-4 text-slate-600">{{ $fee->duration }}</td>
+                                <td class="p-4 font-bold text-slate-900">{{ $fee->course_fee }}</td>
+                                <td class="p-4 text-slate-600">{{ $fee->certification }}</td>
+                                <td class="p-4 text-right whitespace-nowrap">
+                                    <form action="{{ route('admin.fees.delete', $fee->id) }}" method="POST" onsubmit="return confirm('Delete this fee structure?')" class="inline">
+                                        @csrf
+                                        <button type="submit" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5 ml-auto">
+                                            <i class="fa-solid fa-trash-can"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-10 text-slate-400 text-sm font-medium">No fee structures found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ================= TAB 5: GALLERY MANAGEMENT ================= -->
+<div id="tab-galleries" class="hidden space-y-8 animate-fade-in">
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-camera-retro text-blue-500"></i> Gallery Management
+                </h2>
+                <p class="text-xs text-slate-400 font-medium mt-1">Upload images for the public training gallery page.</p>
+            </div>
+            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">{{ count($galleries) }} Images</span>
+        </div>
+
+        <!-- Upload Box -->
+        <form action="{{ route('admin.galleries.store') }}" method="POST" enctype="multipart/form-data" class="bg-slate-50 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 transition duration-200">
+            @csrf
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-bold shrink-0">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Upload New Gallery Image</h4>
+                        <p class="text-xs text-slate-400">Supported formats: JPG, PNG, WEBP (Max: 5MB)</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <input type="file" id="galleryFileInput" name="image" accept="image/*" required class="hidden" onchange="updateGalleryFileName(this)">
+                    <button type="button" onclick="document.getElementById('galleryFileInput').click()" class="w-full md:w-auto px-5 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-100 transition shadow-xs">
+                        <span id="galleryFileLabel">Browse Image File</span>
+                    </button>
+                    <button type="submit" class="w-full md:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition">
+                        Upload Image
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Gallery Images Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 pt-2">
+            @forelse($galleries as $gallery)
+                <div class="relative group bg-slate-100 rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300">
+                    <img src="{{ Str::startsWith($gallery->image_url, '/uploads') ? asset($gallery->image_url) : asset($gallery->image_url) }}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+                    
+                    <!-- Hover Overlay -->
+                    <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-xs">
+                        <form action="{{ route('admin.galleries.delete', $gallery->id) }}" method="POST" onsubmit="return confirm('Delete this gallery image?')">
+                            @csrf
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="p-3 bg-white border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                        <span>Added {{ $gallery->created_at->format('M d, Y') }}</span>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full py-12 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                    <i class="fa-solid fa-image text-3xl text-slate-300 mb-2"></i>
+                    <p class="text-slate-400 text-sm font-medium">No gallery images uploaded yet.</p>
+                </div>
+            @endforelse
+        </div>
+    </section>
+</div>
+
 @endsection
 
 @section('scripts')
 <script>
 function updateSliderFileName(input) {
     const label = document.getElementById('sliderFileLabel');
+    if (input.files && input.files[0]) {
+        label.innerText = input.files[0].name;
+    }
+}
+
+function updateGalleryFileName(input) {
+    const label = document.getElementById('galleryFileLabel');
     if (input.files && input.files[0]) {
         label.innerText = input.files[0].name;
     }

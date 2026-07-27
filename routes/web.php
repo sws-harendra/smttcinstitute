@@ -65,3 +65,9 @@ Route::post('/admin/blogs/delete/{id}', [AdminController::class, 'deleteBlog'])-
 
 Route::post('/admin/sliders', [AdminController::class, 'storeSlider'])->name('admin.sliders.store');
 Route::post('/admin/sliders/delete/{id}', [AdminController::class, 'deleteSlider'])->name('admin.sliders.delete');
+
+Route::post('/admin/fees', [AdminController::class, 'storeFee'])->name('admin.fees.store');
+Route::post('/admin/fees/delete/{id}', [AdminController::class, 'deleteFee'])->name('admin.fees.delete');
+
+Route::post('/admin/galleries', [AdminController::class, 'storeGallery'])->name('admin.galleries.store');
+Route::post('/admin/galleries/delete/{id}', [AdminController::class, 'deleteGallery'])->name('admin.galleries.delete');

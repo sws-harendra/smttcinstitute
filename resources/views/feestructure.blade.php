@@ -34,36 +34,18 @@
       </thead>
 
       <tbody class="text-gray-700 divide-y divide-gray-100">
+        @forelse($fees as $fee)
         <tr class="hover:bg-yellow-50 transition">
-          <td class="px-6 py-4 font-semibold">AC Repairing</td>
-          <td class="px-6 py-4">3 Months</td>
-          <td class="px-6 py-4 font-bold text-gray-900">₹12,000</td>
-          <td class="px-6 py-4">Yes</td>
+          <td class="px-6 py-4 font-semibold">{{ $fee->course_name }}</td>
+          <td class="px-6 py-4">{{ $fee->duration }}</td>
+          <td class="px-6 py-4 font-bold text-gray-900">{{ $fee->course_fee }}</td>
+          <td class="px-6 py-4">{{ $fee->certification }}</td>
         </tr>
-        <tr class="hover:bg-yellow-50 transition">
-          <td class="px-6 py-4 font-semibold">Washing Machine Repairing</td>
-          <td class="px-6 py-4">2 Months</td>
-          <td class="px-6 py-4 font-bold text-gray-900">₹9,000</td>
-          <td class="px-6 py-4">Yes</td>
+        @empty
+        <tr>
+            <td colspan="4" class="px-6 py-8 text-center text-gray-500 font-medium">Fee structure is currently being updated. Check back soon!</td>
         </tr>
-        <tr class="hover:bg-yellow-50 transition">
-          <td class="px-6 py-4 font-semibold">LED / LCD TV Repairing</td>
-          <td class="px-6 py-4">3 Months</td>
-          <td class="px-6 py-4 font-bold text-gray-900">₹14,000</td>
-          <td class="px-6 py-4">Yes</td>
-        </tr>
-        <tr class="hover:bg-yellow-50 transition">
-          <td class="px-6 py-4 font-semibold">Mobile Repairing</td>
-          <td class="px-6 py-4">3 Months</td>
-          <td class="px-6 py-4 font-bold text-gray-900">₹15,000</td>
-          <td class="px-6 py-4">Yes</td>
-        </tr>
-        <tr class="hover:bg-yellow-50 transition">
-          <td class="px-6 py-4 font-semibold">Laptop Repairing</td>
-          <td class="px-6 py-4">3 Months</td>
-          <td class="px-6 py-4 font-bold text-gray-900">₹18,000</td>
-          <td class="px-6 py-4">Yes</td>
-        </tr>
+        @endforelse
       </tbody>
     </table>
   </div>

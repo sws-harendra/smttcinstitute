@@ -52,8 +52,10 @@ class AdminController extends Controller
 
         $blogs = Blog::latest()->get();
         $sliders = SliderImage::latest()->get();
+        $fees = \App\Models\FeeStructure::all();
+        $galleries = \App\Models\GalleryImage::latest()->get();
 
-        return view('admin.dashboard', compact('blogs', 'sliders'));
+        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries'));
     }
 
     public function logout()
@@ -138,6 +140,77 @@ class AdminController extends Controller
         $slider->delete();
 
         return back()->with('slider_success', 'Slider image deleted successfully');
+    }
+
+    public function storeFee(Request $request)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $request->validate([
+            'course_name' => 'required|string',
+            'duration' => 'required|string',
+            'course_fee' => 'required|string',
+            'certification' => 'nullable|string',
+        ]);
+
+        \App\Models\FeeStructure::create([
+            'course_name' => $request->course_name,
+            'duration' => $request->duration,
+            'course_fee' => $request->course_fee,
+            'certification' => $request->certification ?? 'Yes',
+        ]);
+
+        return back()->with('fee_success', 'Fee structure added successfully!');
+    }
+
+    public function deleteFee($id)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $fee = \App\Models\FeeStructure::findOrFail($id);
+        $fee->delete();
+
+        return back()->with('fee_success', 'Fee structure deleted successfully');
+    }
+
+    public function storeGallery(Request $request)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '-gal-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $imageUrl = '/uploads/' . $filename;
+
+            \App\Models\GalleryImage::create(['image_url' => $imageUrl]);
+
+            return back()->with('gallery_success', 'Gallery image uploaded successfully!');
+        }
+
+        return back()->withErrors(['gallery_error' => 'Image file is required']);
+    }
+
+    public function deleteGallery($id)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $gallery = \App\Models\GalleryImage::findOrFail($id);
+        $gallery->delete();
+
+        return back()->with('gallery_success', 'Gallery image deleted successfully');
     }
 
     // API Login for legacy JS calls

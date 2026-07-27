@@ -46,6 +46,24 @@
                 <span class="sidebar-text bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">{{ \App\Models\SliderImage::count() }}</span>
             </button>
 
+            <!-- Fee Structure Link -->
+            <button id="nav-fees" onclick="showTab('fees')" title="Fee Structure" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-indian-rupee-sign text-lg text-slate-400 shrink-0"></i>
+                    <span class="sidebar-text truncate">Fee Structure</span>
+                </div>
+                <span class="sidebar-text bg-green-100 text-green-800 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">{{ \App\Models\FeeStructure::count() }}</span>
+            </button>
+
+            <!-- Gallery Link -->
+            <button id="nav-galleries" onclick="showTab('galleries')" title="Gallery" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-camera-retro text-lg text-slate-400 shrink-0"></i>
+                    <span class="sidebar-text truncate">Gallery</span>
+                </div>
+                <span class="sidebar-text bg-blue-100 text-blue-800 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">{{ \App\Models\GalleryImage::count() }}</span>
+            </button>
+
             <div class="sidebar-text pt-6 px-3 pb-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Quick Actions</div>
 
             <a href="{{ route('home') }}" target="_blank" title="Live Website" class="flex items-center gap-3 px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
