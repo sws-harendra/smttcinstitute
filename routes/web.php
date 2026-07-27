@@ -71,3 +71,16 @@ Route::post('/admin/fees/delete/{id}', [AdminController::class, 'deleteFee'])->n
 
 Route::post('/admin/galleries', [AdminController::class, 'storeGallery'])->name('admin.galleries.store');
 Route::post('/admin/galleries/delete/{id}', [AdminController::class, 'deleteGallery'])->name('admin.galleries.delete');
+
+Route::post('/admin/certificates', [AdminController::class, 'storeCertificate'])->name('admin.certificates.store');
+Route::post('/admin/certificates/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('admin.certificates.delete');
+Route::post('/admin/certificates/signatures', [AdminController::class, 'storeCertSignatures'])->name('admin.certificates.signatures');
+
+Route::get('/certificate/{regd_no}', function($regd_no) {
+    $certificate = \App\Models\Certificate::where('regd_no', $regd_no)->firstOrFail();
+    $student = (object)[
+        'name' => $certificate->name,
+        'certificate' => $certificate
+    ];
+    return view('certificate', compact('student'));
+})->name('certificate.view');

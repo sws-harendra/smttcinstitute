@@ -45,6 +45,16 @@
     </div>
 @endif
 
+@if(session('cert_success'))
+    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl text-sm font-semibold flex items-center justify-between shadow-xs mb-6">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+            <span>{{ session('cert_success') }}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-emerald-500 hover:text-emerald-700">&times;</button>
+    </div>
+@endif
+
 
 <!-- ================= TAB 1: DASHBOARD OVERVIEW ================= -->
 <div id="tab-overview" class="space-y-8 animate-fade-in">
@@ -495,6 +505,136 @@
                     <p class="text-slate-400 text-sm font-medium">No gallery images uploaded yet.</p>
                 </div>
             @endforelse
+        </div>
+    </section>
+</div>
+
+<!-- ================= TAB 6: CERTIFICATES MANAGEMENT ================= -->
+<div id="tab-certificates" class="hidden space-y-8 animate-fade-in">
+    <!-- Signature Settings -->
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8">
+        <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-pen-nib text-indigo-500"></i> Signature Settings</h3>
+        <form action="{{ route('admin.certificates.signatures') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            @csrf
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Training Incharge Signature</label>
+                <input type="file" name="incharge_sig" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                @if(\App\Models\Setting::where('key', 'cert_incharge_signature')->value('value'))
+                    <img src="{{ asset(\App\Models\Setting::where('key', 'cert_incharge_signature')->value('value')) }}" class="h-10 mt-2 object-contain bg-white border border-slate-200 rounded p-1">
+                @endif
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Authorised Signatory</label>
+                <input type="file" name="auth_sig" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                @if(\App\Models\Setting::where('key', 'cert_signature')->value('value'))
+                    <img src="{{ asset(\App\Models\Setting::where('key', 'cert_signature')->value('value')) }}" class="h-10 mt-2 object-contain bg-white border border-slate-200 rounded p-1">
+                @endif
+            </div>
+            <div class="md:col-span-2">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-md transition">Update Signatures</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Generate Form -->
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8">
+        <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-file-circle-plus text-yellow-500"></i> Generate New Certificate</h3>
+        <form action="{{ route('admin.certificates.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @csrf
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Registration No. *</label>
+                <input type="text" name="regd_no" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Serial No. *</label>
+                <input type="text" name="sl_no" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Student Name *</label>
+                <input type="text" name="name" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Father's Name *</label>
+                <input type="text" name="father_name" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date of Birth</label>
+                <input type="date" name="dob" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Course Completed *</label>
+                <input type="text" name="course" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">From Date</label>
+                <input type="date" name="from_date" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">To Date</label>
+                <input type="date" name="to_date" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Training Center *</label>
+                <input type="text" name="center" value="SMTTC Institute" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Location *</label>
+                <input type="text" name="location" value="Patna" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date of Issue</label>
+                <input type="date" name="issued_date" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div class="md:col-span-3 flex justify-end mt-4">
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-xl font-bold text-sm shadow-md transition">Generate Certificate</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- List -->
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div class="p-6 md:p-8 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-list text-slate-400"></i> Issued Certificates
+            </h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    <tr>
+                        <th class="p-4">Regd No.</th>
+                        <th class="p-4">Student Name</th>
+                        <th class="p-4">Course</th>
+                        <th class="p-4">Issue Date</th>
+                        <th class="p-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                    @forelse($certificates ?? [] as $cert)
+                        <tr class="hover:bg-slate-50/80 transition duration-150">
+                            <td class="p-4 font-bold text-indigo-600">{{ $cert->regd_no }}</td>
+                            <td class="p-4 font-bold text-slate-900">{{ $cert->name }}</td>
+                            <td class="p-4 text-slate-600">{{ $cert->course }}</td>
+                            <td class="p-4 text-slate-600">{{ $cert->issued_date ? $cert->issued_date->format('M d, Y') : '-' }}</td>
+                            <td class="p-4 text-right flex justify-end gap-2">
+                                <a href="{{ route('certificate.view', $cert->regd_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold text-xs transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-eye"></i> View/Print
+                                </a>
+                                <form action="{{ route('admin.certificates.delete', $cert->id) }}" method="POST" onsubmit="return confirm('Delete this certificate?')">
+                                    @csrf
+                                    <button type="submit" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-10 text-slate-400 text-sm font-medium">No certificates generated yet.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </section>
 </div>

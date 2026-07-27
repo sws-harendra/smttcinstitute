@@ -54,8 +54,9 @@ class AdminController extends Controller
         $sliders = SliderImage::latest()->get();
         $fees = \App\Models\FeeStructure::all();
         $galleries = \App\Models\GalleryImage::latest()->get();
+        $certificates = \App\Models\Certificate::latest()->get();
 
-        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries'));
+        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries', 'certificates'));
     }
 
     public function logout()
@@ -211,6 +212,68 @@ class AdminController extends Controller
         $gallery->delete();
 
         return back()->with('gallery_success', 'Gallery image deleted successfully');
+    }
+
+    public function storeCertificate(Request $request)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $request->validate([
+            'regd_no' => 'required|unique:certificates',
+            'sl_no' => 'required|unique:certificates',
+            'name' => 'required',
+            'father_name' => 'required',
+            'course' => 'required',
+            'center' => 'required',
+            'location' => 'required',
+        ]);
+
+        \App\Models\Certificate::create($request->all());
+
+        return back()->with('cert_success', 'Certificate generated successfully!');
+    }
+
+    public function deleteCertificate($id)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $cert = \App\Models\Certificate::findOrFail($id);
+        $cert->delete();
+
+        return back()->with('cert_success', 'Certificate deleted successfully');
+    }
+
+    public function storeCertSignatures(Request $request)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        if ($request->hasFile('incharge_sig')) {
+            $file = $request->file('incharge_sig');
+            $filename = 'incharge_sig_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            \App\Models\Setting::updateOrCreate(
+                ['key' => 'cert_incharge_signature'],
+                ['value' => '/uploads/' . $filename]
+            );
+        }
+
+        if ($request->hasFile('auth_sig')) {
+            $file = $request->file('auth_sig');
+            $filename = 'auth_sig_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            \App\Models\Setting::updateOrCreate(
+                ['key' => 'cert_signature'],
+                ['value' => '/uploads/' . $filename]
+            );
+        }
+
+        return back()->with('cert_success', 'Signatures updated successfully!');
     }
 
     // API Login for legacy JS calls

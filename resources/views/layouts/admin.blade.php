@@ -101,7 +101,7 @@
     }
 
     function showTab(tabName) {
-        const tabs = ['overview', 'blogs', 'sliders', 'fees', 'galleries'];
+        const tabs = ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates'];
         
         tabs.forEach(t => {
             const el = document.getElementById('tab-' + t);
@@ -151,6 +151,9 @@
             } else if (tabName === 'galleries') {
                 titleEl.innerText = 'Gallery Management';
                 subTitleEl.innerText = 'Manage images shown on the public gallery page';
+            } else if (tabName === 'certificates') {
+                titleEl.innerText = 'Certificates Management';
+                subTitleEl.innerText = 'Generate and print certificates for students';
             }
         }
 
@@ -174,7 +177,7 @@
         }
 
         const hash = window.location.hash.replace('#', '');
-        if (['overview', 'blogs', 'sliders', 'fees', 'galleries'].includes(hash)) {
+        if (['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates'].includes(hash)) {
             showTab(hash);
         } else {
             showTab('overview');
