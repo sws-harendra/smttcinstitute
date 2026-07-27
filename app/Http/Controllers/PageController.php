@@ -88,8 +88,13 @@ class PageController extends Controller
             'session_start' => 'required|date',
         ]);
 
-        $photoPath = $request->file('photo')->store('public/admissions');
-        $validated['photo'] = str_replace('public/', 'storage/', $photoPath);
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/admissions'), $filename);
+            $validated['photo'] = 'uploads/admissions/' . $filename;
+        }
+
         $validated['password'] = bcrypt($validated['password']);
         
         $latestAdmission = \App\Models\Admission::latest()->first();
