@@ -277,6 +277,41 @@ class AdminController extends Controller
         return back()->with('cert_success', 'Signatures updated successfully!');
     }
 
+    public function approveAdmissionCertificate($id)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $admission = \App\Models\Admission::findOrFail($id);
+
+        // Check if certificate already exists
+        $exists = \App\Models\Certificate::where('regd_no', $admission->enrollment_no)->exists();
+        if ($exists) {
+            return back()->with('cert_success', 'Certificate already generated for this student.');
+        }
+
+        // Auto-generate serial number
+        $latestCert = \App\Models\Certificate::latest()->first();
+        $sl_no = 'SMTTC-CERT-' . date('Y') . '-' . str_pad(($latestCert ? $latestCert->id + 1 : 1), 4, '0', STR_PAD_LEFT);
+
+        \App\Models\Certificate::create([
+            'regd_no' => $admission->enrollment_no,
+            'sl_no' => $sl_no,
+            'name' => $admission->name,
+            'father_name' => $admission->father_name,
+            'dob' => $admission->dob,
+            'course' => $admission->course,
+            'from_date' => $admission->session_start,
+            'to_date' => \Carbon\Carbon::parse($admission->session_start)->addMonths(3)->format('Y-m-d'), // Defaulting to 3 months for now, can be adjusted
+            'center' => $admission->center,
+            'location' => $admission->district . ', ' . $admission->state,
+            'issued_date' => now()->format('Y-m-d'),
+        ]);
+
+        return back()->with('cert_success', 'Certificate generated successfully for ' . $admission->name . '!');
+    }
+
     // API Login for legacy JS calls
     public function apiLogin(Request $request)
     {

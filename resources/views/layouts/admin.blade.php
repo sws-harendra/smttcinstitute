@@ -154,6 +154,9 @@
             } else if (tabName === 'certificates') {
                 titleEl.innerText = 'Certificates Management';
                 subTitleEl.innerText = 'Generate and print certificates for students';
+            } else if (tabName === 'admissions') {
+                titleEl.innerText = 'Student Admissions';
+                subTitleEl.innerText = 'Manage incoming student admissions and generate certificates';
             }
         }
 
@@ -177,7 +180,7 @@
         }
 
         const hash = window.location.hash.replace('#', '');
-        if (['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates'].includes(hash)) {
+        if (['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'].includes(hash)) {
             showTab(hash);
         } else {
             showTab('overview');

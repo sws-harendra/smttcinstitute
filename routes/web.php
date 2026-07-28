@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StudentController;
 
 // Public Homepage & Alias
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -78,6 +79,13 @@ Route::post('/admin/galleries/delete/{id}', [AdminController::class, 'deleteGall
 Route::post('/admin/certificates', [AdminController::class, 'storeCertificate'])->name('admin.certificates.store');
 Route::post('/admin/certificates/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('admin.certificates.delete');
 Route::post('/admin/certificates/signatures', [AdminController::class, 'storeCertSignatures'])->name('admin.certificates.signatures');
+Route::post('/admin/admissions/approve/{id}', [AdminController::class, 'approveAdmissionCertificate'])->name('admin.admissions.approve');
+
+// Student Portal Routes
+Route::get('/student/login', [StudentController::class, 'loginView'])->name('student.login');
+Route::post('/student/login', [StudentController::class, 'login'])->name('student.login.submit');
+Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
+Route::post('/student/logout', [StudentController::class, 'logout'])->name('student.logout');
 
 Route::get('/certificate/{regd_no}', function($regd_no) {
     $certificate = \App\Models\Certificate::where('regd_no', $regd_no)->firstOrFail();

@@ -711,8 +711,8 @@
                         <th class="p-4">Student Name</th>
                         <th class="p-4">Course</th>
                         <th class="p-4">Mobile No.</th>
-                        <th class="p-4">Date</th>
                         <th class="p-4 text-center">Photo</th>
+                        <th class="p-4 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-sm">
@@ -722,14 +722,37 @@
                             <td class="p-4 font-bold text-slate-900">{{ $admission->name }}</td>
                             <td class="p-4 text-slate-600">{{ $admission->course }}</td>
                             <td class="p-4 text-slate-600">{{ $admission->mobile_no }}</td>
-                            <td class="p-4 text-slate-600">{{ $admission->created_at ? $admission->created_at->format('M d, Y') : '-' }}</td>
                             <td class="p-4 text-center">
                                 @if($admission->photo)
-                                    <a href="{{ asset($admission->photo) }}" target="_blank">
-                                        <img src="{{ asset($admission->photo) }}" class="w-10 h-10 rounded-full object-cover border border-slate-200 inline-block">
+                                    @php
+                                        $photoUrl = Str::startsWith($admission->photo, 'http') ? $admission->photo : (Str::startsWith($admission->photo, '/') ? $admission->photo : asset($admission->photo));
+                                    @endphp
+                                    <a href="{{ $photoUrl }}" target="_blank">
+                                        <img src="{{ $photoUrl }}" class="w-10 h-10 rounded-full object-cover border border-slate-200 inline-block" onerror="this.onerror=null; this.src='{{ asset('assets/images/placeholder-user.jpg') }}';">
                                     </a>
                                 @else
-                                    -
+                                    <img src="{{ asset('assets/images/placeholder-user.jpg') }}" class="w-10 h-10 rounded-full object-cover border border-slate-200 inline-block">
+                                @endif
+                            </td>
+                            <td class="p-4 text-right flex justify-end gap-2">
+                                @php
+                                    $hasCertificate = \App\Models\Certificate::where('regd_no', $admission->enrollment_no)->exists();
+                                @endphp
+                                <button type="button" onclick="document.getElementById('profile-modal-{{ $admission->id }}').classList.remove('hidden')" class="px-3.5 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition flex items-center gap-1.5" title="View Full Profile">
+                                    <i class="fa-solid fa-user"></i> <span class="hidden xl:inline">View Profile</span>
+                                </button>
+                                
+                                @if($hasCertificate)
+                                    <a href="{{ route('certificate.view', $admission->enrollment_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold text-xs transition flex items-center gap-1.5" title="View Certificate">
+                                        <i class="fa-solid fa-eye"></i> <span class="hidden xl:inline">View Cert</span>
+                                    </a>
+                                @else
+                                    <form action="{{ route('admin.admissions.approve', $admission->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" onclick="return confirm('Approve admission and generate certificate?')" class="px-3.5 py-1.5 rounded-lg bg-green-500 hover:bg-green-600 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5" title="Approve & Generate Certificate">
+                                            <i class="fa-solid fa-check"></i> <span class="hidden xl:inline">Approve & Gen Cert</span>
+                                        </button>
+                                    </form>
                                 @endif
                             </td>
                         </tr>
@@ -743,6 +766,74 @@
         </div>
     </section>
 </div>
+
+<!-- Student Profile Modals -->
+@foreach($admissions ?? [] as $admission)
+<div id="profile-modal-{{ $admission->id }}" class="fixed inset-0 z-[99] hidden">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="this.parentElement.classList.add('hidden')"></div>
+    <!-- Modal -->
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-6 md:p-8 animate-fade-in max-h-[90vh] overflow-y-auto">
+        <button onclick="this.closest('.fixed').classList.add('hidden')" class="absolute top-6 right-6 text-slate-400 hover:text-red-500 transition-colors">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <h3 class="text-xl font-extrabold text-slate-900 mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-address-card text-indigo-500"></i> Student Profile
+        </h3>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="w-32 h-32 shrink-0 rounded-2xl overflow-hidden border border-slate-200 shadow-sm mx-auto md:mx-0">
+                @php
+                    $photoUrl = $admission->photo ? (Str::startsWith($admission->photo, 'http') ? $admission->photo : (Str::startsWith($admission->photo, '/') ? $admission->photo : asset($admission->photo))) : asset('assets/images/placeholder-user.jpg');
+                @endphp
+                <img src="{{ $photoUrl }}" class="w-full h-full object-cover" alt="Student Photo" onerror="this.onerror=null; this.src='{{ asset('assets/images/placeholder-user.jpg') }}';">
+            </div>
+            <div class="flex-1 space-y-4">
+                <div>
+                    <h4 class="text-2xl font-bold text-slate-900">{{ $admission->name }}</h4>
+                    <p class="text-xs font-semibold text-indigo-600 uppercase tracking-wider mt-1">{{ $admission->course }}</p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Enrollment No.</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ $admission->enrollment_no }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">DOB</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ $admission->dob }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Father's Name</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ $admission->father_name }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Mother's Name</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ $admission->mother_name }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Mobile</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ $admission->mobile_no }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Email</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ $admission->email }}</span>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Full Address</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ $admission->address }}, {{ $admission->district }}, {{ $admission->state }}</span>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Training Center</span>
+                        <span class="text-sm font-semibold text-slate-800">{{ $admission->center }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 
 @endsection
 
