@@ -767,13 +767,17 @@
     </section>
 </div>
 
+
+@endsection
+
+@section('modals')
 <!-- Student Profile Modals -->
 @foreach($admissions ?? [] as $admission)
-<div id="profile-modal-{{ $admission->id }}" class="fixed inset-0 z-[99] hidden">
+<div id="profile-modal-{{ $admission->id }}" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
     <!-- Backdrop -->
     <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="this.parentElement.classList.add('hidden')"></div>
     <!-- Modal -->
-    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-6 md:p-8 animate-fade-in max-h-[90vh] overflow-y-auto">
+    <div class="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-6 md:p-8 animate-fade-in max-h-[90vh] overflow-y-auto z-10">
         <button onclick="this.closest('.fixed').classList.add('hidden')" class="absolute top-6 right-6 text-slate-400 hover:text-red-500 transition-colors">
             <i class="fa-solid fa-xmark text-xl"></i>
         </button>
@@ -834,7 +838,6 @@
     </div>
 </div>
 @endforeach
-
 @endsection
 
 @section('scripts')

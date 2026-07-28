@@ -86,17 +86,17 @@
         </div>
 
         <!-- 3. Student Name -->
-        <div class="absolute font-extrabold text-slate-900 text-[18px] tracking-wide text-center" style="left: 420px; top: 403px; width: 450px;">
+        <div class="absolute font-extrabold text-slate-900 text-[18px] tracking-wide text-center" style="left: 420px; top: 408px; width: 450px;">
             {{ strtoupper($student->certificate->name) }}
         </div>
 
         <!-- 4. Father / Mother Name -->
-        <div class="absolute font-extrabold text-slate-900 text-[15px] tracking-wide text-center" style="left: 280px; top: 445px; width: 330px;">
+        <div class="absolute font-extrabold text-slate-900 text-[15px] tracking-wide text-center" style="left: 280px; top: 455px; width: 330px;">
             {{ strtoupper($student->certificate->father_name) }}
         </div>
 
         <!-- 5. Date of Birth -->
-        <div class="absolute font-extrabold text-slate-900 text-[15px] tracking-wide text-center" style="left: 720px; top: 445px; width: 180px;">
+        <div class="absolute font-extrabold text-slate-900 text-[15px] tracking-wide text-center" style="left: 720px; top: 455px; width: 180px;">
             {{ $student->certificate->dob ? \Carbon\Carbon::parse($student->certificate->dob)->format('d.m.Y') : '' }}
         </div>
 
@@ -116,14 +116,14 @@
         </div>
 
         <!-- 9. Training Incharge Signature -->
-        <div class="absolute flex items-center justify-center" style="left: 160px; top: 680px; width: 140px; height: 40px;">
+        <div class="absolute flex items-center justify-center" style="left: 160px; top: 670px; width: 140px; height: 40px;">
             @if($certInchargeSig)
                 <img src="{{ asset($certInchargeSig) }}" class="max-h-10 object-contain">
             @endif
         </div>
 
         <!-- 10. Authorised Signatory Signature -->
-        <div class="absolute flex items-center justify-center" style="left: 680px; top: 680px; width: 140px; height: 40px;">
+        <div class="absolute flex items-center justify-center" style="left: 680px; top: 670px; width: 140px; height: 40px;">
             @if($certSignature)
                 <img src="{{ asset($certSignature) }}" class="max-h-10 object-contain">
             @endif
