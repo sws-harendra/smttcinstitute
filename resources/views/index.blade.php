@@ -365,7 +365,7 @@
     <h2 class="text-4xl font-bold mb-4">Start Your Technical Career Today</h2>
     <p class="mb-8">Limited seats available. Book your free demo class now.</p>
     <div class="flex justify-center gap-6 flex-wrap">
-      <a href="tel:7091756006" class="btn-shine bg-white text-black px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition transform hover:scale-105">
+      <a href="tel:7870516006" class="btn-shine bg-white text-black px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition transform hover:scale-105">
         📞 Call Now
       </a>
     </div>

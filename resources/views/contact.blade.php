@@ -42,7 +42,7 @@
                     <div class="w-12 h-12 bg-[#FACA0A] rounded-lg flex items-center justify-center text-black text-xl">📞</div>
                     <div>
                         <h4 class="font-semibold text-lg">Call Us</h4>
-                        <a href="tel:7091756006" class="text-gray-300 hover:text-[#FACA0A] transition">+91 70917 56006</a>
+                        <a href="tel:7870516006" class="text-gray-300 hover:text-[#FACA0A] transition">+91 70917 56006</a>
                     </div>
                 </div>
                 <div class="flex items-start gap-4 bg-white/10 p-4 rounded-xl backdrop-blur-sm">

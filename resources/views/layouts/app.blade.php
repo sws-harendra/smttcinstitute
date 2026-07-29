@@ -235,8 +235,8 @@
 
         <!-- Right Actions -->
         <div class="hidden md:flex items-center gap-2 xl:gap-3 shrink-0">
-          <a href="tel:7091756006" class="flex items-center justify-center gap-2 border border-[#FACA0A] text-[#FACA0A] px-3 xl:px-4 py-1.5 xl:py-2 rounded-full font-semibold hover:bg-[#FACA0A] hover:text-white transition whitespace-nowrap shadow-sm hover:shadow-md text-[13px] xl:text-sm">
-            <i class="fa-solid fa-phone"></i> 7091756006
+          <a href="tel:7870516006" class="flex items-center justify-center gap-2 border border-[#FACA0A] text-[#FACA0A] px-3 xl:px-4 py-1.5 xl:py-2 rounded-full font-semibold hover:bg-[#FACA0A] hover:text-white transition whitespace-nowrap shadow-sm hover:shadow-md text-[13px] xl:text-sm">
+            <i class="fa-solid fa-phone"></i> 7870516006
           </a>
           <a href="{{ route('student.login') }}" class="text-[11px] xl:text-xs text-white bg-blue-600 hover:bg-blue-700 px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg font-semibold transition shadow-sm">
             Student Login
@@ -304,7 +304,7 @@
         </nav>
 
         <div class="mt-8 space-y-4">
-          <a href="tel:7091756006" class="block text-center border border-[#FACA0A] text-[#FACA0A] py-3 rounded-full font-semibold">
+          <a href="tel:7870516006" class="block text-center border border-[#FACA0A] text-[#FACA0A] py-3 rounded-full font-semibold">
             📞 Call Now
           </a>
         </div>
@@ -376,7 +376,7 @@
             <h4 class="footer-title font-bold pb-6 text-white text-lg">Contact Us</h4>
             <ul class="space-y-3 text-sm">
               <li>Near Hi-Tech Hospital saguna more Balaji Nagar new Tarachak danapur patna bihar 801503</li>
-              <li>📞 <a href="tel:7091756006" class="footer-link hover:text-[#FACA0A]">7091756006</a></li>
+              <li>📞 <a href="tel:7870516006" class="footer-link hover:text-[#FACA0A]">7870516006</a></li>
               <li>✉️ <a href="mailto:info@technicalcentre.com" class="footer-link hover:text-[#FACA0A]">info@technicalcentre.com</a></li>
               <li>🕒 Mon – Sat: 9:00 AM – 7:00 PM</li>
             </ul>
