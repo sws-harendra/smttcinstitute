@@ -354,7 +354,7 @@
 
     <!-- Floating Contact Buttons -->
     <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9999] flex flex-col gap-3">
-        <a href="https://wa.me/918800414848" target="_blank" aria-label="WhatsApp Us" class="group w-12 h-12 sm:w-14 sm:h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110">
+        <a href="https://wa.me/917870516006" target="_blank" aria-label="WhatsApp Us" class="group w-12 h-12 sm:w-14 sm:h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110">
             <i class="fa-brands fa-whatsapp text-white text-2xl sm:text-3xl"></i>
         </a>
     </div>
@@ -379,7 +379,7 @@
               <a href="#" target="_blank" class="footer-icon text-xl hover:text-blue-600 transition"><i class="fab fa-facebook-f"></i></a>
               <a href="#" target="_blank" class="footer-icon text-xl hover:text-pink-600 transition"><i class="fab fa-instagram"></i></a>
               <a href="#" target="_blank" class="footer-icon text-xl hover:text-red-600 transition"><i class="fab fa-youtube"></i></a>
-              <a href="https://wa.me/918800414848" target="_blank" class="footer-icon text-xl hover:text-green-500 transition"><i class="fab fa-whatsapp"></i></a>
+              <a href="https://wa.me/917870516006" target="_blank" class="footer-icon text-xl hover:text-green-500 transition"><i class="fab fa-whatsapp"></i></a>
             </div>
           </div>
 
@@ -485,7 +485,7 @@
                 const course = document.getElementById("popupCourse").value;
                 const message = document.getElementById("popupMessage").value;
                 const whatsappText = `🎓 New Popup Enquiry\n👤 Name: ${name}\n📞 Mobile: ${phone}\n🏙️ City: ${city}\n📚 Course: ${course}\n📝 Message:\n${message}`;
-                window.open(`https://wa.me/918800414848?text=${encodeURIComponent(whatsappText)}`, "_blank");
+                window.open(`https://wa.me/917870516006?text=${encodeURIComponent(whatsappText)}`, "_blank");
                 popup.classList.add("hidden");
                 popup.classList.remove("flex");
                 this.reset();

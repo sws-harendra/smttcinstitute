@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const course = document.getElementById("contactCourse").value;
             const message = document.getElementById("contactMessage").value;
             const whatsappText = `🎓 Contact Query\n👤 Name: ${name}\n📞 Mobile: ${phone}\n📚 Course: ${course}\n📝 Message:\n${message}`;
-            window.open(`https://wa.me/918800414848?text=${encodeURIComponent(whatsappText)}`, "_blank");
+            window.open(`https://wa.me/917870516006?text=${encodeURIComponent(whatsappText)}`, "_blank");
             this.reset();
         });
     }
