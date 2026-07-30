@@ -21,6 +21,15 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        .cert-scale-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: auto;
+            padding: 1rem 0;
+        }
+
         .cert-wrapper {
             width: 1024px;
             height: 768px;
@@ -30,6 +39,28 @@
             background-repeat: no-repeat;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
             margin: 0 auto;
+            transform-origin: top center;
+        }
+
+        @media screen and (max-width: 1060px) {
+            .cert-wrapper {
+                zoom: 0.85;
+            }
+        }
+        @media screen and (max-width: 850px) {
+            .cert-wrapper {
+                zoom: 0.65;
+            }
+        }
+        @media screen and (max-width: 640px) {
+            .cert-wrapper {
+                zoom: 0.48;
+            }
+        }
+        @media screen and (max-width: 450px) {
+            .cert-wrapper {
+                zoom: 0.33;
+            }
         }
 
         @media print {
@@ -44,10 +75,16 @@
                 align-items: center;
                 justify-content: center;
             }
+            .cert-scale-container {
+                overflow: visible !important;
+                padding: 0 !important;
+            }
             .cert-wrapper {
                 box-shadow: none !important;
                 width: 297mm !important;
                 height: 210mm !important;
+                zoom: 1 !important;
+                transform: none !important;
                 page-break-after: avoid;
                 page-break-inside: avoid;
             }
@@ -55,14 +92,14 @@
         }
     </style>
 </head>
-<body class="print:py-0 py-8">
+<body class="print:py-0 py-4 sm:py-8">
 
     <!-- Top Actions panel (hidden in print) -->
-    <div class="no-print mb-6 flex gap-4">
-        <a href="{{ url('/') }}" class="px-5 py-2.5 rounded-xl border border-gray-300 hover:bg-gray-100 font-bold text-gray-700 transition duration-150 flex items-center gap-2 shadow-sm bg-white">
+    <div class="no-print mb-4 sm:mb-6 flex flex-wrap justify-center gap-3 sm:gap-4 px-4">
+        <a href="{{ url('/') }}" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl border border-gray-300 hover:bg-gray-100 font-bold text-xs sm:text-sm text-gray-700 transition duration-150 flex items-center gap-2 shadow-sm bg-white">
             <i class="fa-solid fa-arrow-left"></i> Back to Home
         </a>
-        <button onclick="window.print()" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-lg shadow-blue-500/20 transition duration-150 flex items-center gap-2">
+        <button onclick="window.print()" class="px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-blue-500/20 transition duration-150 flex items-center gap-2">
             <i class="fa-solid fa-print"></i> Print Certificate
         </button>
     </div>
@@ -73,7 +110,8 @@
     @endphp
 
     <!-- EXACT CERTIFICATE IMAGE WITH OVERLAY DYNAMIC FIELDS -->
-    <div class="cert-wrapper select-none">
+    <div class="cert-scale-container">
+        <div class="cert-wrapper select-none">
 
         <!-- 1. Regd No. (Top Left) -->
         <div class="absolute font-extrabold text-slate-900 text-[14px] tracking-tight" style="left: 235px; top: 31px;">
@@ -130,6 +168,7 @@
         </div>
 
     </div>
+</div>
 
 </body>
 </html>

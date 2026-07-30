@@ -36,7 +36,7 @@
                 <p class="text-black/80 text-xs sm:text-sm mt-1 relative z-10 font-medium">Complete your profile to register in our student database</p>
             </div>
 
-            <form action="{{ route('student.register') }}" method="POST" enctype="multipart/form-data" class="p-6 sm:p-10 space-y-8">
+            <form action="{{ route('student.register') }}" method="POST" enctype="multipart/form-data" class="p-4 sm:p-8 lg:p-10 space-y-6 sm:space-y-8">
                 @csrf
 
                 @if ($errors->any())
@@ -57,7 +57,7 @@
                 </div>
                 @endif
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 
                     {{-- STATE --}}
                     <div>

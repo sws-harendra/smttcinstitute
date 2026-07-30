@@ -11,24 +11,24 @@
 @section('content')
 
 <!-- HERO SECTION -->
-<section class="bg-[#FACA0A] text-black py-20">
-  <div class="max-w-7xl mx-auto px-6 text-center">
-    <h1 class="text-4xl md:text-5xl font-bold mb-6">
+<section class="bg-[#FACA0A] text-black py-12 sm:py-20 px-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+    <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold mb-4 sm:mb-6">
       Mobile Repairing Course in Patna
     </h1>
-    <p class="text-sm md:text-lg max-w-6xl mx-auto leading-relaxed mb-8">
+    <p class="text-xs sm:text-base md:text-lg max-w-5xl mx-auto leading-relaxed mb-6 sm:mb-8 text-black/90">
       Build strong hands-on skills in smartphone repairing: display replacement, IC jumpering, battery charging faults, network problems, and software flashing.
     </p>
-    <a href="{{ route('contact') }}" class="inline-block bg-white text-black px-10 py-3 rounded-full font-semibold hover:bg-gray-100 transition shadow-md">
+    <a href="{{ route('contact') }}" class="inline-block bg-white text-black px-8 sm:px-10 py-3 rounded-full font-bold hover:bg-gray-100 transition shadow-md text-sm sm:text-base">
       Enquire Now
     </a>
   </div>
 </section>
 
 <!-- INTRO SECTION -->
-<section class="py-16 bg-white">
-  <div class="max-w-7xl mx-auto px-6">
-    <p class="text-lg leading-relaxed mb-6">
+<section class="py-10 sm:py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <p class="text-sm sm:text-base md:text-lg leading-relaxed">
       Our <b>mobile repairing training institute in Patna</b> offers a practical and job oriented course created to build strong hands on skills in smartphone repairing. This training helps students learn how to find and repair common mobile phone problems like display damage, battery issues, charging faults, network problems and software related errors.
     </p>
   </div>

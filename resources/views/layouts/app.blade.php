@@ -15,9 +15,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
     
     <style>
-        /* Smooth Scroll Behavior */
-        html {
+        /* Smooth Scroll & Global Responsiveness */
+        html, body {
             scroll-behavior: smooth;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         /* Float Animation */
@@ -82,7 +84,7 @@
             box-shadow: 0 0 10px rgba(250, 202, 10, 0.7);
         }
 
-        /* Award-Winning Text Shimmer */
+        /* Text Shimmer */
         @keyframes shimmerText {
             0% { background-position: -200% center; }
             100% { background-position: 200% center; }
@@ -116,6 +118,7 @@
         /* World-Class 3D Gallery Stage Styles */
         .gallery-3d-stage {
             perspective: 1200px;
+            overflow: hidden;
         }
         .gallery-3d-carousel {
             transform-style: preserve-3d;
@@ -127,7 +130,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            border-radius: 1.5rem;
+            border-radius: 1.25rem;
             transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease, filter 0.8s ease;
             transform-style: preserve-3d;
             cursor: pointer;
@@ -135,7 +138,7 @@
         .gallery-3d-card .inner-card {
             width: 100%;
             height: 100%;
-            border-radius: 1.5rem;
+            border-radius: 1.25rem;
             overflow: hidden;
             position: relative;
             border: 2px solid rgba(250, 202, 10, 0.2);
@@ -156,21 +159,31 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 1.25rem;
+            padding: 0.75rem sm:padding:1.25rem;
             background: linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.4), transparent);
             color: white;
             backdrop-filter: blur(6px);
         }
         .gallery-3d-card .card-caption h4 {
             font-weight: 800;
-            font-size: 1.15rem;
+            font-size: 0.95rem;
             color: #FACA0A;
             letter-spacing: -0.02em;
         }
+        @media (min-width: 640px) {
+            .gallery-3d-card .card-caption h4 {
+                font-size: 1.15rem;
+            }
+        }
         .gallery-3d-card .card-caption p {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             opacity: 0.85;
             color: #cbd5e1;
+        }
+        @media (min-width: 640px) {
+            .gallery-3d-card .card-caption p {
+                font-size: 0.85rem;
+            }
         }
     </style>
     
@@ -266,56 +279,66 @@
     <!-- ================= MOBILE SIDE MENU ================= -->
     <div id="mobileMenu" class="fixed inset-0 z-50 hidden">
       <!-- Overlay -->
-      <div class="absolute inset-0 bg-black/40" onclick="closeMenu()"></div>
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-xs" onclick="closeMenu()"></div>
 
       <!-- Drawer -->
-      <div class="absolute right-0 top-0 h-full w-72 bg-white shadow-xl p-6 animate-slide-in">
-        <div class="flex justify-between items-center mb-6">
-            <a class="flex items-center gap-2" href="{{ route('home') }}">
-                <div class="w-[60px]">
-                  <img class="w-full" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo">
-                </div>
-                <span class="text-xl font-roboto font-semibold drop-shadow-md">
-                  Smart Technical Training Institute
-                </span>
-            </a>
-          <button onclick="closeMenu()" class="text-2xl">✕</button>
-        </div>
-
-        <!-- Links -->
-        <nav class="flex flex-col gap-5 text-sm font-semibold text-gray-700">
-          <a href="{{ route('home') }}" onclick="closeMenu()">Home</a>
-          <a href="{{ route('about') }}" onclick="closeMenu()">About Us</a>
-
-          <!-- Services Dropdown (Mobile) -->
-          <div>
-            <button onclick="toggleServices()" class="flex w-full items-center justify-between text-left hover:text-[#FACA0A] transition">
-              <span>Our Courses</span>
-              <svg id="serviceArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            <div id="servicesMenu" class="mt-3 ml-3 hidden flex-col gap-2 text-gray-600">
-              <a href="{{ route('courses.ac') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">AC Repairing</a>
-              <a href="{{ route('courses.washing') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Washing Machine Repairing</a>
-              <a href="{{ route('courses.fridge') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Fridge Repairing</a>
-              <a href="{{ route('courses.mobile') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Mobile Repairing</a>
-              <a href="{{ route('courses.laptop') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Laptop Repairing</a>
-            </div>
+      <div class="absolute right-0 top-0 h-full w-[85vw] max-w-xs sm:w-80 bg-white shadow-2xl p-6 overflow-y-auto animate-slide-in flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-6 border-b pb-4">
+              <a class="flex items-center gap-2" href="{{ route('home') }}">
+                  <div class="w-[45px] shrink-0">
+                    <img class="w-full" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo">
+                  </div>
+                  <span class="text-sm sm:text-base font-roboto font-bold drop-shadow-md leading-snug">
+                    Smart Technical Training Institute
+                  </span>
+              </a>
+            <button onclick="closeMenu()" class="text-2xl font-bold text-gray-500 hover:text-red-500">✕</button>
           </div>
 
-          <a href="{{ route('feestructure') }}" onclick="closeMenu()">Fee Structure</a>
-          <a href="{{ route('blog.index') }}" onclick="closeMenu()">Blog</a>
-          <a href="{{ route('gallery') }}" onclick="closeMenu()">Gallery</a>
-          <a href="{{ route('admission') }}" onclick="closeMenu()">Student Admission</a>
-          <a href="{{ route('contact') }}" onclick="closeMenu()">Contact</a>
-          <a href="{{ route('student.login') }}" onclick="closeMenu()" class="text-blue-600">Student Login</a>
-        </nav>
+          <!-- Links -->
+          <nav class="flex flex-col gap-4 text-sm font-semibold text-gray-700">
+            <a href="{{ route('home') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">Home</a>
+            <a href="{{ route('about') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">About Us</a>
 
-        <div class="mt-8 space-y-4">
-          <a href="tel:7870516006" class="block text-center border border-[#FACA0A] text-[#FACA0A] py-3 rounded-full font-semibold">
-            📞 Call Now
+            <!-- Services Dropdown (Mobile) -->
+            <div>
+              <button onclick="toggleServices()" class="flex w-full items-center justify-between text-left hover:text-[#FACA0A] transition py-1">
+                <span>Our Courses</span>
+                <svg id="serviceArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div id="servicesMenu" class="mt-2 ml-3 hidden flex-col gap-2 text-gray-600 text-xs sm:text-sm">
+                <a href="{{ route('courses.ac') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">AC Repairing</a>
+                <a href="{{ route('courses.washing') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Washing Machine Repairing</a>
+                <a href="{{ route('courses.fridge') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Fridge Repairing</a>
+                <a href="{{ route('courses.mobile') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Mobile Repairing</a>
+                <a href="{{ route('courses.laptop') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Laptop Repairing</a>
+              </div>
+            </div>
+
+            <a href="{{ route('feestructure') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">Fee Structure</a>
+            <a href="{{ route('blog.index') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">Blog</a>
+            <a href="{{ route('gallery') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">Gallery</a>
+            <a href="{{ route('admission') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">Student Admission</a>
+            <a href="{{ route('contact') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">Contact</a>
+            
+            <div class="pt-3 border-t border-gray-100 space-y-2">
+              <a href="{{ route('student.login') }}" onclick="closeMenu()" class="flex items-center gap-2 text-blue-600 font-bold py-1">
+                <i class="fa-solid fa-user-graduate"></i> Student Login
+              </a>
+              <a href="{{ route('admin.login') }}" onclick="closeMenu()" class="flex items-center gap-2 text-gray-600 font-semibold py-1">
+                <i class="fa-solid fa-user-shield"></i> Admin Portal
+              </a>
+            </div>
+          </nav>
+        </div>
+
+        <div class="mt-8 pt-4 border-t border-gray-100">
+          <a href="tel:7870516006" class="flex items-center justify-center gap-2 text-center bg-[#FACA0A] text-black py-3 rounded-full font-bold shadow-md hover:bg-yellow-400 transition">
+            <i class="fa-solid fa-phone"></i> Call Now: 7870516006
           </a>
         </div>
       </div>
@@ -327,16 +350,16 @@
     </main>
 
     <!-- Floating Contact Buttons -->
-    <div class="fixed bottom-5 right-5 z-[9999] flex flex-col gap-3">
-        <a href="https://wa.me/918800414848" target="_blank" class="group w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110">
-            <i class="fa-brands fa-whatsapp text-white text-3xl"></i>
+    <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9999] flex flex-col gap-3">
+        <a href="https://wa.me/918800414848" target="_blank" aria-label="WhatsApp Us" class="group w-12 h-12 sm:w-14 sm:h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110">
+            <i class="fa-brands fa-whatsapp text-white text-2xl sm:text-3xl"></i>
         </a>
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-gray-900 text-gray-300 pt-20">
-      <div class="max-w-7xl mx-auto px-4">
-        <div class="grid md:grid-cols-4 gap-12 pb-16 border-b border-gray-700">
+    <footer class="bg-gray-900 text-gray-300 pt-16 sm:pt-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pb-12 sm:pb-16 border-b border-gray-700">
           <div>
             <div class="flex gap-1 items-center">
               <img class="w-[80px]" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo">
@@ -548,7 +571,7 @@
 
                 function update3dGallery(newIndex) {
                     activeIndex = (newIndex + totalCards) % totalCards;
-                    const radius = window.innerWidth < 640 ? 150 : (window.innerWidth < 1024 ? 220 : 290);
+                    const radius = window.innerWidth < 480 ? 95 : (window.innerWidth < 640 ? 140 : (window.innerWidth < 1024 ? 220 : 290));
 
                     cards3d.forEach((card, i) => {
                         let offset = i - activeIndex;
