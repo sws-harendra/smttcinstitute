@@ -213,38 +213,38 @@
 
     <!-- ================= HEADER ================= -->
     <header class="bg-white shadow-md sticky top-0 z-50">
-      <div class="max-w-[1320px] mx-auto px-4 py-3 flex items-center justify-between gap-2 xl:gap-4">
+      <div class="max-w-[1440px] mx-auto px-2.5 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 lg:gap-2 xl:gap-4">
 
         <!-- Logo -->
-        <a class="flex items-center gap-2 shrink-0" href="{{ route('home') }}">
-            <img class="w-[50px] xl:w-[55px]" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
-            <span class="text-base lg:text-lg xl:text-xl font-roboto font-semibold drop-shadow-md leading-tight">
-              Smart Technical Training<br class="hidden lg:block xl:hidden"> Institute
+        <a class="flex items-center gap-1.5 sm:gap-2 shrink-0" href="{{ route('home') }}">
+            <img class="w-9 sm:w-11 lg:w-10 xl:w-[48px]" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
+            <span class="text-xs sm:text-sm lg:text-[13px] xl:text-base font-roboto font-bold text-gray-900 leading-tight tracking-tight whitespace-nowrap">
+              Smart Technical<span class="hidden sm:inline lg:hidden xl:inline"> Training</span> Institute
             </span>
         </a>
 
-        <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center gap-3 xl:gap-5 text-[13px] xl:text-sm font-semibold text-gray-700">
+        <!-- Desktop Navigation (visible on lg screens 1024px+) -->
+        <nav class="hidden lg:flex items-center gap-1.5 xl:gap-3.5 2xl:gap-5 text-[11px] lg:text-[12px] xl:text-[13px] 2xl:text-sm font-semibold text-gray-700">
             <a href="{{ route('home') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Home</a>
             <a href="{{ route('about') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">About Us</a>
 
             <!-- Services Dropdown -->
             <div class="relative group">
-                <button class="flex items-center gap-1 hover:text-[#FACA0A] transition whitespace-nowrap">
-                Our Courses
-                <svg class="w-4 h-4 mt-[2px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <button class="flex items-center gap-0.5 hover:text-[#FACA0A] transition whitespace-nowrap">
+                <span>Our Courses</span>
+                <svg class="w-3.5 h-3.5 mt-[1px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div class="absolute left-0 top-full mt-4 w-64 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                <ul class="py-3 text-gray-700">
-                    <li><a href="{{ route('courses.ac') }}" class="block px-5 py-2 hover:bg-[#FACA0A]">AC Repairing</a></li>
-                    <li><a href="{{ route('courses.washing') }}" class="block px-5 py-2 hover:bg-[#FACA0A]">Washing Machine Repairing</a></li>
-                    <li><a href="{{ route('courses.fridge') }}" class="block px-5 py-2 hover:bg-[#FACA0A]">Fridge Repairing</a></li>
-                    <li><a href="{{ route('courses.mobile') }}" class="block px-5 py-2 hover:bg-[#FACA0A]">Mobile Repairing</a></li>
-                    <li><a href="{{ route('courses.laptop') }}" class="block px-5 py-2 hover:bg-[#FACA0A]">Laptop Repairing</a></li>
+                <div class="absolute left-0 top-full mt-2 w-60 bg-white shadow-xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100 py-1.5">
+                <ul class="text-gray-700 text-xs xl:text-sm">
+                    <li><a href="{{ route('courses.ac') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">AC Repairing</a></li>
+                    <li><a href="{{ route('courses.washing') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">Washing Machine Repairing</a></li>
+                    <li><a href="{{ route('courses.fridge') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">Fridge Repairing</a></li>
+                    <li><a href="{{ route('courses.mobile') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">Mobile Repairing</a></li>
+                    <li><a href="{{ route('courses.laptop') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">Laptop Repairing</a></li>
                 </ul>
                 </div>
             </div>
@@ -256,23 +256,26 @@
             <a href="{{ route('contact') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Contact</a>
         </nav>
 
-        <!-- Right Actions -->
-        <div class="hidden md:flex items-center gap-2 xl:gap-3 shrink-0">
-          <a href="tel:7870516006" class="flex items-center justify-center gap-2 border border-[#FACA0A] text-[#FACA0A] px-3 xl:px-4 py-1.5 xl:py-2 rounded-full font-semibold hover:bg-[#FACA0A] hover:text-white transition whitespace-nowrap shadow-sm hover:shadow-md text-[13px] xl:text-sm">
-            <i class="fa-solid fa-phone"></i> 7870516006
+        <!-- Right Actions (Always visible, responsive & never overflows) -->
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <a href="tel:7870516006" class="hidden sm:flex items-center justify-center gap-1 border border-[#FACA0A] text-yellow-800 bg-yellow-50/70 hover:bg-[#FACA0A] hover:text-black px-2 sm:px-2.5 xl:px-3.5 py-1 sm:py-1.5 rounded-full font-semibold transition whitespace-nowrap shadow-xs text-[11px] xl:text-xs">
+            <i class="fa-solid fa-phone text-[#FACA0A]"></i> <span class="hidden xl:inline">7870516006</span>
           </a>
-          <a href="{{ route('student.login') }}" class="text-[11px] xl:text-xs text-white bg-blue-600 hover:bg-blue-700 px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg font-semibold transition shadow-sm">
+          <a href="tel:7870516006" class="sm:hidden flex items-center justify-center w-7 h-7 rounded-full border border-[#FACA0A] text-yellow-800 bg-yellow-50" aria-label="Call Us">
+            <i class="fa-solid fa-phone text-[10px] text-yellow-700"></i>
+          </a>
+          <a href="{{ route('student.login') }}" class="flex text-[11px] sm:text-xs text-white bg-blue-600 hover:bg-blue-700 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg font-semibold transition shadow-xs whitespace-nowrap">
             Student Login
           </a>
-          <a href="{{ route('admin.login') }}" class="text-[11px] xl:text-xs text-gray-500 hover:text-black border border-gray-300 px-2 xl:px-3 py-1 xl:py-1.5 rounded-lg hover:bg-gray-50 transition">
-            Admin
+          <a href="{{ route('admin.login') }}" class="flex items-center gap-1 text-[11px] sm:text-xs text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg font-semibold transition shadow-xs whitespace-nowrap">
+            <i class="fa-solid fa-user-shield text-slate-500 text-[10px] sm:text-xs"></i> <span>Admin</span>
           </a>
+          
+          <!-- Mobile Menu Button (visible on screens < 1024px) -->
+          <button class="lg:hidden p-1 text-2xl text-[#FACA0A] hover:text-yellow-600 shrink-0 focus:outline-none leading-none ml-0.5" onclick="openMenu()" aria-label="Toggle Menu">
+            ☰
+          </button>
         </div>
-
-        <!-- Mobile Menu Button -->
-        <button class="lg:hidden text-2xl text-[#FACA0A] shrink-0" onclick="openMenu()">
-          ☰
-        </button>
       </div>
     </header>
 
@@ -325,19 +328,19 @@
             <a href="{{ route('admission') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">Student Admission</a>
             <a href="{{ route('contact') }}" onclick="closeMenu()" class="hover:text-[#FACA0A] transition py-1">Contact</a>
             
-            <div class="pt-3 border-t border-gray-100 space-y-2">
-              <a href="{{ route('student.login') }}" onclick="closeMenu()" class="flex items-center gap-2 text-blue-600 font-bold py-1">
+            <div class="pt-4 border-t border-gray-100 space-y-2.5">
+              <a href="{{ route('student.login') }}" onclick="closeMenu()" class="flex items-center justify-center gap-2 text-white bg-blue-600 hover:bg-blue-700 py-2.5 rounded-xl font-semibold text-xs shadow-xs transition">
                 <i class="fa-solid fa-user-graduate"></i> Student Login
               </a>
-              <a href="{{ route('admin.login') }}" onclick="closeMenu()" class="flex items-center gap-2 text-gray-600 font-semibold py-1">
-                <i class="fa-solid fa-user-shield"></i> Admin Portal
+              <a href="{{ route('admin.login') }}" onclick="closeMenu()" class="flex items-center justify-center gap-2 text-slate-700 bg-slate-100 hover:bg-slate-200 py-2.5 rounded-xl font-semibold text-xs border border-slate-200 transition">
+                <i class="fa-solid fa-user-shield text-slate-600"></i> Admin Portal
               </a>
             </div>
           </nav>
         </div>
 
         <div class="mt-8 pt-4 border-t border-gray-100">
-          <a href="tel:7870516006" class="flex items-center justify-center gap-2 text-center bg-[#FACA0A] text-black py-3 rounded-full font-bold shadow-md hover:bg-yellow-400 transition">
+          <a href="tel:7870516006" class="flex items-center justify-center gap-2 text-center bg-[#FACA0A] text-black py-3 rounded-full font-bold shadow-md hover:bg-yellow-400 transition text-sm">
             <i class="fa-solid fa-phone"></i> Call Now: 7870516006
           </a>
         </div>

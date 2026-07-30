@@ -29,31 +29,41 @@ const images = [
   "assets/images/g2.webp",
   "assets/images/g3.webp",
 ];
-let i = 0;
-setInterval(() => {
-  i = (i + 1) % images.length;
-  document.getElementById("galleryImage").src = images[i];
-}, 3000);
+const galleryImgEl = document.getElementById("galleryImage");
+if (galleryImgEl) {
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % images.length;
+    galleryImgEl.src = images[i];
+  }, 3000);
+}
 
 // footer year update
-document.getElementById("year").textContent = new Date().getFullYear();
+const yearEl = document.getElementById("year");
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
 
 // gallery page
 const GalleryPageimages = document.querySelectorAll(".gallery-img");
 const modal = document.getElementById("modal");
 const modalImg = document.getElementById("modalImg");
 
-GalleryPageimages.forEach((img) => {
-  img.addEventListener("click", () => {
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-    modalImg.src = img.src;
+if (GalleryPageimages.length > 0 && modal && modalImg) {
+  GalleryPageimages.forEach((img) => {
+    img.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      modalImg.src = img.src;
+    });
   });
-});
+}
 
 function closeModal() {
-  modal.classList.add("hidden");
-  modal.classList.remove("flex");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
 }
 
 function openCourse(course) {
