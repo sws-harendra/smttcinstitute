@@ -268,8 +268,9 @@
             </div>
 
             <div class="space-y-2">
-                <label class="block text-xs font-bold text-slate-600">Article Content / Description</label>
-                <textarea name="content" rows="5" placeholder="Write full article description here..." required class="w-full bg-white border border-slate-200 rounded-xl p-4 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition leading-relaxed"></textarea>
+                <label class="block text-xs font-bold text-slate-600">Article Content / Description (Rich Text - MS Word formatting & Links supported)</label>
+                <input type="hidden" name="content" id="create-blog-content">
+                <div id="create-quill-editor" class="bg-white rounded-b-xl border border-slate-200 min-h-[220px] text-sm"></div>
             </div>
 
             <div class="flex justify-end">
@@ -304,18 +305,23 @@
                                 </td>
                                 <td class="p-4">
                                     <h4 class="font-bold text-slate-900 leading-snug blog-title-cell">{{ $blog->title }}</h4>
-                                    <p class="text-xs text-slate-400 line-clamp-1 mt-0.5">{{ $blog->content }}</p>
+                                    <p class="text-xs text-slate-400 line-clamp-1 mt-0.5">{{ strip_tags($blog->content) }}</p>
                                 </td>
                                 <td class="p-4 text-xs font-semibold text-slate-500 whitespace-nowrap">
                                     {{ $blog->created_at->format('M d, Y') }}
                                 </td>
                                 <td class="p-4 text-right whitespace-nowrap">
-                                    <form action="{{ route('admin.blogs.delete', $blog->id) }}" method="POST" onsubmit="return confirm('Delete this blog article?')" class="inline">
-                                        @csrf
-                                        <button type="submit" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5 ml-auto">
-                                            <i class="fa-solid fa-trash-can"></i> Delete
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button type="button" onclick="openEditBlogModal({{ json_encode($blog) }})" class="px-3.5 py-1.5 rounded-lg border border-indigo-200 text-indigo-600 hover:bg-indigo-50 font-bold text-xs transition flex items-center gap-1.5">
+                                            <i class="fa-solid fa-pen-to-square"></i> Edit
                                         </button>
-                                    </form>
+                                        <form action="{{ route('admin.blogs.delete', $blog->id) }}" method="POST" onsubmit="return confirm('Delete this blog article?')" class="inline">
+                                            @csrf
+                                            <button type="submit" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5">
+                                                <i class="fa-solid fa-trash-can"></i> Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -838,10 +844,129 @@
     </div>
 </div>
 @endforeach
+
+<!-- EDIT BLOG MODAL -->
+<div id="editBlogModal" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-xs" onclick="closeEditBlogModal()"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl p-6 md:p-8 animate-fade-in max-h-[92vh] overflow-y-auto z-10 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square text-indigo-600"></i> Edit Published Article
+            </h3>
+            <button onclick="closeEditBlogModal()" class="text-2xl text-slate-400 hover:text-red-500 font-bold">&times;</button>
+        </div>
+
+        <form id="editBlogForm" method="POST" enctype="multipart/form-data" class="space-y-6">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Article Title</label>
+                    <input type="text" id="edit-blog-title" name="title" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Update Cover Image (Optional)</label>
+                    <input type="file" name="image" accept="image/*" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-600">
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-600">Article Content / Description (Rich Text Editor)</label>
+                <input type="hidden" name="content" id="edit-blog-content-input">
+                <div id="edit-quill-editor" class="bg-white rounded-b-xl border border-slate-200 min-h-[250px] text-sm"></div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                <button type="button" onclick="closeEditBlogModal()" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50">
+                    Cancel
+                </button>
+                <button type="submit" class="px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md transition">
+                    Update Article
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
+let createQuill = null;
+let editQuill = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toolbarOptions = [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'align': [] }],
+        ['link', 'clean']
+    ];
+
+    if (document.getElementById('create-quill-editor') && typeof Quill !== 'undefined') {
+        createQuill = new Quill('#create-quill-editor', {
+            theme: 'snow',
+            placeholder: 'Paste or write article content here (MS Word formatting & links preserved)...',
+            modules: { toolbar: toolbarOptions }
+        });
+
+        const createForm = document.querySelector('form[action="{{ route('admin.blogs.store') }}"]');
+        if (createForm) {
+            createForm.addEventListener('submit', function(e) {
+                const html = createQuill.root.innerHTML;
+                if (html === '<p><br></p>' || !createQuill.getText().trim()) {
+                    alert('Please enter article content!');
+                    e.preventDefault();
+                    return false;
+                }
+                document.getElementById('create-blog-content').value = html;
+            });
+        }
+    }
+
+    if (document.getElementById('edit-quill-editor') && typeof Quill !== 'undefined') {
+        editQuill = new Quill('#edit-quill-editor', {
+            theme: 'snow',
+            placeholder: 'Edit article content here...',
+            modules: { toolbar: toolbarOptions }
+        });
+
+        const editForm = document.getElementById('editBlogForm');
+        if (editForm) {
+            editForm.addEventListener('submit', function(e) {
+                const html = editQuill.root.innerHTML;
+                if (html === '<p><br></p>' || !editQuill.getText().trim()) {
+                    alert('Please enter article content!');
+                    e.preventDefault();
+                    return false;
+                }
+                document.getElementById('edit-blog-content-input').value = html;
+            });
+        }
+    }
+});
+
+function openEditBlogModal(blog) {
+    const editForm = document.getElementById('editBlogForm');
+    if (editForm) {
+        editForm.action = '/admin/blogs/update/' + blog.id;
+    }
+    document.getElementById('edit-blog-title').value = blog.title || '';
+    
+    if (editQuill) {
+        editQuill.root.innerHTML = blog.content || '';
+    }
+    document.getElementById('editBlogModal').classList.remove('hidden');
+}
+
+function closeEditBlogModal() {
+    document.getElementById('editBlogModal').classList.add('hidden');
+}
+
 function updateSliderFileName(input) {
     const label = document.getElementById('sliderFileLabel');
     if (input.files && input.files[0]) {

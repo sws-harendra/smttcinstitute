@@ -29,8 +29,22 @@
                 </div>
             @endif
 
-            <div class="prose max-w-none text-gray-700 leading-relaxed text-sm sm:text-base md:text-lg space-y-4 sm:space-y-6">
-                {!! nl2br(e($blog->content)) !!}
+            <style>
+                .blog-article-content h1 { font-size: 1.875rem; font-weight: 800; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #0f172a; }
+                .blog-article-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #0f172a; }
+                .blog-article-content h3 { font-size: 1.25rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; color: #0f172a; }
+                .blog-article-content p { margin-bottom: 1rem; }
+                .blog-article-content a { color: #2563eb; text-decoration: underline; font-weight: 600; }
+                .blog-article-content a:hover { color: #1d4ed8; }
+                .blog-article-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+                .blog-article-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+                .blog-article-content li { margin-bottom: 0.35rem; }
+                .blog-article-content strong, .blog-article-content b { font-weight: 700; color: #0f172a; }
+                .blog-article-content blockquote { border-left: 4px solid #FACA0A; padding-left: 1rem; font-style: italic; color: #475569; margin: 1rem 0; }
+            </style>
+
+            <div class="blog-article-content prose max-w-none text-gray-800 leading-relaxed text-sm sm:text-base md:text-lg">
+                {!! $blog->content !!}
             </div>
 
             <div class="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-100 flex justify-between items-center flex-wrap gap-4">

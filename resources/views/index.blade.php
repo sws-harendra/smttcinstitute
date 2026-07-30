@@ -346,7 +346,7 @@
                     <div class="p-5 sm:p-6">
                         <p class="text-xs text-gray-500 mb-2">{{ $blog->created_at->format('M d, Y') }}</p>
                         <h3 class="text-lg sm:text-xl font-bold mb-3 line-clamp-2">{{ $blog->title }}</h3>
-                        <p class="text-gray-600 mb-4 line-clamp-3 text-sm">{{ $blog->content }}</p>
+                        <p class="text-gray-600 mb-4 line-clamp-3 text-sm">{{ Str::limit(strip_tags($blog->content), 120) }}</p>
                     </div>
                 </div>
                 <div class="px-5 sm:px-6 pb-6">

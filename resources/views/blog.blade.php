@@ -26,7 +26,7 @@
                     <div class="p-5 sm:p-6">
                         <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{{ $blog->created_at->format('M d, Y') }}</p>
                         <h3 class="text-lg sm:text-xl font-bold mb-3 text-gray-900 leading-snug line-clamp-2">{{ $blog->title }}</h3>
-                        <p class="text-gray-600 mb-4 line-clamp-3 text-xs sm:text-sm">{{ $blog->content }}</p>
+                        <p class="text-gray-600 mb-4 line-clamp-3 text-xs sm:text-sm">{{ Str::limit(strip_tags($blog->content), 150) }}</p>
                     </div>
                 </div>
                 <div class="p-5 sm:p-6 pt-0">

@@ -96,6 +96,34 @@ class AdminController extends Controller
         return back()->with('blog_success', 'Blog published successfully!');
     }
 
+    public function updateBlog(Request $request, $id)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $request->validate([
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ]);
+
+        $blog = Blog::findOrFail($id);
+        $blog->title = $request->title;
+        $blog->content = $request->content;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $blog->image_url = '/uploads/' . $filename;
+        }
+
+        $blog->save();
+
+        return back()->with('blog_success', 'Blog article updated successfully!');
+    }
+
     public function deleteBlog($id)
     {
         if (!session()->has('admin_logged_in')) {
