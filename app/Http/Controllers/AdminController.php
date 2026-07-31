@@ -77,6 +77,7 @@ class AdminController extends Controller
             'title' => 'required|string',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'author_name' => 'nullable|string|max:255',
         ]);
 
         $imageUrl = null;
@@ -91,6 +92,7 @@ class AdminController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'image_url' => $imageUrl,
+            'author_name' => $request->author_name,
         ]);
 
         return back()->with('blog_success', 'Blog published successfully!');
@@ -106,11 +108,13 @@ class AdminController extends Controller
             'title' => 'required|string',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'author_name' => 'nullable|string|max:255',
         ]);
 
         $blog = Blog::findOrFail($id);
         $blog->title = $request->title;
         $blog->content = $request->content;
+        $blog->author_name = $request->author_name;
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');

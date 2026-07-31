@@ -255,14 +255,19 @@
             @csrf
             <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Write New Article</h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="md:col-span-2 space-y-2">
                     <label class="block text-xs font-bold text-slate-600">Article Title</label>
                     <input type="text" name="title" placeholder="e.g. Complete AC Repairing Practical Guide 2026" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600">Cover Image (Optional)</label>
+                    <label class="block text-xs font-bold text-slate-600">Author Name</label>
+                    <input type="text" name="author_name" placeholder="e.g. Admin" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Cover Image</label>
                     <input type="file" name="image" accept="image/*" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-600">
                 </div>
             </div>
@@ -861,14 +866,19 @@
 
         <form id="editBlogForm" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="md:col-span-2 space-y-2">
                     <label class="block text-xs font-bold text-slate-600">Article Title</label>
                     <input type="text" id="edit-blog-title" name="title" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50">
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600">Update Cover Image (Optional)</label>
+                    <label class="block text-xs font-bold text-slate-600">Author Name</label>
+                    <input type="text" id="edit-blog-author" name="author_name" placeholder="e.g. Admin" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Update Cover Image</label>
                     <input type="file" name="image" accept="image/*" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-600">
                 </div>
             </div>
@@ -956,6 +966,7 @@ function openEditBlogModal(blog) {
         editForm.action = '/admin/blogs/update/' + blog.id;
     }
     document.getElementById('edit-blog-title').value = blog.title || '';
+    document.getElementById('edit-blog-author').value = blog.author_name || '';
     
     if (editQuill) {
         editQuill.root.innerHTML = blog.content || '';

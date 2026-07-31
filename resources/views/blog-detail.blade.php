@@ -16,10 +16,17 @@
         </a>
 
         <div class="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-5 sm:p-8 md:p-12">
-            <span class="text-xs font-bold text-[#FACA0A] uppercase tracking-widest bg-yellow-50 px-3 py-1 rounded-full">
-                {{ $blog->created_at->format('F d, Y') }}
-            </span>
-            <h1 class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 mt-3 sm:mt-4 mb-4 sm:mb-6 leading-tight">
+            <div class="flex flex-wrap items-center gap-3 mt-2 mb-2 sm:mb-3">
+                <span class="text-xs font-bold text-[#FACA0A] uppercase tracking-widest bg-yellow-50 px-3 py-1 rounded-full">
+                    {{ $blog->created_at->format('F d, Y') }}
+                </span>
+                @if($blog->author_name)
+                <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-3 py-1 rounded-full flex items-center gap-1.5">
+                    <i class="fa-solid fa-pen-nib"></i> {{ $blog->author_name }}
+                </span>
+                @endif
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight">
                 {{ $blog->title }}
             </h1>
 

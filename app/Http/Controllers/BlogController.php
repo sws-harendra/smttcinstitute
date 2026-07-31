@@ -31,6 +31,7 @@ class BlogController extends Controller
             'title' => 'required|string',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'author_name' => 'nullable|string|max:255',
         ]);
 
         $imageUrl = null;
@@ -45,6 +46,7 @@ class BlogController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'image_url' => $imageUrl,
+            'author_name' => $request->author_name,
         ]);
 
         return response()->json([

@@ -24,7 +24,13 @@
                 <div>
                     <img src="{{ $blog->image_url ? (Str::startsWith($blog->image_url, '/uploads') ? asset($blog->image_url) : asset($blog->image_url)) : asset('assets/images/default-blog.webp') }}" alt="{{ $blog->title }}" class="w-full h-48 sm:h-56 object-cover bg-gray-100">
                     <div class="p-5 sm:p-6">
-                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{{ $blog->created_at->format('M d, Y') }}</p>
+                        <div class="flex items-center gap-2 mb-2 flex-wrap">
+                            <p class="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ $blog->created_at->format('M d, Y') }}</p>
+                            @if($blog->author_name)
+                                <span class="text-gray-300 hidden sm:inline">&bull;</span>
+                                <p class="text-[10px] sm:text-xs font-semibold text-indigo-500 uppercase tracking-wider"><i class="fa-solid fa-pen-nib text-[10px]"></i> {{ $blog->author_name }}</p>
+                            @endif
+                        </div>
                         <h3 class="text-lg sm:text-xl font-bold mb-3 text-gray-900 leading-snug line-clamp-2">{{ $blog->title }}</h3>
                         <p class="text-gray-600 mb-4 line-clamp-3 text-xs sm:text-sm">{{ Str::limit(strip_tags($blog->content), 150) }}</p>
                     </div>
