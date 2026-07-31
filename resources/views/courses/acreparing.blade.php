@@ -17,7 +17,7 @@
       
       <!-- Text Column -->
       <div class="lg:col-span-7" data-aos="fade-right" data-aos-duration="800">
-        <div class="inline-flex items-center gap-2 bg-[#FACA0A] text-slate-900 font-extrabold px-4 py-1.5 rounded-full text-xs sm:text-sm mb-6 shadow-sm">
+        <div class="inline-flex items-center gap-2 bg-[#FACA0A] text-slate-900 font-extrabold px-4 py-1.5 rounded-full text-sm sm:text-base mb-6 shadow-sm font-cursive tracking-wide">
           <i class="fa-solid fa-certificate"></i> Practical AC Repairing Course
         </div>
         
@@ -193,7 +193,7 @@
         </div>
         <div class="pl-2">
           <div class="flex items-center gap-3 mb-2">
-            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider">Module 01</span>
+            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider font-cursive">Module 01</span>
             <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors flex items-center gap-2">
               Fault Finding and Troubleshooting
               <i class="fa-solid fa-arrow-right text-sm opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-500"></i>
@@ -213,7 +213,7 @@
         </div>
         <div class="pl-2">
           <div class="flex items-center gap-3 mb-2">
-            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider">Module 02</span>
+            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider font-cursive">Module 02</span>
             <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors flex items-center gap-2">
               Component Testing and Electrical Diagnosis
               <i class="fa-solid fa-arrow-right text-sm opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-500"></i>
@@ -233,7 +233,7 @@
         </div>
         <div class="pl-2">
           <div class="flex items-center gap-3 mb-2">
-            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider">Module 03</span>
+            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider font-cursive">Module 03</span>
             <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors flex items-center gap-2">
               AC Installation and Servicing Techniques
               <i class="fa-solid fa-arrow-right text-sm opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-500"></i>
@@ -253,7 +253,7 @@
         </div>
         <div class="pl-2">
           <div class="flex items-center gap-3 mb-2">
-            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider">Module 04</span>
+            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider font-cursive">Module 04</span>
             <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors flex items-center gap-2">
               Refrigeration Cycle and Gas Handling
               <i class="fa-solid fa-arrow-right text-sm opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-500"></i>
@@ -273,7 +273,7 @@
         </div>
         <div class="pl-2">
           <div class="flex items-center gap-3 mb-2">
-            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider">Module 05</span>
+            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider font-cursive">Module 05</span>
             <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors flex items-center gap-2">
               Safety Practices and Tool Handling
               <i class="fa-solid fa-arrow-right text-sm opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-500"></i>
@@ -293,7 +293,7 @@
         </div>
         <div class="pl-2">
           <div class="flex items-center gap-3 mb-2">
-            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider">Module 06</span>
+            <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 px-3 py-0.5 rounded-full uppercase tracking-wider font-cursive">Module 06</span>
             <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors flex items-center gap-2">
               Real World Repair Cases and Field Knowledge
               <i class="fa-solid fa-arrow-right text-sm opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-amber-500"></i>
@@ -330,7 +330,7 @@
               <i class="fa-solid fa-clock"></i>
             </div>
             <div>
-              <span class="text-xs font-extrabold text-blue-700 bg-blue-100 border border-blue-200 px-3 py-1 rounded-full uppercase tracking-wider">Flexible Schedule</span>
+              <span class="text-xs font-extrabold text-blue-700 bg-blue-100 border border-blue-200 px-3 py-1 rounded-full uppercase tracking-wider font-cursive">Flexible Schedule</span>
               <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Course Duration & Training Mode</h2>
             </div>
           </div>
@@ -373,7 +373,7 @@
               <i class="fa-solid fa-toolbox"></i>
             </div>
             <div>
-              <span class="text-xs font-extrabold text-amber-800 bg-amber-100 border border-amber-200 px-3 py-1 rounded-full uppercase tracking-wider">Professional Gear</span>
+              <span class="text-xs font-extrabold text-amber-800 bg-amber-100 border border-amber-200 px-3 py-1 rounded-full uppercase tracking-wider font-cursive">Professional Gear</span>
               <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Tools & Practical Training</h2>
             </div>
           </div>
@@ -423,7 +423,7 @@
           <div class="w-14 h-14 rounded-2xl bg-yellow-100 text-yellow-800 flex items-center justify-center font-bold text-2xl group-hover:rotate-6 group-hover:scale-110 transition-all duration-300 shadow-sm">
             <i class="fa-solid fa-award"></i>
           </div>
-          <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 border border-yellow-200 px-3 py-1 rounded-full uppercase tracking-wider">Official Certificate</span>
+          <span class="text-xs font-extrabold text-yellow-800 bg-yellow-100 border border-yellow-200 px-3 py-1 rounded-full uppercase tracking-wider font-cursive">Official Certificate</span>
         </div>
 
         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-6">Certification</h2>
@@ -454,7 +454,7 @@
           <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-700 flex items-center justify-center font-bold text-2xl group-hover:rotate-6 group-hover:scale-110 transition-all duration-300 shadow-sm">
             <i class="fa-solid fa-chart-line"></i>
           </div>
-          <span class="text-xs font-extrabold text-green-800 bg-green-100 border border-green-200 px-3 py-1 rounded-full uppercase tracking-wider">Career Scope</span>
+          <span class="text-xs font-extrabold text-green-800 bg-green-100 border border-green-200 px-3 py-1 rounded-full uppercase tracking-wider font-cursive">Career Scope</span>
         </div>
 
         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-6">Career & Earning Opportunities</h2>

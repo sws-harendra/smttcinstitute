@@ -14,14 +14,20 @@
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
     
-    <!-- Premium Google Fonts -->
+    <!-- Premium Google Fonts (Outfit + Dancing Script & Caveat Cursive Fonts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         body, h1, h2, h3, h4, h5, h6, p, a, span, div, button, input {
-            font-family: 'Outfit', sans-serif !important;
+            font-family: 'Outfit', sans-serif;
+        }
+        .font-cursive {
+            font-family: 'Dancing Script', 'Caveat', cursive !important;
+        }
+        .font-handwriting {
+            font-family: 'Caveat', 'Dancing Script', cursive !important;
         }
         /* Smooth Scroll & Global Responsiveness */
         html, body {
