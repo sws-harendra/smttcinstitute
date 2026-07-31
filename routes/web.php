@@ -29,6 +29,13 @@ Route::get('/sitemap', [PageController::class, 'sitemap'])->name('sitemap');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
 
+// SEO Redirects for Old HTML Pages
+Route::redirect('/acreparing.html', '/courses/ac-repairing', 301);
+Route::redirect('/washingmachine.html', '/courses/washing-machine', 301);
+Route::redirect('/fridgerepairing.html', '/courses/fridge-repairing', 301);
+Route::redirect('/mobilereparing.html', '/courses/mobile-repairing', 301);
+Route::redirect('/laptoprepairing.html', '/courses/laptop-repairing', 301);
+
 // Course Pages
 Route::get('/courses/ac-repairing', [CourseController::class, 'acRepairing'])->name('courses.ac');
 
