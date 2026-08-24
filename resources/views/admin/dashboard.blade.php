@@ -280,8 +280,7 @@
 
             <div class="space-y-2">
                 <label class="block text-xs font-bold text-slate-600">Article Content / Description (Rich Text - MS Word formatting & Links supported)</label>
-                <input type="hidden" name="content" id="create-blog-content">
-                <div id="create-quill-editor" class="bg-white rounded-b-xl border border-slate-200 min-h-[220px] text-sm"></div>
+                <textarea name="content" id="create-blog-content" class="w-full bg-white border border-slate-200 rounded-b-xl text-sm min-h-[250px]"></textarea>
             </div>
 
             <div class="flex justify-end">
@@ -897,8 +896,7 @@
 
             <div class="space-y-2">
                 <label class="block text-xs font-bold text-slate-600">Article Content / Description (Rich Text Editor)</label>
-                <input type="hidden" name="content" id="edit-blog-content-input">
-                <div id="edit-quill-editor" class="bg-white rounded-b-xl border border-slate-200 min-h-[250px] text-sm"></div>
+                <textarea name="content" id="edit-blog-content-input" class="w-full bg-white border border-slate-200 rounded-b-xl text-sm min-h-[250px]"></textarea>
             </div>
 
             <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
@@ -916,114 +914,111 @@
 
 @section('scripts')
 <script>
-let createQuill = null;
-let editQuill = null;
-
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof QuillBlotFormatter !== 'undefined') {
-        Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+    if (typeof tinymce !== 'undefined') {
+        tinymce.init({
+            selector: '#create-blog-content, #edit-blog-content-input',
+            height: 450,
+            menubar: true,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | ' +
+            'bold italic forecolor backcolor | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'image media table link | removeformat | code fullscreen preview',
+            image_title: true,
+            automatic_uploads: true,
+            images_upload_url: "{{ route('admin.blogs.uploadImage') }}",
+            file_picker_types: 'image',
+            images_upload_handler: function (blobInfo, progress) {
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.withCredentials = false;
+                    xhr.open('POST', "{{ route('admin.blogs.uploadImage') }}");
+                    xhr.setRequestHeader('X-CSRF-TOKEN', "{{ csrf_token() }}");
+
+                    xhr.upload.onprogress = (e) => {
+                        progress(e.loaded / e.total * 100);
+                    };
+
+                    xhr.onload = function() {
+                        if (xhr.status === 403) {
+                            reject({ message: 'HTTP Error: ' + xhr.status, remove: true });
+                            return;
+                        }
+
+                        if (xhr.status < 200 || xhr.status >= 300) {
+                            reject('HTTP Error: ' + xhr.status);
+                            return;
+                        }
+
+                        const json = JSON.parse(xhr.responseText);
+
+                        if (!json || typeof json.url != 'string') {
+                            reject('Invalid JSON: ' + xhr.responseText);
+                            return;
+                        }
+
+                        resolve(json.url);
+                    };
+
+                    xhr.onerror = function () {
+                        reject('Image upload failed due to a XHR Transport error.');
+                    };
+
+                    const formData = new FormData();
+                    formData.append('image', blobInfo.blob(), blobInfo.filename());
+
+                    xhr.send(formData);
+                });
+            },
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save();
+                });
+            },
+            content_style: 'body { font-family:Inter,Helvetica,Arial,sans-serif; font-size:14px; line-height:1.6; } img { max-width: 100%; height: auto; }',
+            image_advtab: true,
+            image_class_list: [
+                {title: 'None', value: ''},
+                {title: 'Float Left', value: 'float-left mr-4 mb-4'},
+                {title: 'Float Right', value: 'float-right ml-4 mb-4'},
+                {title: 'Center', value: 'mx-auto block'}
+            ]
+        });
     }
 
-    function imageHandler() {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
-        input.click();
-
-        input.onchange = async () => {
-            const file = input.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append('image', file);
-                formData.append('_token', '{{ csrf_token() }}');
-
-                try {
-                    const response = await fetch("{{ route('admin.blogs.uploadImage') }}", {
-                        method: 'POST',
-                        body: formData
-                    });
-                    
-                    const data = await response.json();
-                    if (data.url) {
-                        const range = this.quill.getSelection(true);
-                        this.quill.insertEmbed(range.index, 'image', data.url);
-                        this.quill.setSelection(range.index + 1);
-                    } else {
-                        alert('Image upload failed: ' + (data.error || 'Unknown error'));
-                    }
-                } catch (error) {
-                    console.error('Error uploading image:', error);
-                    alert('Image upload failed');
-                }
+    const createForm = document.querySelector('form[action="{{ route('admin.blogs.store') }}"]');
+    if (createForm) {
+        createForm.addEventListener('submit', function(e) {
+            if (typeof tinymce !== 'undefined') {
+                tinymce.get('create-blog-content').save();
             }
-        };
-    }
-
-    const toolbarOptions = [
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'align': [] }],
-        ['link', 'image', 'clean']
-    ];
-
-    if (document.getElementById('create-quill-editor') && typeof Quill !== 'undefined') {
-        createQuill = new Quill('#create-quill-editor', {
-            theme: 'snow',
-            placeholder: 'Paste or write article content here (MS Word formatting & links preserved)...',
-            modules: { 
-                blotFormatter: {},
-                toolbar: {
-                    container: toolbarOptions,
-                    handlers: {
-                        image: imageHandler
-                    }
-                } 
+            const content = document.getElementById('create-blog-content').value;
+            if (!content.trim()) {
+                alert('Please enter article content!');
+                e.preventDefault();
+                return false;
             }
         });
-
-        const createForm = document.querySelector('form[action="{{ route('admin.blogs.store') }}"]');
-        if (createForm) {
-            createForm.addEventListener('submit', function(e) {
-                const html = createQuill.root.innerHTML;
-                if (html === '<p><br></p>' || !createQuill.getText().trim()) {
-                    alert('Please enter article content!');
-                    e.preventDefault();
-                    return false;
-                }
-                document.getElementById('create-blog-content').value = html;
-            });
-        }
     }
 
-    if (document.getElementById('edit-quill-editor') && typeof Quill !== 'undefined') {
-        editQuill = new Quill('#edit-quill-editor', {
-            theme: 'snow',
-            placeholder: 'Edit article content here...',
-            modules: { 
-                blotFormatter: {},
-                toolbar: {
-                    container: toolbarOptions,
-                    handlers: {
-                        image: imageHandler
-                    }
-                } 
+    const editForm = document.getElementById('editBlogForm');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            if (typeof tinymce !== 'undefined') {
+                tinymce.get('edit-blog-content-input').save();
+            }
+            const content = document.getElementById('edit-blog-content-input').value;
+            if (!content.trim()) {
+                alert('Please enter article content!');
+                e.preventDefault();
+                return false;
             }
         });
-
-        const editForm = document.getElementById('editBlogForm');
-        if (editForm) {
-            editForm.addEventListener('submit', function(e) {
-                const html = editQuill.root.innerHTML;
-                if (html === '<p><br></p>' || !editQuill.getText().trim()) {
-                    alert('Please enter article content!');
-                    e.preventDefault();
-                    return false;
-                }
-                document.getElementById('edit-blog-content-input').value = html;
-            });
-        }
     }
 });
 
@@ -1036,9 +1031,12 @@ function openEditBlogModal(blog) {
     document.getElementById('edit-blog-slug').value = blog.slug || '';
     document.getElementById('edit-blog-author').value = blog.author_name || '';
     
-    if (editQuill) {
-        editQuill.root.innerHTML = blog.content || '';
+    if (typeof tinymce !== 'undefined' && tinymce.get('edit-blog-content-input')) {
+        tinymce.get('edit-blog-content-input').setContent(blog.content || '');
+    } else {
+        document.getElementById('edit-blog-content-input').value = blog.content || '';
     }
+    
     document.getElementById('editBlogModal').classList.remove('hidden');
 }
 
