@@ -66,6 +66,22 @@ class AdminController extends Controller
         return redirect()->route('admin.login')->with('success', 'Logged out successfully');
     }
 
+    public function uploadImage(Request $request)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            return response()->json(['url' => asset('uploads/' . $filename)]);
+        }
+
+        return response()->json(['error' => 'No image uploaded'], 400);
+    }
+
     // Web CRUD actions
     public function storeBlog(Request $request)
     {

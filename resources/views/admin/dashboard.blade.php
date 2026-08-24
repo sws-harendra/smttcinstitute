@@ -908,20 +908,62 @@ let createQuill = null;
 let editQuill = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+    function imageHandler() {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+
+        input.onchange = async () => {
+            const file = input.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('image', file);
+                formData.append('_token', '{{ csrf_token() }}');
+
+                try {
+                    const response = await fetch("{{ route('admin.blogs.uploadImage') }}", {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    if (data.url) {
+                        const range = this.quill.getSelection(true);
+                        this.quill.insertEmbed(range.index, 'image', data.url);
+                        this.quill.setSelection(range.index + 1);
+                    } else {
+                        alert('Image upload failed: ' + (data.error || 'Unknown error'));
+                    }
+                } catch (error) {
+                    console.error('Error uploading image:', error);
+                    alert('Image upload failed');
+                }
+            }
+        };
+    }
+
     const toolbarOptions = [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         ['bold', 'italic', 'underline', 'strike'],
         [{ 'color': [] }, { 'background': [] }],
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
         [{ 'align': [] }],
-        ['link', 'clean']
+        ['link', 'image', 'clean']
     ];
 
     if (document.getElementById('create-quill-editor') && typeof Quill !== 'undefined') {
         createQuill = new Quill('#create-quill-editor', {
             theme: 'snow',
             placeholder: 'Paste or write article content here (MS Word formatting & links preserved)...',
-            modules: { toolbar: toolbarOptions }
+            modules: { 
+                toolbar: {
+                    container: toolbarOptions,
+                    handlers: {
+                        image: imageHandler
+                    }
+                } 
+            }
         });
 
         const createForm = document.querySelector('form[action="{{ route('admin.blogs.store') }}"]');
@@ -942,7 +984,14 @@ document.addEventListener('DOMContentLoaded', () => {
         editQuill = new Quill('#edit-quill-editor', {
             theme: 'snow',
             placeholder: 'Edit article content here...',
-            modules: { toolbar: toolbarOptions }
+            modules: { 
+                toolbar: {
+                    container: toolbarOptions,
+                    handlers: {
+                        image: imageHandler
+                    }
+                } 
+            }
         });
 
         const editForm = document.getElementById('editBlogForm');

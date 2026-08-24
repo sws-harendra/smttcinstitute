@@ -58,6 +58,7 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('adm
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 Route::post('/admin/blogs', [AdminController::class, 'storeBlog'])->name('admin.blogs.store');
+Route::post('/admin/blogs/upload-image', [AdminController::class, 'uploadImage'])->name('admin.blogs.uploadImage');
 Route::post('/admin/blogs/update/{id}', [AdminController::class, 'updateBlog'])->name('admin.blogs.update');
 Route::post('/admin/blogs/delete/{id}', [AdminController::class, 'deleteBlog'])->name('admin.blogs.delete');
 
