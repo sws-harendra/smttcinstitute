@@ -908,6 +908,10 @@ let createQuill = null;
 let editQuill = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+    if (typeof QuillBlotFormatter !== 'undefined') {
+        Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+    }
+
     function imageHandler() {
         const input = document.createElement('input');
         input.setAttribute('type', 'file');
@@ -957,6 +961,7 @@ document.addEventListener('DOMContentLoaded', () => {
             theme: 'snow',
             placeholder: 'Paste or write article content here (MS Word formatting & links preserved)...',
             modules: { 
+                blotFormatter: {},
                 toolbar: {
                     container: toolbarOptions,
                     handlers: {
@@ -985,6 +990,7 @@ document.addEventListener('DOMContentLoaded', () => {
             theme: 'snow',
             placeholder: 'Edit article content here...',
             modules: { 
+                blotFormatter: {},
                 toolbar: {
                     container: toolbarOptions,
                     handlers: {

@@ -17,6 +17,7 @@
     <!-- Quill.js WYSIWYG Rich Text Editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://unpkg.com/quill-blot-formatter@1.0.5/dist/quill-blot-formatter.min.js"></script>
 
     <style>
         body { font-family: 'Inter', sans-serif; }
