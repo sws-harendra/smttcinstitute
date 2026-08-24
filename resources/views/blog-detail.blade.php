@@ -4,7 +4,7 @@
 
 @section('meta')
     <meta name="description" content="{{ Str::limit(strip_tags($blog->content), 150) }}">
-    <link rel="canonical" href="{{ route('blog.show', $blog->id) }}" />
+    <link rel="canonical" href="{{ route('blog.show', $blog->slug ?? $blog->id) }}" />
 @endsection
 
 @section('content')
@@ -57,7 +57,7 @@
             <div class="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-100 flex justify-between items-center flex-wrap gap-4">
                 <span class="text-xs sm:text-sm font-semibold text-gray-500">Share this article:</span>
                 <div class="flex gap-4">
-                    <a href="https://wa.me/?text={{ urlencode($blog->title . ' - ' . route('blog.show', $blog->id)) }}" target="_blank" aria-label="Share on WhatsApp" class="w-9 h-9 sm:w-10 sm:h-10 bg-green-500 text-white rounded-full flex items-center justify-center shadow hover:scale-105 transition">
+                    <a href="https://wa.me/?text={{ urlencode($blog->title . ' - ' . route('blog.show', $blog->slug ?? $blog->id)) }}" target="_blank" aria-label="Share on WhatsApp" class="w-9 h-9 sm:w-10 sm:h-10 bg-green-500 text-white rounded-full flex items-center justify-center shadow hover:scale-105 transition">
                         <i class="fab fa-whatsapp text-lg"></i>
                     </a>
                 </div>

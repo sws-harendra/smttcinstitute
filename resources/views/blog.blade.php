@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="p-5 sm:p-6 pt-0">
-                    <a href="{{ route('blog.show', $blog->id) }}" class="inline-block text-[#FACA0A] font-bold hover:underline text-sm">Read Full Article &rarr;</a>
+                    <a href="{{ route('blog.show', $blog->slug ?? $blog->id) }}" class="inline-block text-[#FACA0A] font-bold hover:underline text-sm">Read Full Article &rarr;</a>
                 </div>
             </div>
         @endforeach

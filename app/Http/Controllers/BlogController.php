@@ -13,9 +13,9 @@ class BlogController extends Controller
         return view('blog', compact('blogs'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $blog = Blog::findOrFail($id);
+        $blog = Blog::where('slug', $slug)->orWhere('id', $slug)->firstOrFail();
         return view('blog-detail', compact('blog'));
     }
 

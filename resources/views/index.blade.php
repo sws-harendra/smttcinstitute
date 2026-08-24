@@ -350,7 +350,7 @@
                     </div>
                 </div>
                 <div class="px-5 sm:px-6 pb-6">
-                    <a href="{{ route('blog.show', $blog->id) }}" class="text-[#FACA0A] font-semibold hover:underline text-sm">Read More &rarr;</a>
+                    <a href="{{ route('blog.show', $blog->slug ?? $blog->id) }}" class="text-[#FACA0A] font-semibold hover:underline text-sm">Read More &rarr;</a>
                 </div>
             </div>
         @endforeach

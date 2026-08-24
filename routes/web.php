@@ -27,7 +27,7 @@ Route::get('/sitemap', [PageController::class, 'sitemap'])->name('sitemap');
 
 // Blog Pages
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // SEO Redirects for Old HTML Pages
 Route::redirect('/acreparing.html', '/courses/ac-repairing', 301);

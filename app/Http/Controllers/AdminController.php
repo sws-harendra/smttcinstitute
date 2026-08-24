@@ -8,6 +8,7 @@ use App\Models\Blog;
 use App\Models\SliderImage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -91,10 +92,13 @@ class AdminController extends Controller
 
         $request->validate([
             'title' => 'required|string',
+            'slug' => 'nullable|string|unique:blogs,slug',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'author_name' => 'nullable|string|max:255',
         ]);
+
+        $slug = $request->slug ? Str::slug($request->slug) : Str::slug($request->title);
 
         $imageUrl = null;
         if ($request->hasFile('image')) {
@@ -106,6 +110,7 @@ class AdminController extends Controller
 
         Blog::create([
             'title' => $request->title,
+            'slug' => $slug,
             'content' => $request->content,
             'image_url' => $imageUrl,
             'author_name' => $request->author_name,
@@ -122,13 +127,17 @@ class AdminController extends Controller
 
         $request->validate([
             'title' => 'required|string',
+            'slug' => 'nullable|string|unique:blogs,slug,' . $id,
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'author_name' => 'nullable|string|max:255',
         ]);
 
+        $slug = $request->slug ? Str::slug($request->slug) : Str::slug($request->title);
+
         $blog = Blog::findOrFail($id);
         $blog->title = $request->title;
+        $blog->slug = $slug;
         $blog->content = $request->content;
         $blog->author_name = $request->author_name;
 

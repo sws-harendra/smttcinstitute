@@ -261,6 +261,12 @@
                     <input type="text" name="title" placeholder="e.g. Complete AC Repairing Practical Guide 2026" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
                 </div>
 
+                <div class="md:col-span-2 space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Custom URL / Slug (Optional)</label>
+                    <input type="text" name="slug" placeholder="e.g. ac-repairing-guide" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
+                    <p class="text-[10px] text-slate-400">Leave blank to auto-generate from title.</p>
+                </div>
+
                 <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-600">Author Name</label>
                     <input type="text" name="author_name" placeholder="e.g. Admin" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
@@ -872,6 +878,12 @@
                     <input type="text" id="edit-blog-title" name="title" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50">
                 </div>
 
+                <div class="md:col-span-2 space-y-2">
+                    <label class="block text-xs font-bold text-slate-600">Custom URL / Slug (Optional)</label>
+                    <input type="text" id="edit-blog-slug" name="slug" placeholder="e.g. ac-repairing-guide" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50">
+                    <p class="text-[10px] text-slate-400">Leave blank to auto-generate from title.</p>
+                </div>
+
                 <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-600">Author Name</label>
                     <input type="text" id="edit-blog-author" name="author_name" placeholder="e.g. Admin" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50">
@@ -1021,6 +1033,7 @@ function openEditBlogModal(blog) {
         editForm.action = '/admin/blogs/update/' + blog.id;
     }
     document.getElementById('edit-blog-title').value = blog.title || '';
+    document.getElementById('edit-blog-slug').value = blog.slug || '';
     document.getElementById('edit-blog-author').value = blog.author_name || '';
     
     if (editQuill) {
