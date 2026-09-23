@@ -9,7 +9,12 @@
     <link rel="stylesheet" href="{{ asset('build.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <script src="{{ asset('script.min.js') }}" defer></script>
+    <script>
+        function openMenu(){var m=document.getElementById("mobileMenu");if(m)m.classList.remove("hidden");}
+        function closeMenu(){var m=document.getElementById("mobileMenu");if(m)m.classList.add("hidden");var s=document.getElementById("servicesMenu");if(s)s.classList.add("hidden");var a=document.getElementById("serviceArrow");if(a)a.classList.remove("rotate-180");}
+        function toggleServices(){var s=document.getElementById("servicesMenu"),a=document.getElementById("serviceArrow");if(s)s.classList.toggle("hidden");if(a)a.classList.toggle("rotate-180");}
+    </script>
+    <script src="{{ asset('script.min.js') }}?v={{ file_exists(public_path('script.min.js')) ? filemtime(public_path('script.min.js')) : '1.1' }}" defer></script>
     
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
@@ -30,10 +35,25 @@
             font-family: 'Caveat', 'Dancing Script', cursive !important;
         }
         /* Smooth Scroll & Global Responsiveness */
-        html, body {
+        html {
             scroll-behavior: smooth;
-            max-width: 100%;
-            overflow-x: hidden;
+        }
+        body {
+            max-width: 100vw;
+            overflow-x: clip;
+        }
+        @supports not (overflow-x: clip) {
+            body {
+                overflow-x: hidden;
+            }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        .animate-slide-in {
+            animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         /* Float Animation */
@@ -226,14 +246,14 @@
     </div>
 
     <!-- ================= HEADER ================= -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-      <div class="max-w-[1440px] mx-auto px-2.5 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 lg:gap-2 xl:gap-4">
+    <header class="bg-white shadow-md sticky top-0 z-50 w-full">
+      <div class="max-w-[1440px] mx-auto px-2.5 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-2">
 
         <!-- Logo -->
-        <a class="flex items-center gap-1.5 sm:gap-2 shrink-0" href="{{ route('home') }}">
-            <img class="w-9 sm:w-11 lg:w-10 xl:w-[48px]" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
-            <span class="text-xs sm:text-sm lg:text-[13px] xl:text-base font-roboto font-bold text-gray-900 leading-tight tracking-tight whitespace-nowrap">
-              Smart Technical<span class="hidden sm:inline lg:hidden xl:inline"> Training</span> Institute
+        <a class="flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0" href="{{ route('home') }}">
+            <img class="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 xl:w-[46px] object-contain shrink-0" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
+            <span class="text-xs sm:text-sm lg:text-[13px] xl:text-base font-roboto font-bold text-gray-900 leading-tight tracking-tight">
+              Smart Technical<span class="hidden min-[420px]:inline"> Institute</span><span class="hidden sm:inline lg:hidden xl:inline"> Patna</span>
             </span>
         </a>
 
@@ -270,31 +290,38 @@
             <a href="{{ route('contact') }}" class="hover:text-[#FACA0A] transition whitespace-nowrap">Contact</a>
         </nav>
 
-        <!-- Right Actions (Always visible, responsive & never overflows) -->
+        <!-- Right Actions (Always visible, responsive & never overflows on any mobile) -->
         <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <a href="tel:7870516006" class="hidden sm:flex items-center justify-center gap-1 border border-[#FACA0A] text-yellow-800 bg-yellow-50/70 hover:bg-[#FACA0A] hover:text-black px-2 sm:px-2.5 xl:px-3.5 py-1 sm:py-1.5 rounded-full font-semibold transition whitespace-nowrap shadow-xs text-[11px] xl:text-xs">
             <i class="fa-solid fa-phone text-[#FACA0A]"></i> <span class="hidden xl:inline">7870516006</span>
           </a>
-          <a href="tel:7870516006" class="sm:hidden flex items-center justify-center w-7 h-7 rounded-full border border-[#FACA0A] text-yellow-800 bg-yellow-50" aria-label="Call Us">
+          <a href="tel:7870516006" class="sm:hidden flex items-center justify-center w-7 h-7 rounded-full border border-[#FACA0A] text-yellow-800 bg-yellow-50 hover:bg-[#FACA0A] transition" aria-label="Call Us">
             <i class="fa-solid fa-phone text-[10px] text-yellow-700"></i>
           </a>
-          <a href="{{ route('student.login') }}" class="flex text-[11px] sm:text-xs text-white bg-blue-600 hover:bg-blue-700 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg font-semibold transition shadow-xs whitespace-nowrap">
+
+          <!-- Student Login (Compact on small phones, text on larger) -->
+          <a href="{{ route('student.login') }}" class="min-[380px]:hidden flex items-center justify-center w-7 h-7 text-white bg-blue-600 hover:bg-blue-700 rounded-lg text-xs shadow-xs" title="Student Login" aria-label="Student Login">
+            <i class="fa-solid fa-user-graduate"></i>
+          </a>
+          <a href="{{ route('student.login') }}" class="hidden min-[380px]:flex items-center text-[11px] sm:text-xs text-white bg-blue-600 hover:bg-blue-700 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg font-semibold transition shadow-xs whitespace-nowrap">
             Student Login
           </a>
-          <a href="{{ route('admin.login') }}" class="flex items-center gap-1 text-[11px] sm:text-xs text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg font-semibold transition shadow-xs whitespace-nowrap">
+
+          <!-- Admin Portal (Visible on tablet/desktop; on mobile it is in the drawer menu) -->
+          <a href="{{ route('admin.login') }}" class="hidden md:flex items-center gap-1 text-[11px] sm:text-xs text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg font-semibold transition shadow-xs whitespace-nowrap">
             <i class="fa-solid fa-user-shield text-slate-500 text-[10px] sm:text-xs"></i> <span>Admin</span>
           </a>
           
-          <!-- Mobile Menu Button (visible on screens < 1024px) -->
-          <button class="lg:hidden p-1 text-2xl text-[#FACA0A] hover:text-yellow-600 shrink-0 focus:outline-none leading-none ml-0.5" onclick="openMenu()" aria-label="Toggle Menu">
-            ☰
+          <!-- Mobile Menu Button (Never overflows or gets pushed off-screen) -->
+          <button class="lg:hidden flex items-center justify-center w-8 h-8 rounded-lg bg-yellow-50 text-gray-800 border border-yellow-300/80 hover:bg-[#FACA0A] transition shrink-0 focus:outline-none focus:ring-2 focus:ring-[#FACA0A]/50" onclick="openMenu()" aria-label="Toggle Menu">
+            <i class="fa-solid fa-bars text-sm"></i>
           </button>
         </div>
       </div>
     </header>
 
     <!-- ================= MOBILE SIDE MENU ================= -->
-    <div id="mobileMenu" class="fixed inset-0 z-50 hidden">
+    <div id="mobileMenu" class="fixed inset-0 z-[9999] hidden">
       <!-- Overlay -->
       <div class="absolute inset-0 bg-black/50 backdrop-blur-xs" onclick="closeMenu()"></div>
 
