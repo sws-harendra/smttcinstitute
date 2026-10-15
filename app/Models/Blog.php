@@ -16,6 +16,12 @@ class Blog extends Model
         'slug',
         'content',
         'image_url',
+        'cover_link',
+        'title_color',
+        'title_font',
+        'title_size',
+        'title_weight',
+        'title_transform',
         'author_name',
     ];
 }

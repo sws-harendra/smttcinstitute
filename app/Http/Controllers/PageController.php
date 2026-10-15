@@ -19,7 +19,20 @@ class PageController extends Controller
     public function gallery()
     {
         $galleries = \App\Models\GalleryImage::latest()->get();
-        return view('gallery', compact('galleries'));
+        $beforeAfters = \App\Models\BeforeAfterRepair::orderBy('order_num', 'asc')->latest()->get();
+        $successfulStudents = \App\Models\SuccessfulStudent::orderBy('order_num', 'asc')->latest()->get();
+        $successVideos = \App\Models\SuccessStoryVideo::orderBy('order_num', 'asc')->latest()->get();
+        return view('gallery', compact('galleries', 'beforeAfters', 'successfulStudents', 'successVideos'));
+    }
+
+    public function likeBeforeAfter($id)
+    {
+        $item = \App\Models\BeforeAfterRepair::findOrFail($id);
+        $item->increment('likes_count');
+        return response()->json([
+            'success' => true,
+            'likes' => $item->likes_count
+        ]);
     }
 
     public function feestructure()
@@ -105,8 +118,40 @@ class PageController extends Controller
         $validated['marks_grade'] = $request->marks_grade;
         $validated['board'] = $request->board;
 
-        \App\Models\Admission::create($validated);
+        $admission = \App\Models\Admission::create($validated);
 
-        return redirect()->back()->with('success', 'Admission form submitted successfully! Your Enrollment No is: ' . $validated['enrollment_no']);
+        // Auto-generate official Certificate for the student
+        try {
+            $latestCert = \App\Models\Certificate::orderBy('id', 'desc')->first();
+            $nextCertId = $latestCert ? ($latestCert->id + 1) : 1;
+            $sl_no = 'SMTTC-CERT-' . date('Y') . '-' . str_pad($nextCertId, 4, '0', STR_PAD_LEFT);
+
+            // While sl_no exists, increment to guarantee uniqueness
+            while (\App\Models\Certificate::where('sl_no', $sl_no)->exists()) {
+                $nextCertId++;
+                $sl_no = 'SMTTC-CERT-' . date('Y') . '-' . str_pad($nextCertId, 4, '0', STR_PAD_LEFT);
+            }
+
+            $sessionDate = !empty($validated['session_start']) ? $validated['session_start'] : now()->format('Y-m-d');
+            $toDate = \Carbon\Carbon::parse($sessionDate)->addMonths(3)->format('Y-m-d');
+
+            \App\Models\Certificate::create([
+                'regd_no' => $validated['enrollment_no'],
+                'sl_no' => $sl_no,
+                'name' => $validated['name'],
+                'father_name' => $validated['father_name'],
+                'dob' => $validated['dob'] ?? null,
+                'course' => $validated['course'],
+                'from_date' => $sessionDate,
+                'to_date' => $toDate,
+                'center' => $validated['center'] ?? 'SMTTC Institute',
+                'location' => ($validated['district'] ?? 'Patna') . ', ' . ($validated['state'] ?? 'Bihar'),
+                'issued_date' => now()->format('Y-m-d'),
+            ]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Auto Certificate Generation Error: ' . $e->getMessage());
+        }
+
+        return redirect()->back()->with('success', 'Admission form submitted successfully! Your Enrollment No: ' . $validated['enrollment_no'] . ' and official student certificate have been created.');
     }
 }

@@ -182,8 +182,11 @@
             if (icon2) icon2.className = 'fa-solid fa-outdent text-sm';
         }
 
+        const serverTab = "{{ (session('blog_success') || session('blog_error') || $errors->has('title') || $errors->has('content') || $errors->has('image') || $errors->has('slug')) ? 'blogs' : (session('slider_success') || session('slider_error') ? 'sliders' : (session('fee_success') || session('fee_error') ? 'fees' : (session('gallery_success') || session('gallery_error') ? 'galleries' : (session('cert_success') || session('cert_error') ? 'certificates' : '')))) }}";
         const hash = window.location.hash.replace('#', '');
-        if (['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'].includes(hash)) {
+        if (serverTab && ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'].includes(serverTab)) {
+            showTab(serverTab);
+        } else if (hash && ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'].includes(hash)) {
             showTab(hash);
         } else {
             showTab('overview');

@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('admin123'),
             ]);
         }
-
         // Seed Sample Slider Image if empty
         if (SliderImage::count() === 0) {
             SliderImage::create([

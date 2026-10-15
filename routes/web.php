@@ -66,12 +66,28 @@ Route::post('/admin/sliders', [AdminController::class, 'storeSlider'])->name('ad
 Route::post('/admin/sliders/delete/{id}', [AdminController::class, 'deleteSlider'])->name('admin.sliders.delete');
 
 Route::post('/admin/fees', [AdminController::class, 'storeFee'])->name('admin.fees.store');
+Route::post('/admin/fees/update/{id}', [AdminController::class, 'updateFee'])->name('admin.fees.update');
 Route::post('/admin/fees/delete/{id}', [AdminController::class, 'deleteFee'])->name('admin.fees.delete');
 
 Route::post('/admin/galleries', [AdminController::class, 'storeGallery'])->name('admin.galleries.store');
+Route::post('/admin/galleries/update/{id}', [AdminController::class, 'updateGallery'])->name('admin.galleries.update');
 Route::post('/admin/galleries/delete/{id}', [AdminController::class, 'deleteGallery'])->name('admin.galleries.delete');
 
+Route::post('/admin/before-after', [AdminController::class, 'storeBeforeAfter'])->name('admin.before_after.store');
+Route::post('/admin/before-after/update/{id}', [AdminController::class, 'updateBeforeAfter'])->name('admin.before_after.update');
+Route::post('/admin/before-after/delete/{id}', [AdminController::class, 'deleteBeforeAfter'])->name('admin.before_after.delete');
+Route::post('/api/before-after/like/{id}', [PageController::class, 'likeBeforeAfter'])->name('before_after.like');
+
+Route::post('/admin/successful-students', [AdminController::class, 'storeSuccessfulStudent'])->name('admin.students.store');
+Route::post('/admin/successful-students/update/{id}', [AdminController::class, 'updateSuccessfulStudent'])->name('admin.students.update');
+Route::post('/admin/successful-students/delete/{id}', [AdminController::class, 'deleteSuccessfulStudent'])->name('admin.students.delete');
+
+Route::post('/admin/story-videos', [AdminController::class, 'storeSuccessStoryVideo'])->name('admin.story_videos.store');
+Route::post('/admin/story-videos/update/{id}', [AdminController::class, 'updateSuccessStoryVideo'])->name('admin.story_videos.update');
+Route::post('/admin/story-videos/delete/{id}', [AdminController::class, 'deleteSuccessStoryVideo'])->name('admin.story_videos.delete');
+
 Route::post('/admin/certificates', [AdminController::class, 'storeCertificate'])->name('admin.certificates.store');
+Route::post('/admin/certificates/update/{id}', [AdminController::class, 'updateCertificate'])->name('admin.certificates.update');
 Route::post('/admin/certificates/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('admin.certificates.delete');
 Route::post('/admin/certificates/signatures', [AdminController::class, 'storeCertSignatures'])->name('admin.certificates.signatures');
 Route::post('/admin/admissions/approve/{id}', [AdminController::class, 'approveAdmissionCertificate'])->name('admin.admissions.approve');

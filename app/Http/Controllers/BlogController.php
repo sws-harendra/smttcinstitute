@@ -31,6 +31,12 @@ class BlogController extends Controller
             'title' => 'required|string',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'cover_link' => 'nullable|string|max:1000',
+            'title_color' => 'nullable|string|max:50',
+            'title_font' => 'nullable|string|max:50',
+            'title_size' => 'nullable|string|max:50',
+            'title_weight' => 'nullable|string|max:50',
+            'title_transform' => 'nullable|string|max:50',
             'author_name' => 'nullable|string|max:255',
         ]);
 
@@ -42,10 +48,21 @@ class BlogController extends Controller
             $imageUrl = '/uploads/' . $filename;
         }
 
+        $coverLink = $request->cover_link ? trim($request->cover_link) : null;
+        if ($coverLink && !preg_match("~^(?:f|ht)tps?://~i", $coverLink) && !str_starts_with($coverLink, '/') && !str_starts_with($coverLink, '#')) {
+            $coverLink = 'https://' . $coverLink;
+        }
+
         $blog = Blog::create([
             'title' => $request->title,
             'content' => $request->content,
             'image_url' => $imageUrl,
+            'cover_link' => $coverLink,
+            'title_color' => $request->title_color ?: null,
+            'title_font' => $request->title_font ?: null,
+            'title_size' => $request->title_size ?: null,
+            'title_weight' => $request->title_weight ?: null,
+            'title_transform' => $request->title_transform ?: null,
             'author_name' => $request->author_name,
         ]);
 

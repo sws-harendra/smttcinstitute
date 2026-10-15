@@ -15,6 +15,32 @@
     </div>
 @endif
 
+@if(session('blog_error'))
+    <div class="bg-rose-50 border-2 border-rose-300 text-rose-800 px-5 py-4 rounded-2xl text-sm font-semibold flex items-center justify-between shadow-xs mb-6 animate-pulse">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-circle-exclamation text-rose-600 text-xl"></i>
+            <div>
+                <strong class="block font-bold">Blog Post Karne Me Dikkat Aayi:</strong>
+                <span class="text-xs">{{ session('blog_error') }}</span>
+            </div>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-rose-500 hover:text-rose-700 text-lg font-bold">&times;</button>
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="bg-amber-50 border border-amber-300 text-amber-900 px-5 py-4 rounded-2xl text-sm font-medium shadow-xs mb-6">
+        <div class="flex items-center gap-2 font-bold mb-1 text-amber-800">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Kripya in fields ko check karein:
+        </div>
+        <ul class="list-disc list-inside space-y-0.5 text-xs">
+            @foreach($errors->all() as $err)
+                <li>{{ $err }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 @if(session('slider_success'))
     <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-5 py-4 rounded-2xl text-sm font-semibold flex items-center justify-between shadow-xs mb-6">
         <div class="flex items-center gap-3">
@@ -276,15 +302,107 @@
                 <span class="text-[11px] font-semibold text-slate-400">Distraction-free full width layout</span>
             </div>
 
+            <!-- Error Alert inside Form -->
+            @if(session('blog_error') || $errors->any())
+                <div class="bg-rose-50 border-2 border-rose-300 text-rose-900 p-4.5 rounded-2xl flex items-start gap-3 shadow-xs">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-600 text-lg mt-0.5"></i>
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-rose-950">Article Publish Karne Me Dikkat Aayi:</h4>
+                        @if(session('blog_error'))
+                            <p class="text-xs font-semibold text-rose-800">{{ session('blog_error') }}</p>
+                        @endif
+                        @if($errors->any())
+                            <ul class="list-disc list-inside text-xs text-rose-700 space-y-0.5">
+                                @foreach($errors->all() as $err)
+                                    <li>{{ $err }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
             <!-- ================= SECTION 1: FULL-WIDTH EDITORIAL CANVAS ================= -->
             <div class="space-y-6 w-full">
-                <!-- Title -->
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center">
-                        <label class="block text-xs font-bold text-slate-700">Article Title <span class="text-red-500">*</span></label>
+                <!-- Title & Typography Studio -->
+                <div class="space-y-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+                    <div class="flex justify-between items-center flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                            <label class="block text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-heading text-indigo-600"></i> Article Title <span class="text-red-500">*</span>
+                            </label>
+                            <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md">Live Typography</span>
+                        </div>
                         <span id="create-title-count" class="text-[10px] font-semibold text-slate-400">0 / 70 chars</span>
                     </div>
-                    <input type="text" id="create-blog-title" name="title" placeholder="e.g. Complete Inverter AC PCB Troubleshooting & Repairing Guide 2026" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3.5 text-base font-semibold text-slate-800 focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition shadow-xs">
+
+                    <!-- Live Styled Title Input -->
+                    <div class="relative">
+                        <input type="text" id="create-blog-title" name="title" value="{{ old('title') }}" placeholder="e.g. Complete Inverter AC PCB Troubleshooting & Repairing Guide 2026" required class="w-full bg-slate-50/40 border-2 border-slate-200 focus:border-indigo-600 focus:bg-white rounded-xl px-4 py-3.5 text-xl font-black text-slate-900 focus:outline-none focus:ring-4 focus:ring-indigo-50 transition shadow-inner" style="transition: all 0.2s ease;">
+                    </div>
+
+                    <!-- Hidden Styling Form Inputs -->
+                    <input type="hidden" id="create-title-color" name="title_color" value="#0f172a">
+                    <input type="hidden" id="create-title-font" name="title_font" value="sans">
+                    <input type="hidden" id="create-title-size" name="title_size" value="large">
+                    <input type="hidden" id="create-title-weight" name="title_weight" value="900">
+                    <input type="hidden" id="create-title-transform" name="title_transform" value="none">
+
+                    <!-- Title Styling Control Bar (Colour, Letters Style & Size) -->
+                    <div class="flex items-center justify-between flex-wrap gap-3 pt-3 border-t border-slate-100 text-xs">
+                        <!-- Colour Options -->
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                                <i class="fa-solid fa-palette text-indigo-500"></i> Colour:
+                            </span>
+                            <div class="flex items-center gap-1.5" id="createTitleColorPresets">
+                                <button type="button" onclick="setTitleStyle('create', 'color', '#0f172a', this)" class="title-color-btn w-6 h-6 rounded-full bg-slate-900 ring-2 ring-indigo-500 ring-offset-1 transition hover:scale-110 shadow-2xs" title="Dark Slate (Default)"></button>
+                                <button type="button" onclick="setTitleStyle('create', 'color', '#4338ca', this)" class="title-color-btn w-6 h-6 rounded-full bg-indigo-700 transition hover:scale-110 shadow-2xs" title="Indigo Blue"></button>
+                                <button type="button" onclick="setTitleStyle('create', 'color', '#dc2626', this)" class="title-color-btn w-6 h-6 rounded-full bg-red-600 transition hover:scale-110 shadow-2xs" title="Crimson Red"></button>
+                                <button type="button" onclick="setTitleStyle('create', 'color', '#059669', this)" class="title-color-btn w-6 h-6 rounded-full bg-emerald-600 transition hover:scale-110 shadow-2xs" title="Emerald Green"></button>
+                                <button type="button" onclick="setTitleStyle('create', 'color', '#d97706', this)" class="title-color-btn w-6 h-6 rounded-full bg-amber-500 transition hover:scale-110 shadow-2xs" title="Amber Gold"></button>
+                                <button type="button" onclick="setTitleStyle('create', 'color', '#7c3aed', this)" class="title-color-btn w-6 h-6 rounded-full bg-purple-600 transition hover:scale-110 shadow-2xs" title="Royal Purple"></button>
+                                <label class="relative cursor-pointer flex items-center" title="Custom Colour Picker">
+                                    <input type="color" id="createCustomColorPicker" value="#0f172a" oninput="setTitleStyle('create', 'color', this.value, this)" class="sr-only">
+                                    <span class="w-6 h-6 rounded-full border border-slate-300 bg-gradient-to-tr from-rose-500 via-amber-400 to-indigo-500 flex items-center justify-center text-[9px] text-white font-bold shadow-2xs hover:scale-110 transition">
+                                        <i class="fa-solid fa-eye-dropper"></i>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Letters Style / Font Family -->
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                                <i class="fa-solid fa-font text-indigo-500"></i> Style:
+                            </span>
+                            <select id="createTitleFontSelect" onchange="setTitleStyle('create', 'font', this.value)" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:border-indigo-600 shadow-2xs">
+                                <option value="sans" selected>Modern Sans (Clean)</option>
+                                <option value="outfit">Outfit (Trendy Heading)</option>
+                                <option value="serif">Editorial Serif (Classic)</option>
+                                <option value="mono">Technical Monospace</option>
+                            </select>
+                            <button type="button" id="createTitleTransformBtn" onclick="toggleTitleTransform('create')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 font-bold text-xs transition shadow-2xs" title="Toggle UPPERCASE / Normal">
+                                <strong>TT</strong>
+                            </button>
+                            <button type="button" id="createTitleItalicBtn" onclick="toggleTitleItalic('create')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 italic font-bold text-xs transition shadow-2xs" title="Toggle Italic">
+                                <em>I</em>
+                            </button>
+                        </div>
+
+                        <!-- Letters Size -->
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                                <i class="fa-solid fa-text-height text-indigo-500"></i> Size:
+                            </span>
+                            <div class="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5 shadow-2xs">
+                                <button type="button" onclick="setTitleStyle('create', 'size', 'medium', this)" class="title-size-btn px-2.5 py-0.5 rounded text-[11px] font-semibold text-slate-600 hover:text-indigo-600">Med</button>
+                                <button type="button" onclick="setTitleStyle('create', 'size', 'large', this)" class="title-size-btn px-2.5 py-0.5 rounded text-[11px] font-bold bg-white text-indigo-600 shadow-2xs">Large</button>
+                                <button type="button" onclick="setTitleStyle('create', 'size', 'xl', this)" class="title-size-btn px-2.5 py-0.5 rounded text-[11px] font-semibold text-slate-600 hover:text-indigo-600">XL</button>
+                                <button type="button" onclick="setTitleStyle('create', 'size', 'mega', this)" class="title-size-btn px-2.5 py-0.5 rounded text-[11px] font-semibold text-slate-600 hover:text-indigo-600">Mega</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Slug & Author -->
@@ -298,13 +416,13 @@
                         </div>
                         <div class="relative">
                             <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 font-medium">/blog/</span>
-                            <input type="text" id="create-blog-slug" name="slug" placeholder="inverter-ac-pcb-troubleshooting" class="w-full bg-white border border-slate-200 rounded-xl pl-16 pr-4 py-2.5 text-xs font-mono text-slate-700 focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
+                            <input type="text" id="create-blog-slug" name="slug" value="{{ old('slug') }}" placeholder="inverter-ac-pcb-troubleshooting" class="w-full bg-white border border-slate-200 rounded-xl pl-16 pr-4 py-2.5 text-xs font-mono text-slate-700 focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
                         </div>
                     </div>
 
                     <div class="space-y-1.5">
                         <label class="block text-xs font-bold text-slate-700">Author Name</label>
-                        <input type="text" id="create-blog-author" name="author_name" value="{{ session('admin_user', 'SMTTC Master Trainer') }}" placeholder="e.g. Er. S. Kumar" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-700 focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
+                        <input type="text" id="create-blog-author" name="author_name" value="{{ old('author_name', session('admin_user', 'SMTTC Master Trainer')) }}" placeholder="e.g. Er. S. Kumar" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-700 focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 transition">
                     </div>
                 </div>
 
@@ -345,11 +463,26 @@
                             <button type="button" onclick="openImageStudioModal('create-blog-content')" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold shadow-xs transition flex items-center gap-1.5" title="Adjust Image Length, Width, Proportions & Floating Alignment">
                                 <i class="fa-solid fa-arrows-up-down-left-right text-[10px]"></i> <span>Free-Size Image Studio</span>
                             </button>
+
+                            <!-- Jump to Bottom / Free Write Button -->
+                            <button type="button" onclick="insertTypingParagraphAtEnd('create-blog-content')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-200 shadow-xs transition flex items-center gap-1.5" title="Instantly create a new typing line at the bottom to write freely">
+                                <i class="fa-solid fa-i-cursor text-indigo-600"></i> <span>Type at Bottom</span>
+                            </button>
+
+                            <!-- Select All Content Button -->
+                            <button type="button" onclick="selectAllEditorContent('create-blog-content')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-200 shadow-xs transition flex items-center gap-1.5" title="Select all text and content in the editor">
+                                <i class="fa-solid fa-object-group text-indigo-600"></i> <span>Select All</span>
+                            </button>
+
+                            <!-- Large Page View Canvas Toggle -->
+                            <button type="button" onclick="toggleEditorCanvasSize('create')" id="createEditorCanvasBtn" data-is-large="false" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-lg text-xs font-bold border border-slate-200 shadow-xs transition flex items-center gap-1.5" title="Expand Editor to Large Spacious Canvas (800px Height)">
+                                <i class="fa-solid fa-expand text-indigo-600"></i> <span id="createEditorCanvasText">Large Page View</span>
+                            </button>
                         </div>
                     </div>
 
                     <!-- TinyMCE Textarea (Spacious Full Width) -->
-                    <textarea name="content" id="create-blog-content" class="w-full bg-white border border-slate-200 rounded-b-2xl text-sm min-h-[460px]"></textarea>
+                    <textarea name="content" id="create-blog-content" class="w-full bg-white border border-slate-200 rounded-b-2xl text-sm min-h-[460px]">{{ old('content') }}</textarea>
                     
                     <div class="flex items-center justify-between text-xs text-slate-400 pt-1 flex-wrap gap-2">
                         <span><i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> Click any image to drag blue handles freely, double-click for exact Length & Width, or click <strong>Upload Image</strong> above.</span>
@@ -438,6 +571,35 @@
                             <p class="text-xs font-medium">Cover image preview and resolution diagnostics will appear here once selected.</p>
                         </div>
                     </div>
+
+                    <!-- Banner Backlink Option (Full Width 12 Cols) -->
+                    <div class="lg:col-span-12 pt-4 border-t border-slate-100">
+                        <div class="bg-indigo-50/40 border border-indigo-100/90 rounded-2xl p-4.5 space-y-2.5">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <label for="create-cover-link" class="text-xs font-bold text-slate-800 flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs shadow-xs">
+                                        <i class="fa-solid fa-link"></i>
+                                    </span>
+                                    <span>Banner Backlink / Target URL (Optional)</span>
+                                </label>
+                                <span class="text-[11px] font-semibold text-indigo-700 bg-indigo-100/80 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> Clickable Banner Link
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-500">
+                                Yahan backlink enter karein taki visitor jab article ke banner image par click kare toh seedhe is URL par redirect ho jaye (e.g. Admission link, Course details, ya Affiliate/Sponsor website).
+                            </p>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3.5 text-slate-400 text-xs">
+                                    <i class="fa-solid fa-globe"></i>
+                                </span>
+                                <input type="text" id="create-cover-link" name="cover_link" placeholder="https://smttc.in/admission ya https://example.com" class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-24 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 shadow-2xs">
+                                <button type="button" onclick="testCoverLink('create-cover-link')" class="absolute right-2 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 text-[11px] font-bold border border-slate-200 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Test Link
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -479,9 +641,9 @@
                         Ready to go live? Once published, this article will immediately be accessible on the public technical blog.
                     </p>
 
-                    <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-400 to-[#FACA0A] hover:from-amber-500 hover:to-yellow-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg transition duration-200 flex items-center justify-center gap-2 group cursor-pointer">
-                        <i class="fa-solid fa-paper-plane group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform"></i>
-                        <span>Publish Blog Article Now</span>
+                    <button type="submit" id="publishBlogSubmitBtn" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-400 to-[#FACA0A] hover:from-amber-500 hover:to-yellow-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-lg transition duration-200 flex items-center justify-center gap-2 group cursor-pointer">
+                        <i class="fa-solid fa-paper-plane group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform" id="publishBlogSubmitIcon"></i>
+                        <span id="publishBlogSubmitBtnText">Publish Blog Article Now</span>
                     </button>
                 </div>
             </div>
@@ -533,6 +695,12 @@
                                         <span class="text-[10px] text-slate-500 font-medium">
                                             {{ ceil(str_word_count(strip_tags($blog->content)) / 200) }} min read
                                         </span>
+                                        @if($blog->cover_link)
+                                            <span class="text-slate-300">&bull;</span>
+                                            <a href="{{ $blog->cover_link }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[10px] font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/60 px-2 py-0.5 rounded-md transition" title="Banner Target: {{ $blog->cover_link }}">
+                                                <i class="fa-solid fa-link text-[9px]"></i> Backlink Active
+                                            </a>
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="p-4 text-xs font-semibold text-slate-600 whitespace-nowrap">
@@ -652,82 +820,235 @@
     <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8 space-y-8">
         <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-4">
             <div>
-                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-indian-rupee-sign text-green-600"></i> Fee Structure Management
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-tags"></i> Course Pricing & Scholarship Engine
+                </div>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-indian-rupee-sign text-emerald-600"></i> Fee Structure & Discount Management
                 </h2>
-                <p class="text-xs text-slate-400 font-medium mt-1">Manage course pricing and duration for the main page.</p>
+                <p class="text-xs text-slate-500 font-medium mt-1">Set course fees, percentage discounts for boys, special scholarships for girls, and promotional offer tags.</p>
             </div>
-            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">{{ count($fees) }} Courses</span>
+            <span class="text-xs font-bold text-slate-600 bg-slate-100 px-3.5 py-1.5 rounded-full border border-slate-200 shadow-2xs">
+                <i class="fa-solid fa-graduation-cap text-indigo-500 mr-1"></i> {{ count($fees) }} Courses Configured
+            </span>
         </div>
 
-        <!-- Add Fee Form -->
-        <form action="{{ route('admin.fees.store') }}" method="POST" class="bg-slate-50/60 p-6 md:p-8 rounded-2xl border border-slate-200 space-y-6">
+        <!-- Add Fee & Discount Form -->
+        <form action="{{ route('admin.fees.store') }}" method="POST" class="bg-slate-50/80 p-6 md:p-8 rounded-2xl border border-slate-200 space-y-6">
             @csrf
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Add New Course Fee</h3>
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-sm font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-emerald-600"></i> Add New Course Fee & Offer
+                </h3>
+                <span class="text-[11px] font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100">
+                    Live Price & Discount Calculator
+                </span>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600">Course Name</label>
-                    <input type="text" name="course_name" placeholder="e.g. AC Repairing" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-green-600 focus:ring-4 focus:ring-green-50 transition">
+            <!-- Basic Course Info (Row 1) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Course Name <span class="text-red-500">*</span></label>
+                    <input type="text" name="course_name" id="createFeeCourseName" placeholder="e.g. AC Repairing & Inverter PCB" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium focus:outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-50 transition shadow-2xs">
                 </div>
 
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600">Duration</label>
-                    <input type="text" name="duration" placeholder="e.g. 3 Months" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-green-600 focus:ring-4 focus:ring-green-50 transition">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Course Duration <span class="text-red-500">*</span></label>
+                    <input type="text" name="duration" placeholder="e.g. 3 Months (Daily 2 Hours)" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium focus:outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-50 transition shadow-2xs">
                 </div>
 
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600">Course Fee</label>
-                    <input type="text" name="course_fee" placeholder="e.g. ₹12,000" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-green-600 focus:ring-4 focus:ring-green-50 transition">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Base Course Fee <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">₹</span>
+                        <input type="text" name="course_fee" id="createCourseFeeInput" oninput="calculateFeeDiscounts('create')" placeholder="15,000" required class="w-full bg-white border border-slate-200 rounded-xl pl-8 pr-4 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-50 transition shadow-2xs">
+                    </div>
                 </div>
                 
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600">Certification</label>
-                    <input type="text" name="certification" value="Yes" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-green-600 focus:ring-4 focus:ring-green-50 transition">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Certification</label>
+                    <input type="text" name="certification" value="ISO & Govt. Recognized Certificate" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium focus:outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-50 transition shadow-2xs">
                 </div>
             </div>
 
-            <div class="flex justify-end pt-2">
-                <button type="submit" class="px-8 py-3.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-bold text-xs shadow-md shadow-green-100 transition duration-200 flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Add Fee Structure
+            <!-- Special Discount & Scholarship Card (Row 2) -->
+            <div class="bg-white p-5 rounded-2xl border border-indigo-100 shadow-xs space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold">
+                            <i class="fa-solid fa-percent"></i>
+                        </span>
+                        <div>
+                            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Gender-Based Discount & Offer Settings</h4>
+                            <p class="text-[11px] text-slate-400">Offer separate discounts for boys and higher scholarships for girl students.</p>
+                        </div>
+                    </div>
+                    
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="offer_active" value="1" checked class="sr-only peer">
+                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                        <span class="ml-2 text-xs font-bold text-slate-700">Activate Offer</span>
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Boys Discount -->
+                    <div class="bg-blue-50/50 p-3.5 rounded-xl border border-blue-100 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-blue-900 flex items-center gap-1">
+                                👦 Boys Discount (%)
+                            </label>
+                            <span id="createBoysCalculatedBadge" class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md">Final: ₹--</span>
+                        </div>
+                        <div class="relative">
+                            <input type="number" name="discount_boys" id="createDiscountBoysInput" min="0" max="100" placeholder="e.g. 20" oninput="calculateFeeDiscounts('create')" class="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-xs font-bold text-blue-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition">
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 font-bold text-xs">% OFF</span>
+                        </div>
+                    </div>
+
+                    <!-- Girls Special Scholarship -->
+                    <div class="bg-purple-50/50 p-3.5 rounded-xl border border-purple-100 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-purple-900 flex items-center gap-1">
+                                👧 Girls Scholarship (%)
+                            </label>
+                            <span id="createGirlsCalculatedBadge" class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-md">Final: ₹--</span>
+                        </div>
+                        <div class="relative">
+                            <input type="number" name="discount_girls" id="createDiscountGirlsInput" min="0" max="100" placeholder="e.g. 40" oninput="calculateFeeDiscounts('create')" class="w-full bg-white border border-purple-200 rounded-lg px-3 py-2 text-xs font-bold text-purple-900 focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition">
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-purple-400 font-bold text-xs">% OFF</span>
+                        </div>
+                    </div>
+
+                    <!-- Offer Tagline / Badge -->
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold text-slate-700">Offer Tagline / Badge</label>
+                        <input type="text" name="offer_tag" placeholder="e.g. 🔥 Top Trending Course" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-50 transition">
+                    </div>
+
+                    <!-- Badge Theme Color -->
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold text-slate-700">Badge Theme</label>
+                        <select name="badge_color" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:border-emerald-600 transition">
+                            <option value="amber">Amber Gold (🔥 Trending)</option>
+                            <option value="emerald" selected>Emerald Green (⚡ Best Value)</option>
+                            <option value="indigo">Indigo Royal (⭐ Premium)</option>
+                            <option value="rose">Rose Red (🎁 Limited Offer)</option>
+                            <option value="blue">Tech Blue (💻 Standard)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center flex-wrap gap-4 pt-1">
+                <span class="text-xs text-slate-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                    Original fee par strike-through (~~₹15,000~~) aur Boys/Girls discounted price website par automatically dikhega.
+                </span>
+                <button type="submit" class="px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-200 transition duration-200 flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Save Course Fee & Offer
                 </button>
             </div>
         </form>
 
         <!-- Fee Structures Table -->
-        <div class="space-y-4 pt-4">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Existing Course Fees</h3>
+        <div class="space-y-4 pt-2">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-sm font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-indigo-600"></i> Active Course Fee & Scholarship Catalog
+                </h3>
+                <span class="text-xs text-slate-400">Click Edit to modify fees, scholarships, or offer badges anytime.</span>
+            </div>
 
-            <div class="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white">
-                <table class="w-full text-left border-collapse">
+            <div class="overflow-x-auto rounded-2xl border border-slate-200/90 bg-white shadow-2xs">
+                <table class="w-full text-left border-collapse min-w-[750px]">
                     <thead>
-                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
-                            <th class="p-4">Course Name</th>
-                            <th class="p-4">Duration</th>
-                            <th class="p-4">Course Fee</th>
-                            <th class="p-4">Certification</th>
-                            <th class="p-4 text-right">Action</th>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[11px] font-extrabold uppercase tracking-wider">
+                            <th class="p-4">Course Name & Tag</th>
+                            <th class="p-4">Duration & Certificate</th>
+                            <th class="p-4">Standard Fee</th>
+                            <th class="p-4">👦 Boys Fee</th>
+                            <th class="p-4">👧 Girls Scholarship</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 text-sm">
+                    <tbody class="divide-y divide-slate-100 text-xs">
                         @forelse($fees as $fee)
-                            <tr class="hover:bg-slate-50/80 transition duration-150">
-                                <td class="p-4 font-bold text-slate-900">{{ $fee->course_name }}</td>
-                                <td class="p-4 text-slate-600">{{ $fee->duration }}</td>
-                                <td class="p-4 font-bold text-slate-900">{{ $fee->course_fee }}</td>
-                                <td class="p-4 text-slate-600">{{ $fee->certification }}</td>
+                            <tr class="hover:bg-slate-50/70 transition duration-150">
+                                <td class="p-4">
+                                    <div class="font-extrabold text-slate-900 text-sm">{{ $fee->course_name }}</div>
+                                    @if($fee->offer_tag)
+                                        <span class="inline-block mt-1 text-[10px] font-bold px-2.5 py-0.5 rounded-full border
+                                            @if($fee->badge_color === 'amber') bg-amber-50 text-amber-700 border-amber-200
+                                            @elseif($fee->badge_color === 'rose') bg-rose-50 text-rose-700 border-rose-200
+                                            @elseif($fee->badge_color === 'indigo') bg-indigo-50 text-indigo-700 border-indigo-200
+                                            @elseif($fee->badge_color === 'blue') bg-blue-50 text-blue-700 border-blue-200
+                                            @else bg-emerald-50 text-emerald-700 border-emerald-200
+                                            @endif">
+                                            {{ $fee->offer_tag }}
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="p-4">
+                                    <div class="font-bold text-slate-700">{{ $fee->duration }}</div>
+                                    <div class="text-[11px] text-slate-400 truncate max-w-[160px]">{{ $fee->certification }}</div>
+                                </td>
+                                <td class="p-4">
+                                    @if($fee->hasDiscount())
+                                        <div class="text-xs text-slate-400 line-through font-semibold">{{ $fee->course_fee }}</div>
+                                    @else
+                                        <div class="font-black text-slate-900 text-sm">{{ $fee->course_fee }}</div>
+                                    @endif
+                                </td>
+                                <td class="p-4">
+                                    @if($fee->hasDiscount() && $fee->discount_boys > 0)
+                                        <div class="font-extrabold text-blue-700 text-sm">{{ $fee->boys_discounted_fee }}</div>
+                                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded">
+                                            {{ $fee->discount_boys }}% OFF
+                                        </span>
+                                    @else
+                                        <span class="text-slate-600 font-medium">{{ $fee->course_fee }}</span>
+                                    @endif
+                                </td>
+                                <td class="p-4">
+                                    @if($fee->hasDiscount() && $fee->discount_girls > 0)
+                                        <div class="font-extrabold text-purple-700 text-sm">{{ $fee->girls_discounted_fee }}</div>
+                                        <span class="text-[10px] font-bold text-purple-600 bg-purple-50 border border-purple-100 px-1.5 py-0.5 rounded">
+                                            {{ $fee->discount_girls }}% Scholarship
+                                        </span>
+                                    @else
+                                        <span class="text-slate-600 font-medium">{{ $fee->course_fee }}</span>
+                                    @endif
+                                </td>
+                                <td class="p-4">
+                                    @if($fee->offer_active && $fee->hasDiscount())
+                                        <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active Offer
+                                        </span>
+                                    @else
+                                        <span class="text-[11px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-full">
+                                            Standard
+                                        </span>
+                                    @endif
+                                </td>
                                 <td class="p-4 text-right whitespace-nowrap">
-                                    <form action="{{ route('admin.fees.delete', $fee->id) }}" method="POST" onsubmit="return confirm('Delete this fee structure?')" class="inline">
-                                        @csrf
-                                        <button type="submit" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5 ml-auto">
-                                            <i class="fa-solid fa-trash-can"></i> Delete
+                                    <div class="flex items-center justify-end gap-1.5">
+                                        <button type="button" data-fee="{{ base64_encode(json_encode($fee)) }}" onclick="handleFeeEdit(this)" class="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-300 font-bold text-xs transition flex items-center gap-1 bg-white shadow-2xs" title="Edit course fee and discounts">
+                                            <i class="fa-solid fa-pen-to-square text-indigo-500"></i> Edit
                                         </button>
-                                    </form>
+                                        <form action="{{ route('admin.fees.delete', $fee->id) }}" method="POST" onsubmit="return confirm('Delete this course fee structure?')" class="inline">
+                                            @csrf
+                                            <button type="submit" class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1" title="Delete">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-10 text-slate-400 text-sm font-medium">No fee structures found.</td>
+                                <td colspan="7" class="text-center py-12 text-slate-400 text-sm font-medium">No fee structures found. Add your first course pricing above!</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -737,73 +1058,925 @@
     </section>
 </div>
 
-<!-- ================= TAB 5: GALLERY MANAGEMENT ================= -->
-<div id="tab-galleries" class="hidden space-y-8 animate-fade-in">
-    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8 space-y-6">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-4">
-            <div>
-                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-camera-retro text-blue-500"></i> Gallery Management
-                </h2>
-                <p class="text-xs text-slate-400 font-medium mt-1">Upload images for the public training gallery page.</p>
+<!-- ================= MODAL: EDIT COURSE FEE & DISCOUNT ================= -->
+<div id="editFeeModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeEditFeeModal()"></div>
+    <div class="relative bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-2xl overflow-hidden animate-scale-up z-10">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-700 text-white px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-sm font-bold">
+                    <i class="fa-solid fa-tags"></i>
+                </span>
+                <div>
+                    <h3 class="text-base font-black">Edit Course Fee & Discount</h3>
+                    <p class="text-xs text-emerald-100">Update pricing, boys discount and girls scholarship</p>
+                </div>
             </div>
-            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">{{ count($galleries) }} Images</span>
+            <button type="button" onclick="closeEditFeeModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">&times;</button>
         </div>
 
-        <!-- Upload Box -->
-        <form action="{{ route('admin.galleries.store') }}" method="POST" enctype="multipart/form-data" class="bg-slate-50 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-2xl p-6 transition duration-200">
+        <form id="editFeeForm" action="" method="POST" class="p-6 space-y-5">
             @csrf
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-bold shrink-0">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Course Name <span class="text-red-500">*</span></label>
+                    <input type="text" name="course_name" id="editFeeCourseName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Course Duration <span class="text-red-500">*</span></label>
+                    <input type="text" name="duration" id="editFeeDuration" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Standard Course Fee <span class="text-red-500">*</span></label>
+                    <input type="text" name="course_fee" id="editCourseFeeInput" oninput="calculateFeeDiscounts('edit')" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Certification</label>
+                    <input type="text" name="certification" id="editFeeCertification" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+                </div>
+            </div>
+
+            <!-- Discount Section -->
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <span class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-gift text-indigo-600"></i> Special Offer & Scholarships
+                    </span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="offer_active" id="editFeeOfferActive" value="1" class="sr-only peer">
+                        <div class="w-8 h-4 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-600"></div>
+                        <span class="ml-2 text-xs font-bold text-slate-700">Offer Active</span>
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-blue-50/70 p-3 rounded-xl border border-blue-100 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-blue-900">👦 Boys Discount (%)</label>
+                            <span id="editBoysCalculatedBadge" class="text-[10px] font-bold text-blue-700">Final: ₹--</span>
+                        </div>
+                        <input type="number" name="discount_boys" id="editDiscountBoysInput" min="0" max="100" oninput="calculateFeeDiscounts('edit')" class="w-full bg-white border border-blue-200 rounded-lg px-3 py-1.5 text-xs font-bold text-blue-900 focus:outline-none focus:border-blue-600">
                     </div>
-                    <div>
-                        <h4 class="font-bold text-slate-800 text-sm">Upload New Gallery Image</h4>
-                        <p class="text-xs text-slate-400">Supported formats: JPG, PNG, WEBP (Max: 5MB)</p>
+
+                    <div class="bg-purple-50/70 p-3 rounded-xl border border-purple-100 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-bold text-purple-900">👧 Girls Scholarship (%)</label>
+                            <span id="editGirlsCalculatedBadge" class="text-[10px] font-bold text-purple-700">Final: ₹--</span>
+                        </div>
+                        <input type="number" name="discount_girls" id="editDiscountGirlsInput" min="0" max="100" oninput="calculateFeeDiscounts('edit')" class="w-full bg-white border border-purple-200 rounded-lg px-3 py-1.5 text-xs font-bold text-purple-900 focus:outline-none focus:border-purple-600">
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3 w-full md:w-auto">
-                    <input type="file" id="galleryFileInput" name="image" accept="image/*" required class="hidden" onchange="updateGalleryFileName(this)">
-                    <button type="button" onclick="document.getElementById('galleryFileInput').click()" class="w-full md:w-auto px-5 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-100 transition shadow-xs">
-                        <span id="galleryFileLabel">Browse Image File</span>
-                    </button>
-                    <button type="submit" class="w-full md:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md transition">
-                        Upload Image
-                    </button>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-bold text-slate-600">Offer Tagline / Badge</label>
+                        <input type="text" name="offer_tag" id="editFeeOfferTag" placeholder="e.g. 🔥 Top Trending Course" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-bold text-slate-600">Badge Theme</label>
+                        <select name="badge_color" id="editFeeBadgeColor" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-semibold">
+                            <option value="amber">Amber Gold</option>
+                            <option value="emerald">Emerald Green</option>
+                            <option value="indigo">Indigo Royal</option>
+                            <option value="rose">Rose Red</option>
+                            <option value="blue">Tech Blue</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100">
+                <button type="button" onclick="closeEditFeeModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 transition">Cancel</button>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-100 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-check"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ================= TAB 5: GALLERY MANAGEMENT ================= -->
+<div id="tab-galleries" class="hidden space-y-8 animate-fade-in">
+    <!-- Header with Stats -->
+    <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800 flex items-center justify-between flex-wrap gap-4">
+        <div class="space-y-1">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-bold uppercase tracking-wider">
+                <i class="fa-solid fa-photo-film"></i> SMTTC Media Studio
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white flex items-center gap-3">
+                Gallery & Video Management
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-xl">
+                Upload practical training lab photos, student bench testing videos, and event highlights with technical descriptions and category tags.
+            </p>
+        </div>
+
+        <!-- Quick Metrics Badges -->
+        <div class="flex items-center gap-2 flex-wrap">
+            <div class="bg-emerald-500/20 border border-emerald-400/30 px-3.5 py-2 rounded-2xl text-center">
+                <span class="block text-lg font-black text-emerald-300">{{ count($beforeAfters ?? []) }}</span>
+                <span class="text-[10px] font-bold text-emerald-200">🔄 Before/After</span>
+            </div>
+            <div class="bg-red-500/20 border border-red-400/30 px-3.5 py-2 rounded-2xl text-center">
+                <span class="block text-lg font-black text-red-300">{{ count($successVideos ?? []) }}</span>
+                <span class="text-[10px] font-bold text-red-200">🎥 5s Video Stories</span>
+            </div>
+            <div class="bg-sky-500/20 border border-sky-400/30 px-3.5 py-2 rounded-2xl text-center">
+                <span class="block text-lg font-black text-sky-300">{{ count($successfulStudents ?? []) }}</span>
+                <span class="text-[10px] font-bold text-sky-200">🎓 Placed Ticker</span>
+            </div>
+            <div class="bg-blue-500/20 border border-blue-400/30 px-3.5 py-2 rounded-2xl text-center">
+                <span class="block text-lg font-black text-blue-300">{{ count($galleries) }}</span>
+                <span class="text-[10px] font-bold text-blue-200">📸 Media Catalog</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUB-TAB SWITCHER (ALL 4 POST OPTIONS UNIFIED IN GALLERY TAB) -->
+    <div class="bg-slate-100 p-2 rounded-2xl border border-slate-200/80 shadow-inner flex items-center gap-2 overflow-x-auto">
+        <button type="button" 
+                onclick="switchAdminGallerySubTab('ba')" 
+                id="subtab-btn-ba" 
+                class="admin-gal-subtab-btn px-4 py-2.5 rounded-xl font-black text-xs transition flex items-center gap-2 bg-emerald-600 text-white shadow-sm whitespace-nowrap">
+            <i class="fa-solid fa-arrows-left-right text-amber-300"></i>
+            <span>1. Before & After (Upload 2 Images)</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] bg-white/20 text-white font-extrabold">{{ count($beforeAfters ?? []) }}</span>
+        </button>
+
+        <button type="button" 
+                onclick="switchAdminGallerySubTab('stories')" 
+                id="subtab-btn-stories" 
+                class="admin-gal-subtab-btn px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center gap-2 text-slate-700 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap">
+            <i class="fa-solid fa-circle-play text-red-500"></i>
+            <span>2. Video Success Story (5-Sec Slot)</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-700 font-extrabold">{{ count($successVideos ?? []) }}</span>
+        </button>
+
+        <button type="button" 
+                onclick="switchAdminGallerySubTab('students')" 
+                id="subtab-btn-students" 
+                class="admin-gal-subtab-btn px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center gap-2 text-slate-700 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap">
+            <i class="fa-solid fa-graduation-cap text-sky-500"></i>
+            <span>3. Placed Students (Top Live Ticker)</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-700 font-extrabold">{{ count($successfulStudents ?? []) }}</span>
+        </button>
+
+        <button type="button" 
+                onclick="switchAdminGallerySubTab('catalog')" 
+                id="subtab-btn-catalog" 
+                class="admin-gal-subtab-btn px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center gap-2 text-slate-700 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap">
+            <i class="fa-solid fa-photo-film text-blue-600"></i>
+            <span>4. General Lab Media & Videos (Bottom Grid)</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-200 text-slate-700 font-extrabold">{{ count($galleries) }}</span>
+        </button>
+    </div>
+
+    <!-- ================= SUB-PANE 1: BEFORE & AFTER REPAIR (2 IMAGES) ================= -->
+    <div id="admin-gal-pane-ba" class="space-y-6">
+        <!-- Guidance Banner -->
+        <div class="bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border-l-4 border-emerald-500 p-4 rounded-r-2xl">
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 text-sm shadow-sm">
+                    <i class="fa-solid fa-arrows-left-right"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-black text-slate-900 uppercase tracking-wider">Public Gallery: Top Interactive Split Slider</h4>
+                    <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                        Yahan aapko <strong>2 ALAG-ALAG IMAGES</strong> upload karni hain: <strong>1. Before Image (Kharab/Dead PCB)</strong> aur <strong>2. After Image (100% Repaired/Working PCB)</strong>. Jab aap ise publish karenge toh yeh Public Gallery ke <strong>SABSE UPPER</strong> split slider me show hoga jahan students slider ko left-right karke micro-soldering proof dekh sakte hain!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Before & After Upload Form -->
+        <section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-3">
+                <div>
+                    <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i> Upload New 2-Image Before & After Case
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Upload Dead vs Repaired PCB photos with fault diagnostics & micro-soldering solutions.</p>
+                </div>
+                <span class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-black text-xs border border-emerald-200">
+                    {{ count($beforeAfters ?? []) }} Cases Published
+                </span>
+            </div>
+
+            <form action="{{ route('admin.before_after.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Left (7 Cols): Metadata -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700">Practical Case Title <span class="text-red-500">*</span></label>
+                            <input type="text" name="title" required placeholder="e.g. Inverter AC Outdoor PCB - IPM Short Circuit Repair" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-50 transition shadow-2xs">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Category Tag <span class="text-red-500">*</span></label>
+                                <select name="category" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+                                    <option value="AC & HVAC PCB Repairing">❄️ AC & HVAC PCB Repairing</option>
+                                    <option value="Smartphone Hardware & Micro-soldering">📱 Smartphone Hardware & Micro-soldering</option>
+                                    <option value="Laptop Chip Level Repairing">💻 Laptop Chip Level Repairing</option>
+                                    <option value="Home Appliances (Fridge/Washing Machine)">⚡ Home Appliances (Fridge / Washing Machine)</option>
+                                    <option value="Student Lab Practicals">🔬 Student Lab Practicals</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Tools / Equipment Used</label>
+                                <input type="text" name="tools_used" placeholder="e.g. SMD Hot Air Gun, DSO, Microscope" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700">Fault Diagnosed (समस्या / खराबी) <span class="text-red-500">*</span></label>
+                            <textarea name="fault_description" rows="2" required placeholder="e.g. Outdoor PCB completely non-responsive with U4 error code. Burnt traces and shorted IPM module." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs"></textarea>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700">Repair Procedure (समाधान / प्रैक्टिकल तरीका) <span class="text-red-500">*</span></label>
+                            <textarea name="repair_solution" rows="2" required placeholder="e.g. Micro-soldered replacement IPM module, reconstructed damaged PCB traces using 0.08mm wire, tested on compressor bench." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition shadow-2xs"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Right (5 Cols): Both Images Upload (Before & After) -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <!-- 1. Before Image (Faulty) -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-red-600 flex items-center justify-between">
+                                <span class="flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i> 1. BEFORE Image (Kharab / Dead PCB) <span class="text-red-500">*</span></span>
+                                <span class="text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded-full">Required</span>
+                            </label>
+                            <div onclick="document.getElementById('baBeforeFileInput').click()" class="border-2 border-dashed border-red-200 hover:border-red-400 bg-red-50/20 hover:bg-red-50/40 rounded-2xl p-4 text-center cursor-pointer transition min-h-[110px] flex flex-col justify-center items-center">
+                                <input type="file" id="baBeforeFileInput" name="before_image" accept="image/*" required class="hidden" onchange="previewAdminBAFile(this, 'adminBeforePreview')">
+                                <p class="text-xs font-bold text-slate-700" id="adminBeforeLabel">Click to Choose Before Image</p>
+                                <p class="text-[10px] text-slate-400">JPG, PNG, WEBP (Max 10MB)</p>
+                                <img id="adminBeforePreview" src="" alt="Before Preview" class="hidden max-h-24 mt-2 rounded-lg object-cover shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- 2. After Image (Repaired) -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-emerald-600 flex items-center justify-between">
+                                <span class="flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> 2. AFTER Image (100% Repaired / OK PCB) <span class="text-red-500">*</span></span>
+                                <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-full">Required</span>
+                            </label>
+                            <div onclick="document.getElementById('baAfterFileInput').click()" class="border-2 border-dashed border-emerald-200 hover:border-emerald-400 bg-emerald-50/20 hover:bg-emerald-50/40 rounded-2xl p-4 text-center cursor-pointer transition min-h-[110px] flex flex-col justify-center items-center">
+                                <input type="file" id="baAfterFileInput" name="after_image" accept="image/*" required class="hidden" onchange="previewAdminBAFile(this, 'adminAfterPreview')">
+                                <p class="text-xs font-bold text-slate-700" id="adminAfterLabel">Click to Choose After Image</p>
+                                <p class="text-[10px] text-slate-400">JPG, PNG, WEBP (Max 10MB)</p>
+                                <img id="adminAfterPreview" src="" alt="After Preview" class="hidden max-h-24 mt-2 rounded-lg object-cover shadow-sm">
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs shadow-md shadow-emerald-200 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Publish Before & After Case (Shows at Top Slider)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+            <!-- Existing Case Studies List -->
+            @if(isset($beforeAfters) && count($beforeAfters) > 0)
+            <div class="pt-6 border-t border-slate-100 space-y-4">
+                <h4 class="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                    <i class="fa-solid fa-list-check text-emerald-600"></i> Active Before & After Cases in Top Slider ({{ count($beforeAfters) }})
+                </h4>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach($beforeAfters as $case)
+                        @php
+                            $bSrc = Str::startsWith($case->before_image, 'http') ? $case->before_image : asset($case->before_image);
+                            $aSrc = Str::startsWith($case->after_image, 'http') ? $case->after_image : asset($case->after_image);
+                        @endphp
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-emerald-300 transition flex items-start gap-4 justify-between">
+                            <!-- Two Mini Images -->
+                            <div class="flex items-center gap-2 shrink-0">
+                                <div class="relative w-16 h-16 rounded-xl overflow-hidden border border-red-200 shadow-2xs">
+                                    <img src="{{ $bSrc }}" alt="Before" class="w-full h-full object-cover">
+                                    <span class="absolute bottom-0 inset-x-0 bg-red-600/90 text-white text-[8px] font-bold text-center py-0.5">Before</span>
+                                </div>
+                                <div class="relative w-16 h-16 rounded-xl overflow-hidden border border-emerald-200 shadow-2xs">
+                                    <img src="{{ $aSrc }}" alt="After" class="w-full h-full object-cover">
+                                    <span class="absolute bottom-0 inset-x-0 bg-emerald-600/90 text-white text-[8px] font-bold text-center py-0.5">After</span>
+                                </div>
+                            </div>
+
+                            <!-- Info -->
+                            <div class="flex-1 min-w-0 space-y-1">
+                                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-100 text-blue-700">{{ $case->category }}</span>
+                                <h5 class="text-xs font-bold text-slate-900 truncate" title="{{ $case->title }}">{{ $case->title }}</h5>
+                                <p class="text-[11px] text-slate-500 line-clamp-1">{{ $case->fault_description ?: 'No fault notes' }}</p>
+                                <span class="text-[10px] text-slate-400 flex items-center gap-1 font-medium">
+                                    <i class="fa-solid fa-heart text-red-400"></i> {{ $case->likes_count }} Helpful clicks
+                                </span>
+                            </div>
+
+                            <!-- Action -->
+                            <form action="{{ route('admin.before_after.delete', $case->id) }}" method="POST" onsubmit="return confirm('Delete this Before & After case study?')" class="shrink-0">
+                                @csrf
+                                <button type="submit" class="w-7 h-7 rounded-lg bg-white hover:bg-red-50 text-slate-400 hover:text-red-600 border border-slate-200 transition flex items-center justify-center" title="Delete Case">
+                                    <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                </button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+        </section>
+    </div>
+
+    <!-- ================= SUB-PANE 2: VIDEO SUCCESS STORY (5-SEC SLOT) ================= -->
+    <div id="admin-gal-pane-stories" class="hidden space-y-6">
+        <!-- Guidance Banner -->
+        <div class="bg-gradient-to-r from-red-500/10 via-rose-500/5 to-transparent border-l-4 border-red-500 p-4 rounded-r-2xl">
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-xl bg-red-500 text-white flex items-center justify-center shrink-0 text-sm shadow-sm">
+                    <i class="fa-solid fa-circle-play"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-black text-slate-900 uppercase tracking-wider">Public Gallery: 5-Second Auto-Rotating Video Slot</h4>
+                    <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                        Yeh video card public gallery me Before/After comparison ke bagal me display hota hai aur <strong>HAR 5 SECONDS ME AUTOMATICALLY CHANGE</strong> hota hai! Yahan aap student ka name, course, video demonstration link (YouTube ya MP4 file), earning badge aur unka real feedback add kar sakte hain.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Story Video Form -->
+        <section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-3">
+                <div>
+                    <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-video text-red-600"></i> Add Video Success Story (5-Sec Rotator)
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Students who completed practical training and started successful careers / earning.</p>
+                </div>
+                <span class="px-3 py-1.5 rounded-xl bg-red-50 text-red-700 font-black text-xs border border-red-200">
+                    {{ count($successVideos ?? []) }} Stories Published
+                </span>
+            </div>
+
+            <form action="{{ route('admin.story_videos.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Left (7 Cols): Student Info & Story Details -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Student Name <span class="text-red-500">*</span></label>
+                                <input type="text" name="student_name" required placeholder="e.g. Rahul Sharma" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-50 transition shadow-2xs">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Course Completed <span class="text-red-500">*</span></label>
+                                <input type="text" name="course" required placeholder="e.g. Inverter AC PCB Repairing" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-50 transition shadow-2xs">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Video Story Title <span class="text-red-500">*</span></label>
+                                <input type="text" name="title" required placeholder="e.g. From Beginner to Earning ₹60,000/mo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-50 transition shadow-2xs">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Monthly Earning / Shop Badge</label>
+                                <input type="text" name="earning_badge" placeholder="e.g. Earns ₹50,000+/mo, Shop Owner" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white transition shadow-2xs">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700">Student Real Experience / Testimonial Quote</label>
+                            <textarea name="story_description" rows="3" placeholder="e.g. SMTTC ke practical lab me mujhe real fault-finding seekhne ko mila. Ab main har tarah ke dead inverter board repair kar leta hoon." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white transition shadow-2xs"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Right (5 Cols): Video URL / Upload -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700 flex items-center justify-between">
+                                <span class="flex items-center gap-1"><i class="fa-brands fa-youtube text-red-500"></i> YouTube Video URL</span>
+                                <span class="text-[10px] text-slate-400">Recommended</span>
+                            </label>
+                            <input type="url" name="video_url" placeholder="https://www.youtube.com/watch?v=... or shorts" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white transition shadow-2xs">
+                            <p class="text-[10px] text-slate-400">YouTube video automatically gets thumbnail preview.</p>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700 flex items-center gap-1">
+                                <i class="fa-solid fa-file-video text-indigo-500"></i> OR Upload MP4 Video File
+                            </label>
+                            <div onclick="document.getElementById('storyVideoFileInput').click()" class="border-2 border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/20 hover:bg-indigo-50/40 rounded-2xl p-4 text-center cursor-pointer transition">
+                                <input type="file" id="storyVideoFileInput" name="video_file" accept="video/mp4,video/webm,video/quicktime" class="hidden" onchange="previewStoryVideoFile(this)">
+                                <p class="text-xs font-bold text-slate-700" id="storyVideoFileLabel">Click to Upload MP4 Video</p>
+                                <p class="text-[10px] text-slate-400">Supports MP4 up to 50MB</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700 flex items-center justify-between">
+                                <span>Custom Thumbnail (Optional)</span>
+                                <span class="text-[10px] text-slate-400">JPG, PNG, WEBP</span>
+                            </label>
+                            <input type="file" name="thumbnail" accept="image/*" onchange="previewStoryThumbnail(this)" class="w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer">
+                            <img id="storyThumbPreview" src="" alt="Thumbnail Preview" class="hidden max-h-20 rounded-lg object-cover mt-2 shadow-2xs">
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-black text-xs shadow-md shadow-red-200 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Publish Video Success Story</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+            <!-- Existing Video Stories List -->
+            @if(isset($successVideos) && count($successVideos) > 0)
+            <div class="pt-6 border-t border-slate-100 space-y-4">
+                <h4 class="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                    <i class="fa-solid fa-list-check text-red-600"></i> Active 5-Sec Success Stories ({{ count($successVideos) }})
+                </h4>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($successVideos as $sv)
+                        @php
+                            $thumb = $sv->thumbnail_url ? (Str::startsWith($sv->thumbnail_url, 'http') ? $sv->thumbnail_url : asset(ltrim($sv->thumbnail_url, '/'))) : asset('assets/images/g1.webp');
+                        @endphp
+                        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-red-300 transition space-y-3">
+                            <div class="relative rounded-xl overflow-hidden aspect-video bg-black shadow-xs">
+                                <img src="{{ $thumb }}" alt="{{ $sv->student_name }}" class="w-full h-full object-cover">
+                                <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-600 text-white shadow-xs">
+                                    {{ $sv->earning_badge }}
+                                </span>
+                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center text-xs shadow-md">
+                                        <i class="fa-solid fa-play ml-0.5"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <h5 class="text-xs font-black text-slate-900 truncate">{{ $sv->student_name }}</h5>
+                                    <span class="text-[10px] font-bold text-sky-600">{{ $sv->course }}</span>
+                                </div>
+                                <p class="text-[11px] font-semibold text-slate-700 line-clamp-1">{{ $sv->title }}</p>
+                                <p class="text-[10px] text-slate-500 italic line-clamp-2">"{{ $sv->story_description }}"</p>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-200/60 flex items-center justify-between">
+                                <a href="{{ $sv->video_url }}" target="_blank" rel="noopener" class="text-[11px] font-bold text-blue-600 hover:underline flex items-center gap-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> View Video
+                                </a>
+
+                                <form action="{{ route('admin.story_videos.delete', $sv->id) }}" method="POST" onsubmit="return confirm('Delete this success story video?')" class="shrink-0">
+                                    @csrf
+                                    <button type="submit" class="w-7 h-7 rounded-lg bg-white hover:bg-red-50 text-slate-400 hover:text-red-600 border border-slate-200 transition flex items-center justify-center" title="Delete Story">
+                                        <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+        </section>
+    </div>
+
+    <!-- ================= SUB-PANE 3: PLACED STUDENTS (TOP LIVE TICKER) ================= -->
+    <div id="admin-gal-pane-students" class="hidden space-y-6">
+        <!-- Guidance Banner -->
+        <div class="bg-gradient-to-r from-sky-500/10 via-blue-500/5 to-transparent border-l-4 border-sky-500 p-4 rounded-r-2xl">
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center shrink-0 text-sm shadow-sm">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-black text-slate-900 uppercase tracking-wider">Public Gallery: Top Continuous Right-to-Left Ticker</h4>
+                    <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                        Yahan add kiye gaye students Public Gallery page ke <strong>SABSE TOP PE infinite Right-to-Left scrolling marquee ticker</strong> me chalte hain! Student photo, name, course aur unka job placement ya khud ka repair care center display hota hai.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Student Form -->
+        <section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-3">
+                <div>
+                    <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-user-plus text-sky-600"></i> Add Placed / Success Student to Ticker
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Showcase real students placed in companies or running their own electronics labs.</p>
+                </div>
+                <span class="px-3 py-1.5 rounded-xl bg-sky-50 text-sky-700 font-black text-xs border border-sky-200">
+                    {{ count($successfulStudents ?? []) }} Students in Ticker
+                </span>
+            </div>
+
+            <form action="{{ route('admin.students.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Left (7 Cols): Student Info -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Student Full Name <span class="text-red-500">*</span></label>
+                                <input type="text" name="name" required placeholder="e.g. Amit Kumar" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-50 transition shadow-2xs">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Course Studied <span class="text-red-500">*</span></label>
+                                <input type="text" name="course" required placeholder="e.g. Advanced Laptop Chip Level" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-50 transition shadow-2xs">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Achievement / Shop / Job Placement <span class="text-red-500">*</span></label>
+                                <input type="text" name="achievement" required placeholder="e.g. Opened Care Center / Earns ₹50,000/mo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-50 transition shadow-2xs">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-slate-700">Batch / Status Tag</label>
+                                <input type="text" name="batch_year" placeholder="e.g. Certified Expert / Batch 2024" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white focus:ring-4 focus:ring-sky-50 transition shadow-2xs">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right (5 Cols): Photo Upload -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-slate-700 flex items-center justify-between">
+                                <span class="flex items-center gap-1"><i class="fa-solid fa-image text-sky-500"></i> Student Passport Photo <span class="text-red-500">*</span></span>
+                                <span class="text-[10px] text-slate-400">JPG, PNG, WEBP</span>
+                            </label>
+                            <div onclick="document.getElementById('studentPhotoFileInput').click()" class="border-2 border-dashed border-sky-200 hover:border-sky-400 bg-sky-50/20 hover:bg-sky-50/40 rounded-2xl p-4 text-center cursor-pointer transition min-h-[110px] flex flex-col justify-center items-center">
+                                <input type="file" id="studentPhotoFileInput" name="photo" accept="image/*" required class="hidden" onchange="previewStudentPhoto(this)">
+                                <p class="text-xs font-bold text-slate-700" id="studentPhotoLabel">Click to Choose Student Photo</p>
+                                <p class="text-[10px] text-slate-400">Square or portrait photo recommended</p>
+                                <img id="studentPhotoPreview" src="" alt="Student Preview" class="hidden w-20 h-20 mt-2 rounded-xl object-cover shadow-sm border-2 border-sky-400">
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white font-black text-xs shadow-md shadow-sky-200 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Add Student to Top Live Ticker</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+            <!-- Existing Ticker Students List -->
+            @if(isset($successfulStudents) && count($successfulStudents) > 0)
+            <div class="pt-6 border-t border-slate-100 space-y-4">
+                <h4 class="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                    <i class="fa-solid fa-list-check text-sky-600"></i> Active Students in Top Marquee ({{ count($successfulStudents) }})
+                </h4>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    @foreach($successfulStudents as $st)
+                        @php
+                            $pSrc = Str::startsWith($st->photo, 'http') ? $st->photo : asset(ltrim($st->photo, '/'));
+                        @endphp
+                        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-sky-300 transition flex items-center gap-3 justify-between">
+                            <div class="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-amber-300 shadow-2xs">
+                                <img src="{{ $pSrc }}" alt="{{ $st->name }}" class="w-full h-full object-cover">
+                            </div>
+
+                            <div class="flex-1 min-w-0 space-y-0.5">
+                                <h5 class="text-xs font-black text-slate-900 truncate">{{ $st->name }}</h5>
+                                <p class="text-[10px] font-bold text-sky-600 truncate">{{ $st->course }}</p>
+                                <p class="text-[10px] font-extrabold text-emerald-600 truncate">{{ $st->achievement }}</p>
+                            </div>
+
+                            <form action="{{ route('admin.students.delete', $st->id) }}" method="POST" onsubmit="return confirm('Remove student from ticker?')" class="shrink-0">
+                                @csrf
+                                <button type="submit" class="w-7 h-7 rounded-lg bg-white hover:bg-red-50 text-slate-400 hover:text-red-600 border border-slate-200 transition flex items-center justify-center" title="Remove Student">
+                                    <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                </button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+        </section>
+    </div>
+
+    <!-- ================= SUB-PANE 4: GENERAL MEDIA CATALOG (BOTTOM GRID) ================= -->
+    <div id="admin-gal-pane-catalog" class="hidden space-y-6">
+        <!-- Guidance Banner -->
+        <div class="bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-transparent border-l-4 border-blue-500 p-4 rounded-r-2xl">
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center shrink-0 text-sm shadow-sm">
+                    <i class="fa-solid fa-photo-film"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-black text-slate-900 uppercase tracking-wider">Public Gallery: Bottom Media Grid</h4>
+                    <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                        Yahan se upload kiye gaye photos aur long practical videos Public Gallery ke <strong>NICHE WALE GRID</strong> me category filters (All / Photos / Videos) aur search bar ke sath display hote hain.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Upload Studio Card -->
+        <section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-3">
+            <div>
+                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-blue-600"></i> Upload New Media Asset
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">Choose whether to upload a photo, video file, or embed a YouTube demonstration.</p>
+            </div>
+
+            <!-- Mode Selector Tabs -->
+            <div class="inline-flex p-1 bg-slate-100 rounded-2xl border border-slate-200/80 text-xs font-bold" id="galleryUploadTypeTabs">
+                <button type="button" onclick="setGalleryUploadType('image')" id="btn-mode-image" class="px-3.5 py-2 rounded-xl transition bg-white text-blue-700 shadow-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-image"></i> Photo
+                </button>
+                <button type="button" onclick="setGalleryUploadType('video_file')" id="btn-mode-video-file" class="px-3.5 py-2 rounded-xl transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-video"></i> Video File (MP4)
+                </button>
+                <button type="button" onclick="setGalleryUploadType('video_url')" id="btn-mode-video-url" class="px-3.5 py-2 rounded-xl transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube / Video URL
+                </button>
+            </div>
+        </div>
+
+        <form action="{{ route('admin.galleries.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            @csrf
+            <input type="hidden" name="media_type" id="galleryMediaTypeInput" value="image">
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left Column: Metadata (Title, Category, Description) (7 Cols) -->
+                <div class="lg:col-span-7 space-y-4">
+                    <!-- Title / Caption -->
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold text-slate-700">Media Title / Topic Caption <span class="text-slate-400 font-normal">(Optional)</span></label>
+                        <input type="text" name="title" placeholder="e.g. Inverter AC PCB Tracing Practical Demo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-50 transition shadow-2xs">
+                    </div>
+
+                    <!-- Category Selector -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-xs font-bold text-slate-700">Category Tag (किस कैटेगरी का है) <span class="text-red-500">*</span></label>
+                            <span class="text-[10px] text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-md">Topic Filter</span>
+                        </div>
+                        <select name="category" id="galleryCategorySelect" onchange="checkCustomCategory(this.value, 'create')" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-50 transition shadow-2xs">
+                            <option value="AC & HVAC PCB Repairing">❄️ AC & HVAC PCB Repairing</option>
+                            <option value="Smartphone Hardware & Micro-soldering">📱 Smartphone Hardware & Micro-soldering</option>
+                            <option value="Laptop Chip Level Repairing">💻 Laptop Chip Level Repairing</option>
+                            <option value="Home Appliances (Fridge/Washing Machine)">⚡ Home Appliances (Fridge / Washing Machine)</option>
+                            <option value="Student Lab Practicals" selected>🔬 Student Lab Practicals</option>
+                            <option value="Events & Certificate Ceremonies">🏆 Events & Certificate Ceremonies</option>
+                            <option value="Campus & Workshop Infrastructure">🏫 Campus & Workshop Infrastructure</option>
+                            <option value="__custom__">➕ Other Custom Category...</option>
+                        </select>
+                        <input type="text" id="createCustomCategoryInput" name="custom_category_text" placeholder="Type custom category name..." class="hidden mt-2 w-full bg-white border border-blue-300 rounded-xl px-4 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold text-slate-700">Practical Description (डिटेल्स / डिस्क्रिप्शन)</label>
+                        <textarea name="description" rows="3" placeholder="Explain what workbench skills, diagnosis methods, or practical equipment are demonstrated in this session..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-50 transition shadow-2xs"></textarea>
+                    </div>
+                </div>
+
+                <!-- Right Column: Media Upload Area (5 Cols) -->
+                <div class="lg:col-span-5 space-y-4">
+                    <!-- MODE 1: PHOTO UPLOAD -->
+                    <div id="box-upload-image" class="space-y-3">
+                        <label class="block text-xs font-bold text-slate-700">Photo File (JPG, PNG, WEBP)</label>
+                        <div onclick="document.getElementById('galleryImageFileInput').click()" class="border-2 border-dashed border-blue-200 hover:border-blue-500 bg-blue-50/20 hover:bg-blue-50/40 rounded-2xl p-6 text-center cursor-pointer transition min-h-[170px] flex flex-col justify-center items-center group">
+                            <input type="file" id="galleryImageFileInput" name="image" accept="image/*" class="hidden" onchange="previewGalleryImage(this, 'create')">
+                            <div id="galleryImageEmpty" class="space-y-2">
+                                <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl group-hover:scale-110 transition shadow-xs">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800">Click or Drag Photo</p>
+                                <p class="text-[11px] text-slate-400">Supports JPG, PNG, WEBP (Max 10MB)</p>
+                            </div>
+                            <img id="galleryImagePreviewImg" src="" alt="Preview" class="hidden max-h-40 rounded-xl object-cover shadow-sm">
+                        </div>
+                    </div>
+
+                    <!-- MODE 2: VIDEO FILE UPLOAD -->
+                    <div id="box-upload-video-file" class="hidden space-y-3">
+                        <label class="block text-xs font-bold text-slate-700">Video File (MP4, WEBM, MOV)</label>
+                        <div onclick="document.getElementById('galleryVideoFileInput').click()" class="border-2 border-dashed border-indigo-200 hover:border-indigo-500 bg-indigo-50/20 hover:bg-indigo-50/40 rounded-2xl p-6 text-center cursor-pointer transition min-h-[140px] flex flex-col justify-center items-center group">
+                            <input type="file" id="galleryVideoFileInput" name="video_file" accept="video/mp4,video/webm,video/ogg,video/quicktime" class="hidden" onchange="previewGalleryVideoFile(this)">
+                            <div class="space-y-2">
+                                <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl group-hover:scale-110 transition shadow-xs">
+                                    <i class="fa-solid fa-video"></i>
+                                </div>
+                                <p class="text-xs font-bold text-slate-800" id="galleryVideoFileLabel">Click to Choose Video File</p>
+                                <p class="text-[11px] text-slate-400">Supports MP4, WEBM up to 50MB</p>
+                            </div>
+                        </div>
+
+                        <!-- Optional Thumbnail for Video File -->
+                        <div class="space-y-1">
+                            <label class="block text-[11px] font-bold text-slate-600">Custom Video Poster / Thumbnail (Optional)</label>
+                            <input type="file" name="thumbnail" accept="image/*" class="w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- MODE 3: YOUTUBE / VIDEO URL -->
+                    <div id="box-upload-video-url" class="hidden space-y-3">
+                        <label class="block text-xs font-bold text-slate-700">YouTube or Video Link URL</label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-red-500 text-sm">
+                                <i class="fa-brands fa-youtube"></i>
+                            </span>
+                            <input type="url" id="galleryVideoUrlInput" name="video_url" oninput="previewYoutubeUrl(this.value)" placeholder="https://www.youtube.com/watch?v=... or shorts" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-50 transition shadow-2xs">
+                        </div>
+                        <div id="youtubePreviewContainer" class="hidden rounded-xl overflow-hidden border border-slate-200 relative bg-slate-900 aspect-video flex items-center justify-center shadow-xs">
+                            <img id="youtubeThumbImg" src="" alt="YouTube Thumbnail" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center text-sm shadow-lg">
+                                    <i class="fa-solid fa-play ml-0.5"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Paste any YouTube watch or shorts URL. Thumbnail will be auto-generated automatically!</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-md shadow-blue-200 hover:shadow-lg transition duration-200 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span id="gallerySubmitBtnText">Upload Media to Gallery</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>
+    </section>
 
-        <!-- Gallery Images Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 pt-2">
+    <!-- Gallery Media Explorer & Live Filters -->
+    <section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4 flex-wrap gap-4">
+            <div>
+                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-grip text-blue-600"></i> Published Media Catalog (<span id="visibleGalleryCount">{{ count($galleries) }}</span>)
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">Filter by media type or topic, or search through training gallery cards.</p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex items-center gap-2 flex-wrap">
+                <!-- Type Filter Pills -->
+                <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold" id="adminMediaFilterPills">
+                    <button type="button" onclick="filterAdminGalleryType('all', this)" class="gal-type-filter active px-3 py-1.5 rounded-lg bg-white text-blue-700 shadow-2xs transition">All ({{ count($galleries) }})</button>
+                    <button type="button" onclick="filterAdminGalleryType('image', this)" class="gal-type-filter px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">📸 Photos ({{ $galleries->where('media_type', 'image')->count() }})</button>
+                    <button type="button" onclick="filterAdminGalleryType('video', this)" class="gal-type-filter px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">🎥 Videos ({{ $galleries->where('media_type', 'video')->count() }})</button>
+                </div>
+
+                <!-- Category Filter Dropdown -->
+                <select id="adminGalleryCategoryFilter" onchange="filterAdminGalleryCatalog()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:border-blue-600 shadow-2xs">
+                    <option value="all">All Categories</option>
+                    @foreach($galleries->pluck('category')->filter()->unique() as $cat)
+                        <option value="{{ strtolower($cat) }}">{{ $cat }}</option>
+                    @endforeach
+                </select>
+
+                <!-- Search Input -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="adminGallerySearchInput" onkeyup="filterAdminGalleryCatalog()" placeholder="Search title or tag..." class="bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:border-blue-600 w-44 sm:w-56 shadow-2xs">
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Grid Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-2" id="adminGalleryGrid">
             @forelse($galleries as $gallery)
-                <div class="relative group bg-slate-100 rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300">
-                    <img src="{{ Str::startsWith($gallery->image_url, '/uploads') ? asset($gallery->image_url) : asset($gallery->image_url) }}" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+                @php
+                    $isVid = $gallery->media_type === 'video';
+                    $displayImg = $gallery->thumbnail_url ?: $gallery->image_url;
+                    $displayImgSrc = $displayImg ? (Str::startsWith($displayImg, 'http') ? $displayImg : asset($displayImg)) : asset('assets/images/g1.webp');
+                    $galleryDataJson = base64_encode(json_encode([
+                        'id' => $gallery->id,
+                        'title' => $gallery->title ?? '',
+                        'category' => $gallery->category ?? 'General',
+                        'description' => $gallery->description ?? '',
+                        'media_type' => $gallery->media_type ?? 'image',
+                        'image_url' => $gallery->image_url ? (Str::startsWith($gallery->image_url, 'http') ? $gallery->image_url : asset($gallery->image_url)) : '',
+                        'video_url' => $gallery->video_url ? (Str::startsWith($gallery->video_url, 'http') ? $gallery->video_url : asset($gallery->video_url)) : '',
+                        'thumbnail_url' => $gallery->thumbnail_url ? (Str::startsWith($gallery->thumbnail_url, 'http') ? $gallery->thumbnail_url : asset($gallery->thumbnail_url)) : '',
+                        'embed_url' => $gallery->embed_url ?? '',
+                        'created_at_formatted' => $gallery->created_at ? $gallery->created_at->format('M d, Y') : ''
+                    ]));
+                @endphp
+                <div class="gallery-card-item group relative bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                     data-type="{{ $gallery->media_type ?: 'image' }}"
+                     data-category="{{ strtolower($gallery->category ?? 'general') }}"
+                     data-search="{{ strtolower(($gallery->title ?? '') . ' ' . ($gallery->description ?? '') . ' ' . ($gallery->category ?? '')) }}">
                     
-                    <!-- Hover Overlay -->
-                    <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-xs">
-                        <form action="{{ route('admin.galleries.delete', $gallery->id) }}" method="POST" onsubmit="return confirm('Delete this gallery image?')">
-                            @csrf
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-lg transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-trash-can"></i> Delete
-                            </button>
-                        </form>
+                    <!-- Media Top View -->
+                    <div>
+                        <div class="relative overflow-hidden bg-slate-900 aspect-[16/10] cursor-pointer" data-gallery="{{ $galleryDataJson }}" onclick="handleGalleryPreview(this)">
+                            <img src="{{ $displayImgSrc }}" alt="{{ $gallery->title ?: 'Gallery Media' }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            
+                            <!-- Category Badge (Top Left) -->
+                            <div class="absolute top-2.5 left-2.5 z-10">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-950/80 backdrop-blur-xs text-white shadow-sm border border-white/10">
+                                    {{ $gallery->category ?: 'General' }}
+                                </span>
+                            </div>
+
+                            <!-- Media Type Badge (Top Right) -->
+                            <div class="absolute top-2.5 right-2.5 z-10">
+                                @if($isVid)
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-600 text-white shadow-md flex items-center gap-1">
+                                        <i class="fa-solid fa-play text-[8px]"></i> Video
+                                    </span>
+                                @else
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-900/80 text-white shadow-sm flex items-center gap-1">
+                                        <i class="fa-regular fa-image text-[8px]"></i> Photo
+                                    </span>
+                                @endif
+                            </div>
+
+                            <!-- Video Play Overlay Icon -->
+                            @if($isVid)
+                                <div class="absolute inset-0 bg-slate-950/30 flex items-center justify-center group-hover:bg-slate-950/10 transition">
+                                    <div class="w-11 h-11 rounded-full bg-white/90 text-indigo-600 flex items-center justify-center text-sm shadow-xl group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition duration-200">
+                                        <i class="fa-solid fa-play ml-0.5"></i>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Card Body (Title & Description) -->
+                        <div class="p-4 space-y-1.5">
+                            <h4 class="font-bold text-slate-900 text-sm leading-snug line-clamp-1 group-hover:text-blue-600 transition" title="{{ $gallery->title ?: 'SMTTC Practical' }}">
+                                {{ $gallery->title ?: 'SMTTC Practical Demonstration' }}
+                            </h4>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed" title="{{ $gallery->description ?: 'No details provided.' }}">
+                                {{ $gallery->description ?: 'Workbench practical training session at SMTTC Patna.' }}
+                            </p>
+                        </div>
                     </div>
 
-                    <div class="p-3 bg-white border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-                        <span>Added {{ $gallery->created_at->format('M d, Y') }}</span>
+                    <!-- Card Footer Actions -->
+                    <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                        <span class="text-[11px] font-medium">{{ $gallery->created_at->format('M d, Y') }}</span>
+                        
+                        <div class="flex items-center gap-1.5">
+                            <!-- Preview/Play -->
+                            <button type="button" data-gallery="{{ $galleryDataJson }}" onclick="handleGalleryPreview(this)" class="w-7 h-7 rounded-lg bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-600 border border-slate-200 transition flex items-center justify-center" title="Preview / Play">
+                                <i class="fa-solid {{ $isVid ? 'fa-play' : 'fa-expand' }} text-[10px]"></i>
+                            </button>
+                            <!-- Edit -->
+                            <button type="button" data-gallery="{{ $galleryDataJson }}" onclick="handleGalleryEdit(this)" class="w-7 h-7 rounded-lg bg-white hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 border border-slate-200 transition flex items-center justify-center" title="Edit Info">
+                                <i class="fa-solid fa-pen text-[10px]"></i>
+                            </button>
+                            <!-- Delete -->
+                            <form action="{{ route('admin.galleries.delete', $gallery->id) }}" method="POST" onsubmit="return confirm('Delete this gallery item?')" class="inline">
+                                @csrf
+                                <button type="submit" class="w-7 h-7 rounded-lg bg-white hover:bg-red-50 text-slate-400 hover:text-red-600 border border-slate-200 transition flex items-center justify-center" title="Delete">
+                                    <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             @empty
-                <div class="col-span-full py-12 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-                    <i class="fa-solid fa-image text-3xl text-slate-300 mb-2"></i>
-                    <p class="text-slate-400 text-sm font-medium">No gallery images uploaded yet.</p>
+                <div class="col-span-full py-16 text-center bg-slate-50/60 rounded-3xl border border-dashed border-slate-200 space-y-3">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center text-2xl shadow-inner">
+                        <i class="fa-solid fa-photo-film"></i>
+                    </div>
+                    <h4 class="text-sm font-bold text-slate-700">No Gallery Media Uploaded Yet</h4>
+                    <p class="text-xs text-slate-400 max-w-sm mx-auto">Upload training photos or add YouTube practical videos above to showcase student workbench work.</p>
                 </div>
             @endforelse
         </div>
     </section>
+    </div>
 </div>
 
 <!-- ================= TAB 6: CERTIFICATES MANAGEMENT ================= -->
@@ -914,12 +2087,31 @@
                             <td class="p-4 text-slate-600">{{ $cert->course }}</td>
                             <td class="p-4 text-slate-600">{{ $cert->issued_date ? $cert->issued_date->format('M d, Y') : '-' }}</td>
                             <td class="p-4 text-right flex justify-end gap-2">
-                                <a href="{{ route('certificate.view', $cert->regd_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold text-xs transition flex items-center gap-1.5">
+                                <a href="{{ route('certificate.view', $cert->regd_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold text-xs transition flex items-center gap-1.5" title="View/Print Certificate">
                                     <i class="fa-solid fa-eye"></i> View/Print
                                 </a>
+                                @php
+                                    $certJson = base64_encode(json_encode([
+                                        'id' => $cert->id,
+                                        'regd_no' => $cert->regd_no,
+                                        'sl_no' => $cert->sl_no,
+                                        'name' => $cert->name,
+                                        'father_name' => $cert->father_name,
+                                        'dob' => $cert->dob ? $cert->dob->format('Y-m-d') : '',
+                                        'course' => $cert->course,
+                                        'from_date' => $cert->from_date ? $cert->from_date->format('Y-m-d') : '',
+                                        'to_date' => $cert->to_date ? $cert->to_date->format('Y-m-d') : '',
+                                        'center' => $cert->center,
+                                        'location' => $cert->location,
+                                        'issued_date' => $cert->issued_date ? $cert->issued_date->format('Y-m-d') : '',
+                                    ]));
+                                @endphp
+                                <button type="button" data-cert="{{ $certJson }}" onclick="handleCertEdit(this)" class="px-3.5 py-1.5 rounded-lg border border-amber-200 text-amber-700 hover:bg-amber-50 font-bold text-xs transition flex items-center gap-1.5" title="Change Certificate Dates & Details">
+                                    <i class="fa-solid fa-calendar-days text-amber-500"></i> Edit Dates
+                                </button>
                                 <form action="{{ route('admin.certificates.delete', $cert->id) }}" method="POST" onsubmit="return confirm('Delete this certificate?')">
                                     @csrf
-                                    <button type="submit" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5">
+                                    <button type="submit" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5" title="Delete Certificate">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                 </form>
@@ -989,9 +2181,31 @@
                                 </button>
                                 
                                 @if($hasCertificate)
+                                    @php
+                                        $admCert = \App\Models\Certificate::where('regd_no', $admission->enrollment_no)->first();
+                                        $admCertJson = $admCert ? base64_encode(json_encode([
+                                            'id' => $admCert->id,
+                                            'regd_no' => $admCert->regd_no,
+                                            'sl_no' => $admCert->sl_no,
+                                            'name' => $admCert->name,
+                                            'father_name' => $admCert->father_name,
+                                            'dob' => $admCert->dob ? $admCert->dob->format('Y-m-d') : '',
+                                            'course' => $admCert->course,
+                                            'from_date' => $admCert->from_date ? $admCert->from_date->format('Y-m-d') : '',
+                                            'to_date' => $admCert->to_date ? $admCert->to_date->format('Y-m-d') : '',
+                                            'center' => $admCert->center,
+                                            'location' => $admCert->location,
+                                            'issued_date' => $admCert->issued_date ? $admCert->issued_date->format('Y-m-d') : '',
+                                        ])) : '';
+                                    @endphp
                                     <a href="{{ route('certificate.view', $admission->enrollment_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold text-xs transition flex items-center gap-1.5" title="View Certificate">
                                         <i class="fa-solid fa-eye"></i> <span class="hidden xl:inline">View Cert</span>
                                     </a>
+                                    @if($admCert)
+                                        <button type="button" data-cert="{{ $admCertJson }}" onclick="handleCertEdit(this)" class="px-3.5 py-1.5 rounded-lg border border-amber-200 text-amber-700 hover:bg-amber-50 font-bold text-xs transition flex items-center gap-1.5" title="Change Certificate Dates & Details">
+                                            <i class="fa-solid fa-calendar-days text-amber-500"></i> <span class="hidden xl:inline">Edit Dates</span>
+                                        </button>
+                                    @endif
                                 @else
                                     <form action="{{ route('admin.admissions.approve', $admission->id) }}" method="POST" class="inline">
                                         @csrf
@@ -1085,6 +2299,115 @@
 </div>
 @endforeach
 
+<!-- EDIT CERTIFICATE & MANUAL DATES MODAL -->
+<div id="editCertModal" class="fixed inset-0 z-[105] hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeEditCertModal()"></div>
+    
+    <!-- Modal Dialog -->
+    <div class="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in max-h-[92vh] overflow-y-auto z-10">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-indigo-600 px-6 py-4 text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-lg shadow-sm">
+                    <i class="fa-solid fa-certificate"></i>
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-lg font-black leading-tight text-white">Edit Certificate & Manual Dates</h3>
+                    <p class="text-xs text-yellow-100 font-medium">Update student certificate particulars, training period and issue date</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeEditCertModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg transition">&times;</button>
+        </div>
+
+        <form id="editCertForm" method="POST" action="" class="p-6 sm:p-8 space-y-5">
+            @csrf
+
+            <!-- Identifiers (Regd & Serial) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Registration / Enrollment No. <span class="text-red-500">*</span></label>
+                    <input type="text" name="regd_no" id="editCertRegdNo" required class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-indigo-700 focus:outline-none">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Certificate Serial No. <span class="text-red-500">*</span></label>
+                    <input type="text" name="sl_no" id="editCertSlNo" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                </div>
+            </div>
+
+            <!-- Student Particulars -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Student Full Name <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" id="editCertName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Father's Name <span class="text-red-500">*</span></label>
+                    <input type="text" name="father_name" id="editCertFatherName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Date of Birth (DOB)</label>
+                    <input type="date" name="dob" id="editCertDob" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Course Completed <span class="text-red-500">*</span></label>
+                    <input type="text" name="course" id="editCertCourse" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                </div>
+            </div>
+
+            <!-- MANUAL DATES SECTION (HIGHLIGHTED BOX) -->
+            <div class="bg-gradient-to-br from-amber-50/70 to-yellow-50/50 p-4 sm:p-5 rounded-2xl border border-amber-200/90 space-y-3">
+                <div class="flex items-center justify-between border-b border-amber-200/70 pb-2">
+                    <span class="text-xs font-black text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-calendar-days text-amber-600"></i> Manual Training Period & Issue Date
+                    </span>
+                    <span class="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300">
+                        Appears on Certificate
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-bold text-slate-700">From Date (शुरुआत)</label>
+                        <input type="date" name="from_date" id="editCertFromDate" class="w-full bg-white border border-amber-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100 transition">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-bold text-slate-700">To Date (समाप्ति)</label>
+                        <input type="date" name="to_date" id="editCertToDate" class="w-full bg-white border border-amber-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100 transition">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-bold text-slate-700">Date of Issue (जारी दिनांक)</label>
+                        <input type="date" name="issued_date" id="editCertIssuedDate" class="w-full bg-white border border-amber-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100 transition">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Center & Location -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Training Center <span class="text-red-500">*</span></label>
+                    <input type="text" name="center" id="editCertCenter" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-bold text-slate-700">Location <span class="text-red-500">*</span></label>
+                    <input type="text" name="location" id="editCertLocation" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                </div>
+            </div>
+
+            <!-- Modal Footer Actions -->
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                <button type="button" onclick="closeEditCertModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition">Cancel</button>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-black text-xs shadow-md transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-check"></i> Update Certificate
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- EDIT BLOG MODAL (STUDIO MODE) -->
 <div id="editBlogModal" class="fixed inset-0 z-[99] hidden flex items-center justify-center p-4">
     <!-- Backdrop -->
@@ -1107,13 +2430,85 @@
             
             <!-- SECTION 1: FULL-WIDTH EDITORIAL CANVAS -->
             <div class="space-y-5 w-full">
-                <!-- Title -->
-                <div class="space-y-1.5">
-                    <div class="flex justify-between items-center">
-                        <label class="block text-xs font-bold text-slate-700">Article Title <span class="text-red-500">*</span></label>
+                <!-- Title & Typography Studio (Edit) -->
+                <div class="space-y-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+                    <div class="flex justify-between items-center flex-wrap gap-2">
+                        <div class="flex items-center gap-2">
+                            <label class="block text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-heading text-indigo-600"></i> Article Title <span class="text-red-500">*</span>
+                            </label>
+                            <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-md">Live Typography</span>
+                        </div>
                         <span id="edit-title-count" class="text-[10px] font-semibold text-slate-400">0 / 70 chars</span>
                     </div>
-                    <input type="text" id="edit-blog-title" name="title" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-base font-semibold text-slate-800 focus:outline-none focus:border-indigo-600 focus:ring-4 focus:ring-indigo-50 shadow-xs">
+
+                    <!-- Live Styled Title Input -->
+                    <div class="relative">
+                        <input type="text" id="edit-blog-title" name="title" required class="w-full bg-slate-50/40 border-2 border-slate-200 focus:border-indigo-600 focus:bg-white rounded-xl px-4 py-3.5 text-xl font-black text-slate-900 focus:outline-none focus:ring-4 focus:ring-indigo-50 transition shadow-inner" style="transition: all 0.2s ease;">
+                    </div>
+
+                    <!-- Hidden Styling Form Inputs -->
+                    <input type="hidden" id="edit-title-color" name="title_color" value="#0f172a">
+                    <input type="hidden" id="edit-title-font" name="title_font" value="sans">
+                    <input type="hidden" id="edit-title-size" name="title_size" value="large">
+                    <input type="hidden" id="edit-title-weight" name="title_weight" value="900">
+                    <input type="hidden" id="edit-title-transform" name="title_transform" value="none">
+
+                    <!-- Title Styling Control Bar (Colour, Letters Style & Size) -->
+                    <div class="flex items-center justify-between flex-wrap gap-3 pt-3 border-t border-slate-100 text-xs">
+                        <!-- Colour Options -->
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                                <i class="fa-solid fa-palette text-indigo-500"></i> Colour:
+                            </span>
+                            <div class="flex items-center gap-1.5" id="editTitleColorPresets">
+                                <button type="button" onclick="setTitleStyle('edit', 'color', '#0f172a', this)" class="title-color-btn w-6 h-6 rounded-full bg-slate-900 ring-2 ring-indigo-500 ring-offset-1 transition hover:scale-110 shadow-2xs" title="Dark Slate (Default)"></button>
+                                <button type="button" onclick="setTitleStyle('edit', 'color', '#4338ca', this)" class="title-color-btn w-6 h-6 rounded-full bg-indigo-700 transition hover:scale-110 shadow-2xs" title="Indigo Blue"></button>
+                                <button type="button" onclick="setTitleStyle('edit', 'color', '#dc2626', this)" class="title-color-btn w-6 h-6 rounded-full bg-red-600 transition hover:scale-110 shadow-2xs" title="Crimson Red"></button>
+                                <button type="button" onclick="setTitleStyle('edit', 'color', '#059669', this)" class="title-color-btn w-6 h-6 rounded-full bg-emerald-600 transition hover:scale-110 shadow-2xs" title="Emerald Green"></button>
+                                <button type="button" onclick="setTitleStyle('edit', 'color', '#d97706', this)" class="title-color-btn w-6 h-6 rounded-full bg-amber-500 transition hover:scale-110 shadow-2xs" title="Amber Gold"></button>
+                                <button type="button" onclick="setTitleStyle('edit', 'color', '#7c3aed', this)" class="title-color-btn w-6 h-6 rounded-full bg-purple-600 transition hover:scale-110 shadow-2xs" title="Royal Purple"></button>
+                                <label class="relative cursor-pointer flex items-center" title="Custom Colour Picker">
+                                    <input type="color" id="editCustomColorPicker" value="#0f172a" oninput="setTitleStyle('edit', 'color', this.value, this)" class="sr-only">
+                                    <span class="w-6 h-6 rounded-full border border-slate-300 bg-gradient-to-tr from-rose-500 via-amber-400 to-indigo-500 flex items-center justify-center text-[9px] text-white font-bold shadow-2xs hover:scale-110 transition">
+                                        <i class="fa-solid fa-eye-dropper"></i>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Letters Style / Font Family -->
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                                <i class="fa-solid fa-font text-indigo-500"></i> Style:
+                            </span>
+                            <select id="editTitleFontSelect" onchange="setTitleStyle('edit', 'font', this.value)" class="bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 focus:outline-none focus:border-indigo-600 shadow-2xs">
+                                <option value="sans" selected>Modern Sans (Clean)</option>
+                                <option value="outfit">Outfit (Trendy Heading)</option>
+                                <option value="serif">Editorial Serif (Classic)</option>
+                                <option value="mono">Technical Monospace</option>
+                            </select>
+                            <button type="button" id="editTitleTransformBtn" onclick="toggleTitleTransform('edit')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 font-bold text-xs transition shadow-2xs" title="Toggle UPPERCASE / Normal">
+                                <strong>TT</strong>
+                            </button>
+                            <button type="button" id="editTitleItalicBtn" onclick="toggleTitleItalic('edit')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 italic font-bold text-xs transition shadow-2xs" title="Toggle Italic">
+                                <em>I</em>
+                            </button>
+                        </div>
+
+                        <!-- Letters Size -->
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                                <i class="fa-solid fa-text-height text-indigo-500"></i> Size:
+                            </span>
+                            <div class="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5 shadow-2xs">
+                                <button type="button" onclick="setTitleStyle('edit', 'size', 'medium', this)" class="title-size-btn px-2.5 py-0.5 rounded text-[11px] font-semibold text-slate-600 hover:text-indigo-600">Med</button>
+                                <button type="button" onclick="setTitleStyle('edit', 'size', 'large', this)" class="title-size-btn px-2.5 py-0.5 rounded text-[11px] font-bold bg-white text-indigo-600 shadow-2xs">Large</button>
+                                <button type="button" onclick="setTitleStyle('edit', 'size', 'xl', this)" class="title-size-btn px-2.5 py-0.5 rounded text-[11px] font-semibold text-slate-600 hover:text-indigo-600">XL</button>
+                                <button type="button" onclick="setTitleStyle('edit', 'size', 'mega', this)" class="title-size-btn px-2.5 py-0.5 rounded text-[11px] font-semibold text-slate-600 hover:text-indigo-600">Mega</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Slug & Author in 2 cols -->
@@ -1151,6 +2546,18 @@
                             </button>
                             <button type="button" onclick="openImageStudioModal('edit-blog-content-input')" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold shadow-xs transition flex items-center gap-1.5" title="Adjust Image Length, Width & Proportions">
                                 <i class="fa-solid fa-arrows-up-down-left-right text-[10px]"></i> <span>Free-Size Image Studio</span>
+                            </button>
+                            <button type="button" onclick="insertTypingParagraphAtEnd('edit-blog-content-input')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-200 shadow-xs transition flex items-center gap-1.5" title="Instantly create a new typing line at the bottom to write freely">
+                                <i class="fa-solid fa-i-cursor text-indigo-600"></i> <span>Type at Bottom</span>
+                            </button>
+                            <!-- Select All Content Button -->
+                            <button type="button" onclick="selectAllEditorContent('edit-blog-content-input')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold border border-slate-200 shadow-xs transition flex items-center gap-1.5" title="Select all text and content in the editor">
+                                <i class="fa-solid fa-object-group text-indigo-600"></i> <span>Select All</span>
+                            </button>
+
+                            <!-- Large Page View Canvas Toggle -->
+                            <button type="button" onclick="toggleEditorCanvasSize('edit')" id="editEditorCanvasBtn" data-is-large="false" class="px-3 py-1.5 bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-lg text-xs font-bold border border-slate-200 shadow-xs transition flex items-center gap-1.5" title="Expand Editor to Large Spacious Canvas (800px Height)">
+                                <i class="fa-solid fa-expand text-indigo-600"></i> <span id="editEditorCanvasText">Large Page View</span>
                             </button>
                         </div>
                     </div>
@@ -1216,6 +2623,35 @@
                                     <span id="editCoverHeightVal" class="font-mono font-bold text-indigo-600">200px</span>
                                 </div>
                                 <input type="range" min="160" max="360" value="200" oninput="adjustCoverPreviewHeight(this.value, 'edit')" class="w-full accent-indigo-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Banner Backlink Option for Edit (Full Width 12 Cols) -->
+                    <div class="lg:col-span-12 pt-4 border-t border-slate-200/80">
+                        <div class="bg-white border border-indigo-100 rounded-2xl p-4.5 space-y-2.5 shadow-2xs">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <label for="edit-cover-link" class="text-xs font-bold text-slate-800 flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs shadow-xs">
+                                        <i class="fa-solid fa-link"></i>
+                                    </span>
+                                    <span>Banner Backlink / Target URL (Optional)</span>
+                                </label>
+                                <span class="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100 flex items-center gap-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> Clickable Banner Link
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-500">
+                                Banner image par click hone par open hone wala destination URL (Backlink). Khali chhodne par normal image zoom hoga.
+                            </p>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3.5 text-slate-400 text-xs">
+                                    <i class="fa-solid fa-globe"></i>
+                                </span>
+                                <input type="text" id="edit-cover-link" name="cover_link" placeholder="https://smttc.in/admission ya koi bhi target URL" class="w-full bg-slate-50/60 border border-slate-200 rounded-xl pl-9 pr-24 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white focus:ring-4 focus:ring-indigo-50 shadow-2xs">
+                                <button type="button" onclick="testCoverLink('edit-cover-link')" class="absolute right-2 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-600 hover:text-indigo-600 text-[11px] font-bold border border-slate-200 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Test Link
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1564,6 +3000,153 @@
         </div>
     </div>
 </div>
+
+<!-- ================= GALLERY PREVIEW & VIDEO PLAYER MODAL ================= -->
+<div id="galleryPreviewModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-3 sm:p-6">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-950/85 backdrop-blur-md" onclick="closeGalleryPreview()"></div>
+    
+    <!-- Modal Window -->
+    <div class="relative w-full max-w-4xl bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-800 animate-fade-in z-10 flex flex-col max-h-[94vh]">
+        <!-- Top bar with close button -->
+        <div class="flex items-center justify-between p-4 sm:px-6 bg-slate-950/60 border-b border-white/10 z-20">
+            <div class="flex items-center gap-2.5">
+                <span id="galPreviewCategory" class="px-3 py-1 rounded-full text-[11px] font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                    General
+                </span>
+                <span id="galPreviewTypeBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-slate-300">
+                    Media
+                </span>
+            </div>
+            <button type="button" onclick="closeGalleryPreview()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+
+        <!-- Media Display Area -->
+        <div class="relative bg-black flex items-center justify-center flex-1 min-h-[300px] overflow-hidden">
+            <!-- 1. Photo View -->
+            <div id="galPreviewImageContainer" class="hidden w-full max-h-[65vh] flex items-center justify-center p-2">
+                <img id="galPreviewImg" src="" alt="Gallery Preview" class="max-h-[60vh] max-w-full object-contain rounded-xl shadow-2xl">
+            </div>
+
+            <!-- 2. YouTube Iframe View -->
+            <div id="galPreviewIframeContainer" class="hidden w-full aspect-video">
+                <iframe id="galPreviewIframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <!-- 3. Direct HTML5 Video File View -->
+            <div id="galPreviewVideoContainer" class="hidden w-full aspect-video bg-black flex items-center justify-center">
+                <video id="galPreviewVideo" class="w-full h-full max-h-[65vh]" controls playsinline preload="metadata">
+                    <source id="galPreviewVideoSource" src="" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+            </div>
+        </div>
+
+        <!-- Info Description Bottom Drawer -->
+        <div class="p-5 sm:p-6 bg-slate-900 border-t border-white/10 space-y-2 max-h-48 overflow-y-auto">
+            <div class="flex items-start justify-between gap-4">
+                <h3 id="galPreviewTitle" class="text-base sm:text-lg font-black text-white leading-snug">
+                    Gallery Media
+                </h3>
+                <span id="galPreviewDate" class="text-xs font-semibold text-slate-400 shrink-0"></span>
+            </div>
+            <p id="galPreviewDescription" class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                No description provided.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ================= EDIT GALLERY MEDIA MODAL ================= -->
+<div id="editGalleryModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeEditGalleryModal()"></div>
+
+    <!-- Modal Box -->
+    <div class="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-6 sm:p-8 animate-fade-in max-h-[92vh] overflow-y-auto z-10 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div>
+                <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-indigo-600"></i> Edit Media Details
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">Update category tag, practical title, workbench description or replace media.</p>
+            </div>
+            <button type="button" onclick="closeEditGalleryModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+
+        <form id="editGalleryForm" action="" method="POST" enctype="multipart/form-data" class="space-y-5">
+            @csrf
+            <input type="hidden" id="editGalleryId" name="id">
+            <input type="hidden" id="editGalleryMediaType" name="media_type" value="image">
+
+            <!-- Title / Caption -->
+            <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-slate-700">Media Title / Practical Caption</label>
+                <input type="text" id="editGalleryTitle" name="title" placeholder="e.g. Inverter AC PCB Tracing Practical Demo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white focus:ring-4 focus:ring-indigo-50 transition shadow-2xs">
+            </div>
+
+            <!-- Category -->
+            <div class="space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <label class="block text-xs font-bold text-slate-700">Category Tag (किस कैटेगरी का है) <span class="text-red-500">*</span></label>
+                    <span class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-md">Filter Group</span>
+                </div>
+                <select id="editGalleryCategory" name="category" onchange="checkCustomCategory(this.value, 'edit')" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-indigo-600 focus:bg-white focus:ring-4 focus:ring-indigo-50 transition shadow-2xs">
+                    <option value="AC & HVAC PCB Repairing">❄️ AC & HVAC PCB Repairing</option>
+                    <option value="Smartphone Hardware & Micro-soldering">📱 Smartphone Hardware & Micro-soldering</option>
+                    <option value="Laptop Chip Level Repairing">💻 Laptop Chip Level Repairing</option>
+                    <option value="Home Appliances (Fridge/Washing Machine)">⚡ Home Appliances (Fridge / Washing Machine)</option>
+                    <option value="Student Lab Practicals">🔬 Student Lab Practicals</option>
+                    <option value="Events & Certificate Ceremonies">🏆 Events & Certificate Ceremonies</option>
+                    <option value="Campus & Workshop Infrastructure">🏫 Campus & Workshop Infrastructure</option>
+                    <option value="__custom__">➕ Other Custom Category...</option>
+                </select>
+                <input type="text" id="editCustomCategoryInput" name="custom_category_text" placeholder="Type custom category name..." class="hidden mt-2 w-full bg-white border border-indigo-300 rounded-xl px-4 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            </div>
+
+            <!-- Description -->
+            <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-slate-700">Practical Description (डिटेल्स / डिस्क्रिप्शन)</label>
+                <textarea id="editGalleryDescription" name="description" rows="3" placeholder="Explain what workbench skills, diagnosis methods, or practical equipment are demonstrated..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white focus:ring-4 focus:ring-indigo-50 transition shadow-2xs"></textarea>
+            </div>
+
+            <!-- Image Replacement Field (shown if image) -->
+            <div id="editGalleryImageBlock" class="space-y-2">
+                <label class="block text-xs font-bold text-slate-700">Replace Photo (Optional)</label>
+                <div class="flex items-center gap-4">
+                    <img id="editGalleryCurrentImagePreview" src="" alt="Current Media" class="w-16 h-12 rounded-xl object-cover border border-slate-200 shadow-2xs">
+                    <input type="file" name="image" accept="image/*" class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                </div>
+            </div>
+
+            <!-- Video Replacement Field (shown if video) -->
+            <div id="editGalleryVideoBlock" class="space-y-3">
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-slate-700">Update YouTube / Video URL</label>
+                    <input type="url" id="editGalleryVideoUrl" name="video_url" placeholder="https://www.youtube.com/watch?v=..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-600 focus:bg-white transition shadow-2xs">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-slate-700">Or Upload New Video File</label>
+                    <input type="file" name="video_file" accept="video/mp4,video/webm,video/ogg,video/quicktime" class="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
+                <button type="button" onclick="closeEditGalleryModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition">
+                    Cancel
+                </button>
+                <button type="submit" class="px-7 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs shadow-md shadow-indigo-100 transition duration-200 flex items-center gap-2">
+                    <i class="fa-solid fa-check"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -1576,6 +3159,192 @@ let studioOriginalHeight = 450;
 let studioCurrentAlign = 'center';
 let autoSlugEnabled = true;
 
+// -----------------------------------------------------------------------------
+// Core Image Wrap, Scaling & Position Locking Engine
+// -----------------------------------------------------------------------------
+function scaleImageSize(editor, imgNode, factor) {
+    if (!editor || !imgNode) return;
+    editor.undoManager.transact(() => {
+        let currentW = imgNode.offsetWidth || parseInt(imgNode.style.width) || parseInt(imgNode.getAttribute('width')) || 350;
+        let newW = Math.round(currentW * factor);
+        newW = Math.max(60, Math.min(1200, newW));
+
+        imgNode.style.width = newW + 'px';
+        imgNode.style.height = 'auto';
+        imgNode.setAttribute('width', newW);
+        imgNode.removeAttribute('height');
+
+        editor.save();
+        updateEditorMetrics(editor);
+        showAdminToast(`Image resized to ${newW}px!`, 'info');
+    });
+}
+
+function adjustImageDimension(editor, imgNode, dimension, delta) {
+    if (!editor || !imgNode) return;
+    editor.undoManager.transact(() => {
+        const parentFigure = editor.dom.getParent(imgNode, 'figure');
+        if (parentFigure && !parentFigure.querySelector('figcaption')) {
+            editor.dom.replace(imgNode, parentFigure);
+        }
+
+        if (dimension === 'height') {
+            let currentH = imgNode.offsetHeight || parseInt(imgNode.style.height) || parseInt(imgNode.getAttribute('height')) || imgNode.naturalHeight || 300;
+            let newH = Math.max(40, Math.min(2000, currentH + delta));
+            imgNode.style.height = newH + 'px';
+            imgNode.setAttribute('height', newH);
+            imgNode.style.removeProperty('max-height');
+            showAdminToast(`Image Length (Height / लंबाई): ${newH}px`, 'info');
+        } else if (dimension === 'width') {
+            let currentW = imgNode.offsetWidth || parseInt(imgNode.style.width) || parseInt(imgNode.getAttribute('width')) || imgNode.naturalWidth || 400;
+            let newW = Math.max(50, Math.min(2000, currentW + delta));
+            imgNode.style.width = newW + 'px';
+            imgNode.setAttribute('width', newW);
+            imgNode.style.removeProperty('max-width');
+            showAdminToast(`Image Breadth (Width / चौड़ाई): ${newW}px`, 'info');
+        }
+        editor.save();
+        updateEditorMetrics(editor);
+    });
+}
+
+function applyImageWrap(editor, imgNode, align = 'float-left') {
+    if (!editor || !imgNode) return;
+
+    editor.undoManager.transact(() => {
+        // If wrapped in a figure with no caption, unwrap for clean native 8-point resizing
+        const parentFigure = editor.dom.getParent(imgNode, 'figure');
+        if (parentFigure && !parentFigure.querySelector('figcaption')) {
+            editor.dom.replace(imgNode, parentFigure);
+        }
+
+        // If wrapped in a P, unwrap it so float works cleanly across the document
+        const parentP = editor.dom.getParent(imgNode, 'p');
+        if (parentP && parentP !== editor.getBody()) {
+            parentP.parentNode.insertBefore(imgNode, parentP);
+            const remainingText = parentP.textContent.replace(/[\s\u00a0]+/g, '').trim();
+            if (!remainingText && !parentP.querySelector('img, iframe, video, audio')) {
+                parentP.remove();
+            }
+        }
+
+        const targetNode = imgNode;
+
+        // Clean previous alignment classes & styles
+        imgNode.classList.remove('img-float-left', 'img-float-right', 'img-center-block', 'img-full-width');
+        imgNode.style.removeProperty('float');
+        imgNode.style.removeProperty('display');
+        imgNode.style.removeProperty('margin');
+        imgNode.style.removeProperty('margin-left');
+        imgNode.style.removeProperty('margin-right');
+        imgNode.style.removeProperty('max-width'); // Never lock max-width
+
+        // Remove !important from width/height so native handles work!
+        const styleW = imgNode.style.getPropertyValue('width');
+        const styleH = imgNode.style.getPropertyValue('height');
+        imgNode.style.removeProperty('width');
+        imgNode.style.removeProperty('height');
+        if (styleW) imgNode.style.width = styleW;
+        if (styleH && styleH !== 'auto') imgNode.style.height = styleH;
+        else imgNode.style.height = 'auto';
+
+        if (align === 'float-left') {
+            imgNode.classList.add('img-float-left');
+            imgNode.removeAttribute('data-explicit-center');
+            imgNode.style.float = 'left';
+            imgNode.style.margin = '8px 24px 16px 0';
+            imgNode.style.display = 'block';
+            imgNode.style.clear = 'none';
+
+            // Only set default width if image has none; if user already sized it, KEEP user's exact size!
+            let curW = parseInt(imgNode.style.width) || parseInt(imgNode.getAttribute('width')) || 0;
+            if (!curW) {
+                const natW = imgNode.naturalWidth || 380;
+                const sensibleW = Math.min(natW, 380);
+                imgNode.style.width = sensibleW + 'px';
+                imgNode.setAttribute('width', sensibleW);
+                imgNode.style.height = 'auto';
+            }
+
+            // Find or create paragraph to type beside the image on the right
+            let nextBlock = targetNode.nextElementSibling;
+            if (!nextBlock || nextBlock.nodeName.toLowerCase() !== 'p') {
+                nextBlock = editor.dom.create('p', { style: 'clear: none;' }, '<br data-mce-bogus="1">');
+                editor.dom.insertAfter(nextBlock, targetNode);
+            }
+            nextBlock.style.removeProperty('clear');
+            nextBlock.style.clear = 'none';
+
+            if (nextBlock.textContent.trim().length > 0) {
+                editor.selection.setCursorLocation(nextBlock, nextBlock.childNodes.length);
+            } else {
+                editor.selection.setCursorLocation(nextBlock, 0);
+            }
+            editor.focus();
+
+            showAdminToast('Photo locked on LEFT. Typing cursor is BESIDE it on the RIGHT!', 'success');
+        } else if (align === 'float-right') {
+            imgNode.classList.add('img-float-right');
+            imgNode.removeAttribute('data-explicit-center');
+            imgNode.style.float = 'right';
+            imgNode.style.margin = '8px 0 16px 24px';
+            imgNode.style.display = 'block';
+            imgNode.style.clear = 'none';
+
+            let curW = parseInt(imgNode.style.width) || parseInt(imgNode.getAttribute('width')) || 0;
+            if (!curW) {
+                const natW = imgNode.naturalWidth || 380;
+                const sensibleW = Math.min(natW, 380);
+                imgNode.style.width = sensibleW + 'px';
+                imgNode.setAttribute('width', sensibleW);
+                imgNode.style.height = 'auto';
+            }
+
+            // In float-right, following paragraph flows to the left of the image
+            let nextBlock = targetNode.nextElementSibling;
+            if (!nextBlock || nextBlock.nodeName.toLowerCase() !== 'p') {
+                nextBlock = editor.dom.create('p', { style: 'clear: none;' }, '<br data-mce-bogus="1">');
+                editor.dom.insertAfter(nextBlock, targetNode);
+            }
+            nextBlock.style.removeProperty('clear');
+            nextBlock.style.clear = 'none';
+
+            if (nextBlock.textContent.trim().length > 0) {
+                editor.selection.setCursorLocation(nextBlock, nextBlock.childNodes.length);
+            } else {
+                editor.selection.setCursorLocation(nextBlock, 0);
+            }
+            editor.focus();
+
+            showAdminToast('Photo locked on RIGHT. Typing cursor is BESIDE it on the LEFT!', 'success');
+        } else if (align === 'center') {
+            imgNode.classList.add('img-center-block');
+            imgNode.classList.remove('img-float-left', 'img-float-right');
+            imgNode.setAttribute('data-explicit-center', 'true');
+            imgNode.style.display = 'block';
+            imgNode.style.margin = '20px auto';
+            imgNode.style.removeProperty('float');
+            imgNode.style.clear = 'both';
+
+            // Also ensure surrounding elements clear float so text flows full-width across page
+            const parent = editor.dom.getParent(imgNode, 'p') || editor.dom.getParent(imgNode, 'figure');
+            if (parent) {
+                parent.style.clear = 'both';
+                parent.style.textAlign = 'center';
+            }
+            const nextNode = (parent || imgNode).nextElementSibling;
+            if (nextNode) {
+                nextNode.style.clear = 'both';
+            }
+
+            showAdminToast('Image Full Page Center (No text wrap, full page paragraphs)!', 'success');
+        }
+
+        editor.save();
+        updateEditorMetrics(editor);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------------------
     // 1. Advanced TinyMCE Initialization with Free-Size & High-Detailing
@@ -1584,6 +3353,9 @@ document.addEventListener('DOMContentLoaded', () => {
         tinymce.init({
             selector: '#create-blog-content, #edit-blog-content-input',
             height: 520,
+            resize: 'both', // Enables dragging the bottom-right handle (//) in Image 1 to resize BOTH width & height!
+            min_height: 520,
+            max_height: 2000,
             relative_urls: false,
             remove_script_host: false,
             document_base_url: window.location.origin + '/',
@@ -1592,7 +3364,7 @@ document.addEventListener('DOMContentLoaded', () => {
             branding: false,
             promotion: false, // Hides the Upgrade badge
             object_resizing: true, // Natively enables 8 free-size drag handles on images
-            resize_img_proportional: false, // Allows free-size dragging in any direction
+            resize_img_proportional: false, // Independent height (lamba/chota) & width resizing with 8 drag handles!
             image_dimensions: true, // Enables width & length inputs in dialogs
             image_advtab: true, // Enables Advanced tab for borders & styles
             image_caption: true,
@@ -1601,6 +3373,8 @@ document.addEventListener('DOMContentLoaded', () => {
             automatic_uploads: true,
             images_upload_url: '/admin/blogs/upload-image',
             file_picker_types: 'image',
+            forced_root_block: 'p',
+            end_container_on_empty_block: true,
 
             // Native file browser popup callback when user clicks Image tool
             file_picker_callback: function (cb, value, meta) {
@@ -1638,6 +3412,17 @@ document.addEventListener('DOMContentLoaded', () => {
                                 }
                                 cb(imgUrl, { title: file.name, alt: file.name });
                                 showAdminToast('Image selected and uploaded!', 'success');
+
+                                // Ensure newly inserted image floats left and typing cursor is beside it
+                                setTimeout(() => {
+                                    const activeEd = tinymce.activeEditor;
+                                    if (activeEd) {
+                                        const imgs = activeEd.dom.select('img[src*="' + file.name.replace(/\.[^/.]+$/, "") + '"], img[src="' + imgUrl + '"]');
+                                        if (imgs.length > 0) {
+                                            applyImageWrap(activeEd, imgs[imgs.length - 1], 'float-left');
+                                        }
+                                    }
+                                }, 300);
                             } else {
                                 showAdminToast('Upload failed: ' + (data.error || 'Server error'), 'error');
                             }
@@ -1653,38 +3438,101 @@ document.addEventListener('DOMContentLoaded', () => {
             plugins: [
                 'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
                 'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                'insertdatetime', 'media', 'table', 'help', 'wordcount', 'quickbars'
+                'insertdatetime', 'media', 'table', 'help', 'wordcount'
             ],
 
-            toolbar: 'undo redo | blocks fontfamily fontsize | ' +
-                     'bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify | ' +
-                     'upload_image_btn free_size_image image media table link | bullist numlist outdent indent | ' +
-                     'removeformat code fullscreen preview',
+            toolbar_location: 'top',
+            toolbar_sticky: true,
+            toolbar_mode: 'wrap', // Never float into content; always wrap cleanly at the top header
 
-            quickbars_selection_toolbar: 'bold italic underline | quicklink h2 h3 blockquote',
-            quickbars_insert_toolbar: 'image media table hr',
+            toolbar: [
+                'selectall undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify',
+                'img_wrap_left img_wrap_right img_center add_free_line write_below_btn | upload_image_btn free_size_image image media table link | bullist numlist outdent indent | removeformat code fullscreen custom_preview'
+            ],
 
             image_class_list: [
+                { title: 'Float Left (Text Wraps Around - Locked)', value: 'img-float-left' },
+                { title: 'Float Right (Text Wraps Around - Locked)', value: 'img-float-right' },
+                { title: 'Center Block (बीच में)', value: 'img-center-block' },
                 { title: 'Responsive (Default)', value: 'img-responsive' },
-                { title: 'Float Left (Text wraps around)', value: 'img-float-left' },
-                { title: 'Float Right (Text wraps around)', value: 'img-float-right' },
-                { title: 'Center Block', value: 'img-center-block' },
                 { title: '100% Full Width', value: 'img-full-width' },
                 { title: 'Modern Rounded Corners (16px)', value: 'img-rounded-lg' },
                 { title: 'Elevated Drop Shadow', value: 'img-shadow-card' }
             ],
 
             content_style: `
+                html {
+                    min-height: 100%;
+                    cursor: text;
+                    user-select: text !important;
+                    -webkit-user-select: text !important;
+                    background-color: #f8fafc;
+                }
                 body {
                     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                    font-size: 15px;
-                    line-height: 1.7;
+                    font-size: 1.0625rem;
+                    line-height: 1.8;
                     color: #1e293b;
-                    padding: 1.5rem;
+                    padding: 1.5rem 1.5rem 24rem 1.5rem;
+                    min-height: 100%;
+                    cursor: text;
+                    box-sizing: border-box;
+                    user-select: text !important;
+                    -webkit-user-select: text !important;
+                    word-break: break-word;
+                    overflow-wrap: anywhere;
+                    hyphens: auto;
+                }
+                ::selection {
+                    background-color: #c7d2fe !important;
+                    color: #1e1b4b !important;
+                }
+                ::-moz-selection {
+                    background-color: #c7d2fe !important;
+                    color: #1e1b4b !important;
+                }
+                h1 {
+                    font-family: inherit;
+                    font-size: 1.85rem;
+                    font-weight: 800;
+                    margin-top: 2rem;
+                    margin-bottom: 0.85rem;
+                    color: #0f172a;
+                    line-height: 1.3;
+                    border-bottom: 2px solid #f1f5f9;
+                    padding-bottom: 0.5rem;
+                }
+                h2 {
+                    font-family: inherit;
+                    font-size: 1.45rem;
+                    font-weight: 800;
+                    margin-top: 1.75rem;
+                    margin-bottom: 0.75rem;
+                    color: #0f172a;
+                    line-height: 1.35;
+                }
+                h3 {
+                    font-family: inherit;
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    margin-top: 1.5rem;
+                    margin-bottom: 0.6rem;
+                    color: #1e293b;
+                }
+                p {
+                    margin-top: 0;
+                    margin-bottom: 1.25rem;
+                    min-height: 1.6rem;
+                    line-height: 1.8;
+                    color: #334155;
+                }
+                p:empty, p:has(> br:only-child) {
+                    min-height: 1.6rem;
+                    cursor: text;
                 }
                 img {
                     max-width: 100%;
-                    cursor: pointer;
+                    cursor: default;
                     transition: outline 0.15s ease, box-shadow 0.2s ease;
                     border-radius: 8px;
                     display: inline-block;
@@ -1696,17 +3544,34 @@ document.addEventListener('DOMContentLoaded', () => {
                     outline: 2px dashed #6366f1;
                     outline-offset: 3px;
                 }
-                img.img-float-left {
+                img.img-float-left,
+                img[style*="float: left"] {
                     float: left !important;
-                    margin: 0.5rem 1.5rem 1rem 0 !important;
+                    margin: 0.25rem 1.75rem 1rem 0 !important;
+                    max-width: 100%;
                 }
-                img.img-float-right {
+                img.img-float-right,
+                img[style*="float: right"] {
                     float: right !important;
-                    margin: 0.5rem 0 1rem 1.5rem !important;
+                    margin: 0.25rem 0 1rem 1.75rem !important;
+                    max-width: 100%;
+                }
+                p:has(> img.img-float-left),
+                p:has(> img.img-float-right),
+                p:has(> img[style*="float: left"]),
+                p:has(> img[style*="float: right"]) {
+                    margin-bottom: 0 !important;
+                }
+                p:has(> img.img-float-left) + *,
+                p:has(> img.img-float-right) + *,
+                img.img-float-left + *,
+                img.img-float-right + * {
+                    margin-top: 0 !important;
                 }
                 img.img-center-block {
                     display: block !important;
                     margin: 1.5rem auto !important;
+                    clear: both !important;
                 }
                 img.img-full-width {
                     width: 100% !important;
@@ -1720,8 +3585,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 figure.image {
                     display: inline-block;
-                    margin: 1.5rem 0;
+                    margin: 1rem 0;
                     text-align: center;
+                }
+                figure.image.img-float-left,
+                figure.img-float-left {
+                    float: left !important;
+                    margin: 0.25rem 1.75rem 1rem 0 !important;
+                    max-width: 50% !important;
+                    text-align: left !important;
+                }
+                figure.image.img-float-right,
+                figure.img-float-right {
+                    float: right !important;
+                    margin: 0.25rem 0 1rem 1.75rem !important;
+                    max-width: 50% !important;
+                    text-align: right !important;
+                }
+                figure.image.img-center-block,
+                figure.img-center-block {
+                    display: block !important;
+                    margin: 1.5rem auto !important;
+                    text-align: center !important;
+                    clear: both !important;
                 }
                 figure.image figcaption {
                     font-size: 13px;
@@ -1778,6 +3664,307 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             setup: function (editor) {
+                // Register Custom Preview Button (Includes Title, Banner & 100% Exact Live Styles)
+                editor.ui.registry.addButton('custom_preview', {
+                    icon: 'preview',
+                    tooltip: '100% Exact Live Preview (Title + Banner + Formatted Content)',
+                    onAction: () => {
+                        const isCreate = editor.id === 'create-blog-content';
+                        let coverSrc = '';
+                        let title = '';
+                        if (isCreate) {
+                            coverSrc = document.getElementById('createCoverPreviewImg')?.src || '';
+                            title = document.getElementById('create-blog-title')?.value || 'Untitled Article';
+                        } else {
+                            coverSrc = document.getElementById('editCoverPreviewImg')?.src || '';
+                            title = document.getElementById('edit-blog-title')?.value || 'Untitled Article';
+                        }
+                        
+                        let bannerHtml = '';
+                        if (coverSrc && coverSrc !== window.location.href && !coverSrc.includes('default-blog.webp')) {
+                            bannerHtml = `<div class="article-preview-banner"><img src="${coverSrc}" alt="Article Cover" /></div>`;
+                        }
+                        
+                        const content = editor.getContent();
+                        const html = `
+                            <style>
+                                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+                                
+                                .article-live-preview-wrapper {
+                                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                                    font-size: 16px;
+                                    line-height: 1.8;
+                                    color: #1e293b;
+                                    max-width: 920px;
+                                    margin: 0 auto;
+                                    padding: 16px 20px 48px 20px;
+                                    background: #ffffff;
+                                    box-sizing: border-box;
+                                    word-break: break-word;
+                                    overflow-wrap: break-word;
+                                }
+                                .article-live-preview-wrapper * {
+                                    box-sizing: border-box;
+                                }
+                                .article-live-preview-wrapper h1.article-preview-title {
+                                    font-size: 2.25rem;
+                                    font-weight: 800;
+                                    margin-top: 0;
+                                    margin-bottom: 1.75rem;
+                                    color: #0f172a;
+                                    line-height: 1.25;
+                                    text-align: center;
+                                    letter-spacing: -0.02em;
+                                }
+                                .article-live-preview-wrapper .article-preview-banner {
+                                    margin-bottom: 2.25rem;
+                                    width: 100%;
+                                    display: flex;
+                                    justify-content: center;
+                                }
+                                .article-live-preview-wrapper .article-preview-banner img {
+                                    display: block;
+                                    margin: 0 auto;
+                                    width: 100%;
+                                    max-height: 480px;
+                                    object-fit: cover;
+                                    object-position: center;
+                                    border-radius: 16px;
+                                    box-shadow: 0 12px 32px -8px rgba(0,0,0,0.18);
+                                }
+                                .article-live-preview-content {
+                                    font-size: 1.0625rem;
+                                    line-height: 1.8;
+                                    color: #1e293b;
+                                }
+                                .article-live-preview-content p {
+                                    margin-top: 0;
+                                    margin-bottom: 1.25rem;
+                                    color: #334155;
+                                    line-height: 1.8;
+                                }
+                                .article-live-preview-content h1 {
+                                    font-size: 1.85rem;
+                                    font-weight: 800;
+                                    margin-top: 2rem;
+                                    margin-bottom: 0.85rem;
+                                    color: #0f172a;
+                                    line-height: 1.3;
+                                    border-bottom: 2px solid #f1f5f9;
+                                    padding-bottom: 0.5rem;
+                                }
+                                .article-live-preview-content h2 {
+                                    font-size: 1.45rem;
+                                    font-weight: 800;
+                                    margin-top: 1.75rem;
+                                    margin-bottom: 0.75rem;
+                                    color: #0f172a;
+                                    line-height: 1.35;
+                                }
+                                .article-live-preview-content h3 {
+                                    font-size: 1.25rem;
+                                    font-weight: 700;
+                                    margin-top: 1.5rem;
+                                    margin-bottom: 0.6rem;
+                                    color: #1e293b;
+                                }
+                                .article-live-preview-content a {
+                                    color: #4f46e5;
+                                    text-decoration: underline;
+                                    text-underline-offset: 3px;
+                                    font-weight: 600;
+                                }
+                                .article-live-preview-content ul {
+                                    list-style-type: disc;
+                                    padding-left: 1.75rem;
+                                    margin-bottom: 1.25rem;
+                                    color: #334155;
+                                }
+                                .article-live-preview-content ol {
+                                    list-style-type: decimal;
+                                    padding-left: 1.75rem;
+                                    margin-bottom: 1.25rem;
+                                    color: #334155;
+                                }
+                                .article-live-preview-content li {
+                                    margin-bottom: 0.5rem;
+                                }
+                                .article-live-preview-content strong, .article-live-preview-content b {
+                                    font-weight: 700;
+                                    color: #0f172a;
+                                }
+                                .article-live-preview-content blockquote {
+                                    border-left: 4px solid #FACA0A;
+                                    background: #fffbeb;
+                                    padding: 1rem 1.5rem;
+                                    border-radius: 0 1rem 1rem 0;
+                                    font-style: italic;
+                                    color: #451a03;
+                                    margin: 1.75rem 0;
+                                }
+                                .article-live-preview-content code {
+                                    background: #f1f5f9;
+                                    color: #0f172a;
+                                    padding: 0.2rem 0.45rem;
+                                    border-radius: 0.375rem;
+                                    font-size: 0.875em;
+                                    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                                }
+                                .article-live-preview-content pre {
+                                    background: #0f172a;
+                                    color: #f8fafc;
+                                    padding: 1.25rem;
+                                    border-radius: 1rem;
+                                    overflow-x: auto;
+                                    margin: 1.5rem 0;
+                                }
+                                .article-live-preview-content table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                    margin: 2rem 0;
+                                    border-radius: 1rem;
+                                    overflow: hidden;
+                                    border: 1px solid #e2e8f0;
+                                }
+                                .article-live-preview-content th, .article-live-preview-content td {
+                                    padding: 0.85rem 1.25rem;
+                                    border: 1px solid #e2e8f0;
+                                    text-align: left;
+                                }
+                                .article-live-preview-content th {
+                                    background: #f8fafc;
+                                    font-weight: 700;
+                                }
+                                
+                                /* IMAGES - Exact 1:1 Rendering */
+                                .article-live-preview-content img {
+                                    max-width: 100%;
+                                    border-radius: 8px;
+                                    box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.12);
+                                    display: inline-block;
+                                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                                }
+                                .article-live-preview-content img:not([style*="height"]):not([height]) {
+                                    height: auto;
+                                }
+                                .article-live-preview-content img.img-float-left,
+                                .article-live-preview-content img[style*="float: left"] {
+                                    float: left !important;
+                                    margin: 0.25rem 1.75rem 1rem 0 !important;
+                                    max-width: 100%;
+                                    display: block !important;
+                                }
+                                .article-live-preview-content img.img-float-right,
+                                .article-live-preview-content img[style*="float: right"] {
+                                    float: right !important;
+                                    margin: 0.25rem 0 1rem 1.75rem !important;
+                                    max-width: 100%;
+                                    display: block !important;
+                                }
+                                .article-live-preview-content p:has(> img.img-float-left),
+                                .article-live-preview-content p:has(> img.img-float-right),
+                                .article-live-preview-content p:has(> img[style*="float: left"]),
+                                .article-live-preview-content p:has(> img[style*="float: right"]) {
+                                    margin-bottom: 0 !important;
+                                }
+                                .article-live-preview-content p:has(> img.img-float-left) + *,
+                                .article-live-preview-content p:has(> img.img-float-right) + *,
+                                .article-live-preview-content img.img-float-left + *,
+                                .article-live-preview-content img.img-float-right + * {
+                                    margin-top: 0 !important;
+                                }
+                                .article-live-preview-content img.img-center-block,
+                                .article-live-preview-content img[style*="margin-left: auto"][style*="margin-right: auto"],
+                                .article-live-preview-content img[style*="margin: auto"],
+                                .article-live-preview-content img[style*="20px auto"] {
+                                    display: block !important;
+                                    margin: 2rem auto !important;
+                                    clear: both !important;
+                                }
+                                .article-live-preview-content img.img-full-width {
+                                    width: 100% !important;
+                                    display: block !important;
+                                }
+                                .article-live-preview-content img.img-rounded-lg {
+                                    border-radius: 1.25rem !important;
+                                }
+                                .article-live-preview-content img.img-shadow-card {
+                                    box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.2) !important;
+                                }
+                                .article-live-preview-content figure {
+                                    margin: 1.5rem auto;
+                                    text-align: center;
+                                    max-width: 100%;
+                                }
+                                .article-live-preview-content figure.img-float-left,
+                                .article-live-preview-content figure[style*="float: left"],
+                                .article-live-preview-content figure:has(img.img-float-left) {
+                                    float: left !important;
+                                    margin: 0.5rem 1.75rem 1.25rem 0 !important;
+                                    max-width: 100%;
+                                    text-align: left !important;
+                                }
+                                .article-live-preview-content figure.img-float-right,
+                                .article-live-preview-content figure[style*="float: right"],
+                                .article-live-preview-content figure:has(img.img-float-right) {
+                                    float: right !important;
+                                    margin: 0.5rem 0 1.25rem 1.75rem !important;
+                                    max-width: 100%;
+                                    text-align: right !important;
+                                }
+                                .article-live-preview-content figure.img-center-block,
+                                .article-live-preview-content figure[style*="margin: 20px auto"] {
+                                    display: block !important;
+                                    margin: 2rem auto !important;
+                                    text-align: center !important;
+                                    clear: both !important;
+                                }
+                                .article-live-preview-content figure img {
+                                    margin: 0 auto;
+                                    display: inline-block;
+                                }
+                                .article-live-preview-content figcaption {
+                                    margin-top: 0.65rem;
+                                    font-size: 0.85rem;
+                                    color: #64748b;
+                                    font-style: italic;
+                                    text-align: center;
+                                }
+                                .article-live-preview-content::after {
+                                    content: "";
+                                    display: table;
+                                    clear: both;
+                                }
+                            </style>
+                            <div class="article-live-preview-wrapper">
+                                <h1 class="article-preview-title">${title}</h1>
+                                ${bannerHtml}
+                                <div class="article-live-preview-content">${content}</div>
+                            </div>
+                        `;
+                        
+                        editor.windowManager.open({
+                            title: '100% Exact Live Preview (Title + Banner + Formatted Content)',
+                            size: 'large',
+                            body: {
+                                type: 'panel',
+                                items: [
+                                    {
+                                        type: 'htmlpanel',
+                                        html: html
+                                    }
+                                ]
+                            },
+                            buttons: [
+                                {
+                                    type: 'cancel',
+                                    text: 'Close Preview'
+                                }
+                            ]
+                        });
+                    }
+                });
+
                 // Register Custom Toolbar Button for Direct Computer Image Upload
                 editor.ui.registry.addButton('upload_image_btn', {
                     icon: 'image',
@@ -1785,6 +3972,40 @@ document.addEventListener('DOMContentLoaded', () => {
                     tooltip: 'Directly upload image from computer into article',
                     onAction: () => {
                         triggerDirectImageUpload(editor.id);
+                    }
+                });
+
+                // Free-Line Button on Main Toolbar: Insert a free typing line anywhere
+                editor.ui.registry.addButton('add_free_line', {
+                    text: '✍️ Add Line Here',
+                    tooltip: 'Insert a new typing line at cursor position to write freely',
+                    onAction: () => {
+                        const body = editor.getBody();
+                        const selNode = editor.selection.getNode();
+                        const currentBlock = (selNode && selNode !== body) ? (editor.dom.getParent(selNode, editor.dom.isBlock) || selNode) : null;
+                        const newP = editor.dom.create('p', {}, '<br data-mce-bogus="1">');
+                        if (currentBlock && currentBlock.parentNode) {
+                            editor.dom.insertAfter(newP, currentBlock);
+                        } else {
+                            body.appendChild(newP);
+                        }
+                        editor.selection.setCursorLocation(newP, 0);
+                        editor.focus();
+                        editor.save();
+                    }
+                });
+
+                // Write Below Button on Main Toolbar: Instantly jump to end of article
+                editor.ui.registry.addButton('write_below_btn', {
+                    text: '⬇️ Type Below',
+                    tooltip: 'Instantly add line at bottom of article and type freely',
+                    onAction: () => {
+                        const body = editor.getBody();
+                        const newP = editor.dom.create('p', {}, '<br data-mce-bogus="1">');
+                        body.appendChild(newP);
+                        editor.selection.setCursorLocation(newP, 0);
+                        editor.focus();
+                        editor.save();
                     }
                 });
 
@@ -1797,21 +4018,122 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                // 1. Move to Center of Width (चौड़ाई के बिल्कुल बीच में)
-                editor.ui.registry.addButton('quick_img_center', {
-                    tooltip: 'Move to Center of Width (चौड़ाई के बीच में)',
-                    text: '🎯 Center Width',
+                // Contextual Toolbar Action: Type Above Image
+                editor.ui.registry.addButton('quick_write_above', {
+                    tooltip: 'Start typing above this image',
+                    text: '✍️ Type Above',
                     onAction: () => {
                         const selected = editor.selection.getNode();
-                        if (selected && selected.nodeName.toLowerCase() === 'img') {
-                            selected.classList.remove('img-float-left', 'img-float-right');
-                            selected.classList.add('img-center-block');
-                            selected.style.setProperty('display', 'block', 'important');
-                            selected.style.setProperty('margin-left', 'auto', 'important');
-                            selected.style.setProperty('margin-right', 'auto', 'important');
-                            selected.style.removeProperty('float');
+                        if (selected) {
+                            const parent = editor.dom.getParent(selected, 'figure') || editor.dom.getParent(selected, 'p') || selected;
+                            const newP = editor.dom.create('p', { style: 'clear: both;' }, '<br data-mce-bogus="1">');
+                            parent.parentNode.insertBefore(newP, parent);
+                            editor.selection.setCursorLocation(newP, 0);
+                            editor.focus();
                             editor.save();
-                            showAdminToast('Image moved to Center of Width (चौड़ाई के बीच में)!', 'success');
+                            showAdminToast('Ready to type above image!', 'info');
+                        }
+                    }
+                });
+
+                // Contextual Toolbar Action: Type Below Image
+                editor.ui.registry.addButton('quick_write_below', {
+                    tooltip: 'Start typing below this image',
+                    text: '✍️ Type Below',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        if (selected) {
+                            const parent = editor.dom.getParent(selected, 'figure') || editor.dom.getParent(selected, 'p') || selected;
+                            const newP = editor.dom.create('p', { style: 'clear: both;' }, '<br data-mce-bogus="1">');
+                            editor.dom.insertAfter(newP, parent);
+                            editor.selection.setCursorLocation(newP, 0);
+                            editor.focus();
+                            editor.save();
+                            showAdminToast('Ready to type below image!', 'info');
+                        }
+                    }
+                });
+
+                // Register Main Toolbar Wrap Left (Type Right) Button
+                editor.ui.registry.addButton('img_wrap_left', {
+                    text: '✍️ Type Beside (Right)',
+                    tooltip: 'Photo on Left, type beside it on the Right (बगल में लिखें)',
+                    onAction: () => {
+                        const sel = editor.selection.getNode();
+                        const img = (sel && sel.nodeName.toLowerCase() === 'img') ? sel : (sel ? sel.querySelector('img') : null) || editor.dom.select('img')[0];
+                        if (img) {
+                            applyImageWrap(editor, img, 'float-left');
+                        } else {
+                            showAdminToast('Please select or insert an image first.', 'info');
+                        }
+                    }
+                });
+
+                // Register Main Toolbar Wrap Right (Type Left) Button
+                editor.ui.registry.addButton('img_wrap_right', {
+                    text: '✍️ Type Beside (Left)',
+                    tooltip: 'Photo on Right, type beside it on the Left (बगल में लिखें)',
+                    onAction: () => {
+                        const sel = editor.selection.getNode();
+                        const img = (sel && sel.nodeName.toLowerCase() === 'img') ? sel : (sel ? sel.querySelector('img') : null) || editor.dom.select('img')[0];
+                        if (img) {
+                            applyImageWrap(editor, img, 'float-right');
+                        } else {
+                            showAdminToast('Please select or insert an image first.', 'info');
+                        }
+                    }
+                });
+
+                // Register Main Toolbar Center Block Button
+                editor.ui.registry.addButton('img_center', {
+                    text: '🎯 Center Block',
+                    tooltip: 'Center Image in Article (Block mode)',
+                    onAction: () => {
+                        const sel = editor.selection.getNode();
+                        const img = (sel && sel.nodeName.toLowerCase() === 'img') ? sel : (sel ? sel.querySelector('img') : null) || editor.dom.select('img')[0];
+                        if (img) {
+                            applyImageWrap(editor, img, 'center');
+                        } else {
+                            showAdminToast('Please select or insert an image first.', 'info');
+                        }
+                    }
+                });
+
+                // Contextual Toolbar Action: Type Beside on Right
+                editor.ui.registry.addButton('quick_write_beside_right', {
+                    tooltip: 'Type Beside on Right side (फोटो बाईं तरफ, बगल में दाईं तरफ लिखें)',
+                    text: '✍️ Type Right (बगल में)',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        const img = (selected && selected.nodeName.toLowerCase() === 'img') ? selected : (selected ? selected.querySelector('img') : null) || editor.dom.select('img')[0];
+                        if (img) {
+                            applyImageWrap(editor, img, 'float-left');
+                        }
+                    }
+                });
+
+                // Contextual Toolbar Action: Type Beside on Left
+                editor.ui.registry.addButton('quick_write_beside_left', {
+                    tooltip: 'Type Beside on Left side (फोटो दाईं तरफ, बगल में बाईं तरफ लिखें)',
+                    text: '✍️ Type Left (बगल में)',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        const img = (selected && selected.nodeName.toLowerCase() === 'img') ? selected : (selected ? selected.querySelector('img') : null) || editor.dom.select('img')[0];
+                        if (img) {
+                            applyImageWrap(editor, img, 'float-right');
+                        }
+                    }
+                });
+
+                // 1. Move to Center of Width (पूरा पेज - Full Page Center)
+                editor.ui.registry.addButton('quick_img_center', {
+                    tooltip: 'Full Page Center (पूरा पेज - No text wrap beside image)',
+                    text: '🎯 Full Page (Center)',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        const img = (selected && selected.nodeName.toLowerCase() === 'img') ? selected : (selected ? selected.querySelector('img') : null) || editor.dom.select('img')[0];
+                        if (img) {
+                            applyImageWrap(editor, img, 'center');
                         }
                     }
                 });
@@ -1858,6 +4180,63 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
+                // Quick Direct Height & Width Adjustment Buttons: Lamba / Chota / Chauda / Patla
+                editor.ui.registry.addButton('quick_img_taller', {
+                    tooltip: 'Make Taller (लंबाई बढ़ाएं / Lamba)',
+                    text: '↕️ Lamba (+)',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        const img = (selected && selected.nodeName.toLowerCase() === 'img') ? selected : (selected ? selected.querySelector('img') : null);
+                        if (img) {
+                            adjustImageDimension(editor, img, 'height', 40);
+                        } else {
+                            showAdminToast('Please click on the image first.', 'info');
+                        }
+                    }
+                });
+
+                editor.ui.registry.addButton('quick_img_shorter', {
+                    tooltip: 'Make Shorter (लंबाई घटाएं / Chota)',
+                    text: '↕️ Chota (-)',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        const img = (selected && selected.nodeName.toLowerCase() === 'img') ? selected : (selected ? selected.querySelector('img') : null);
+                        if (img) {
+                            adjustImageDimension(editor, img, 'height', -40);
+                        } else {
+                            showAdminToast('Please click on the image first.', 'info');
+                        }
+                    }
+                });
+
+                editor.ui.registry.addButton('quick_img_wider', {
+                    tooltip: 'Make Wider (चौड़ाई बढ़ाएं / Chauda)',
+                    text: '↔️ Chauda (+)',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        const img = (selected && selected.nodeName.toLowerCase() === 'img') ? selected : (selected ? selected.querySelector('img') : null);
+                        if (img) {
+                            adjustImageDimension(editor, img, 'width', 50);
+                        } else {
+                            showAdminToast('Please click on the image first.', 'info');
+                        }
+                    }
+                });
+
+                editor.ui.registry.addButton('quick_img_narrower', {
+                    tooltip: 'Make Narrower (चौड़ाई घटाएं / Patla)',
+                    text: '↔️ Patla (-)',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        const img = (selected && selected.nodeName.toLowerCase() === 'img') ? selected : (selected ? selected.querySelector('img') : null);
+                        if (img) {
+                            adjustImageDimension(editor, img, 'width', -50);
+                        } else {
+                            showAdminToast('Please click on the image first.', 'info');
+                        }
+                    }
+                });
+
                 // 4. Vertical Spacing / Margin (लंबाई के बीच में स्पेस/गैप)
                 editor.ui.registry.addButton('quick_img_vspacing', {
                     tooltip: 'Vertical Gap / Spacing (लंबाई के बीच में गैप)',
@@ -1869,8 +4248,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             const newV = prompt('Enter Vertical Gap / Margin between text (e.g. 16px, 24px, 36px, 50px):', currentV);
                             if (newV && newV.trim()) {
                                 const formattedV = newV.includes('px') ? newV.trim() : newV.trim() + 'px';
-                                selected.style.setProperty('margin-top', formattedV, 'important');
-                                selected.style.setProperty('margin-bottom', formattedV, 'important');
+                                selected.style.marginTop = formattedV;
+                                selected.style.marginBottom = formattedV;
                                 editor.save();
                                 showAdminToast('Vertical spacing set to ' + formattedV, 'success');
                             }
@@ -1885,12 +4264,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     onAction: () => {
                         const selected = editor.selection.getNode();
                         if (selected && selected.nodeName.toLowerCase() === 'img') {
-                            const currentW = selected.style.width || selected.getAttribute('width') || '100%';
+                            const currentW = selected.style.width || selected.getAttribute('width') || '350px';
                             const newW = prompt('Enter Image Breadth / Width (e.g. 100%, 75%, 50%, 600px, 400px):', currentW);
                             if (newW && newW.trim()) {
                                 const formattedW = newW.includes('%') || newW.includes('px') ? newW.trim() : newW.trim() + 'px';
-                                selected.style.setProperty('width', formattedW, 'important');
+                                selected.style.width = formattedW;
+                                selected.style.height = 'auto';
                                 selected.setAttribute('width', formattedW);
+                                selected.removeAttribute('height');
                                 editor.save();
                                 showAdminToast('Breadth set to ' + formattedW, 'success');
                             }
@@ -1912,7 +4293,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     selected.style.height = 'auto';
                                     selected.removeAttribute('height');
                                 } else {
-                                    selected.style.setProperty('height', formattedH, 'important');
+                                    selected.style.height = formattedH;
                                     selected.style.removeProperty('object-fit');
                                     selected.setAttribute('height', formattedH);
                                 }
@@ -1923,27 +4304,207 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
+                // Contextual Toolbar Action: Safely Delete Image
+                editor.ui.registry.addButton('quick_img_delete', {
+                    tooltip: 'Safely Delete this image',
+                    text: '🗑️ Delete Image',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        if (selected && (selected.nodeName.toLowerCase() === 'img' || selected.querySelector('img'))) {
+                            const parent = editor.dom.getParent(selected, 'figure') || (selected.parentElement && selected.parentElement.nodeName.toLowerCase() === 'p' && selected.parentElement.children.length === 1 ? selected.parentElement : null);
+                            if (parent) {
+                                parent.remove();
+                            } else {
+                                selected.remove();
+                            }
+                            editor.save();
+                            updateEditorMetrics(editor);
+                            showAdminToast('Image removed.', 'info');
+                        }
+                    }
+                });
+
                 // Contextual Toolbar on Image Selection
                 editor.ui.registry.addContextToolbar('image-free-size-toolbar', {
                     predicate: (node) => node.nodeName.toLowerCase() === 'img',
-                    items: 'free_size_image quick_img_center quick_img_up quick_img_down quick_img_vspacing quick_img_breadth quick_img_length | alignleft alignright | remove',
+                    items: 'quick_write_beside_right quick_write_beside_left quick_img_center | quick_img_taller quick_img_shorter quick_img_wider quick_img_narrower free_size_image | quick_write_below quick_img_delete',
                     position: 'node',
                     scope: 'node'
                 });
 
-                // Double Click Image Handler to open Free-Size Studio
-                editor.on('dblclick', function(e) {
-                    if (e.target && e.target.nodeName.toLowerCase() === 'img') {
-                        openImageStudioModal(editor.id, e.target);
+                // -------------------------------------------------------------
+                // Backspace & Enter Image Protection: Text flows freely, images stay locked!
+                // -------------------------------------------------------------
+                editor.on('keydown', function (e) {
+                    // Enter Protection: If an image is selected, cleanly insert a typing line without moving or displacing the image
+                    if (e.key === 'Enter') {
+                        const selectedNode = editor.selection.getNode();
+                        if (selectedNode && selectedNode.nodeName.toLowerCase() === 'img') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const isFloated = selectedNode.style.float === 'left' || selectedNode.style.float === 'right' || selectedNode.classList.contains('img-float-left') || selectedNode.classList.contains('img-float-right');
+                            const parent = editor.dom.getParent(selectedNode, 'p') || editor.dom.getParent(selectedNode, 'figure') || selectedNode;
+                            let nextP = parent.nextElementSibling;
+                            if (!nextP || nextP.nodeName.toLowerCase() !== 'p') {
+                                nextP = editor.dom.create('p', { style: isFloated ? 'clear: none;' : 'clear: both;' }, '<br data-mce-bogus="1">');
+                                editor.dom.insertAfter(nextP, parent);
+                            } else if (isFloated) {
+                                nextP.style.clear = 'none';
+                            }
+                            editor.selection.setCursorLocation(nextP, 0);
+                            editor.focus();
+                            return false;
+                        }
+                    }
+                    if (e.key === 'Backspace') {
+                        const selectedNode = editor.selection.getNode();
+
+                        // 1. If an IMG node itself is directly selected, don't wipe it with Backspace!
+                        if (selectedNode && selectedNode.nodeName.toLowerCase() === 'img') {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            // Deselect image and move cursor into a safe text paragraph below it
+                            const parent = editor.dom.getParent(selectedNode, 'p') || editor.dom.getParent(selectedNode, 'figure') || selectedNode;
+                            let nextP = parent.nextElementSibling;
+                            if (!nextP || nextP.nodeName.toLowerCase() !== 'p') {
+                                nextP = editor.dom.create('p', { style: 'clear: both;' }, '<br data-mce-bogus="1">');
+                                editor.dom.insertAfter(nextP, parent);
+                            }
+                            editor.selection.setCursorLocation(nextP, 0);
+                            editor.focus();
+
+                            showAdminToast('Image preserved. Click 🗑️ Delete Image button to remove images.', 'info');
+                            return false;
+                        }
+
+                        // 2. If caret is right against an image with no text in between, protect the image
+                        const rng = editor.selection.getRng();
+                        if (rng && rng.collapsed) {
+                            let prevNode = null;
+                            if (rng.startContainer.nodeType === Node.TEXT_NODE && rng.startOffset === 0) {
+                                prevNode = rng.startContainer.previousSibling;
+                            } else if (rng.startContainer.nodeType === Node.ELEMENT_NODE && rng.startOffset > 0) {
+                                prevNode = rng.startContainer.childNodes[rng.startOffset - 1] || null;
+                            }
+
+                            if (prevNode && (prevNode.nodeName && prevNode.nodeName.toLowerCase() === 'img')) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                showAdminToast('Image preserved.', 'info');
+                                return false;
+                            }
+                        }
+
+                        // For ALL other cases (typing text, deleting letters, words, sentences):
+                        // Never call preventDefault! Let browser delete text freely and natively!
                     }
                 });
 
-                // Strip out any previously applied object-fit: cover so resized images are never cut off
+                // -------------------------------------------------------------
+                // Mouse Drag & Selection Guardian: Protects mouse selections!
+                // -------------------------------------------------------------
+                let isMouseDragging = false;
+                let mouseDownX = 0;
+                let mouseDownY = 0;
+
+                editor.on('mousedown', function (e) {
+                    mouseDownX = e.clientX;
+                    mouseDownY = e.clientY;
+                    isMouseDragging = false;
+                });
+
+                editor.on('mousemove', function (e) {
+                    if (e.buttons === 1) { // Left mouse button dragged
+                        const distX = Math.abs(e.clientX - mouseDownX);
+                        const distY = Math.abs(e.clientY - mouseDownY);
+                        if (distX > 3 || distY > 3) {
+                            isMouseDragging = true;
+                        }
+                    }
+                });
+
+                editor.on('mouseup', function (e) {
+                    setTimeout(() => {
+                        isMouseDragging = false;
+                    }, 150);
+                });
+
+                // -------------------------------------------------------------
+                // Free Pointer Placement: Click beside any image to write beside it instantly!
+                // -------------------------------------------------------------
+                editor.on('click', function (e) {
+                    // CRITICAL: If user dragged mouse to select, OR if any content is selected:
+                    // NEVER touch or collapse the selection!
+                    if (isMouseDragging || !editor.selection.isCollapsed()) {
+                        return;
+                    }
+
+                    const target = e.target;
+                    const body = editor.getBody();
+
+                    // If user clicked directly on an IMG node, let TinyMCE handle image selection and toolbar
+                    if (target && target.nodeName.toLowerCase() === 'img') {
+                        return;
+                    }
+
+                    // Regular click on empty canvas / bottom whitespace
+                    if (target === body || target.nodeName.toLowerCase() === 'html') {
+                        const lastChild = body.lastElementChild;
+                        if (!lastChild) {
+                            const p = editor.dom.create('p', {}, '<br data-mce-bogus="1">');
+                            body.appendChild(p);
+                            editor.selection.setCursorLocation(p, 0);
+                        } else if (lastChild.nodeName.toLowerCase() === 'img' || (lastChild.nodeName.toLowerCase() === 'p' && lastChild.querySelector('img') && !lastChild.textContent.trim()) || lastChild.nodeName.toLowerCase() === 'figure') {
+                            const p = editor.dom.create('p', { style: 'clear: both;' }, '<br data-mce-bogus="1">');
+                            body.appendChild(p);
+                            editor.selection.setCursorLocation(p, 0);
+                        } else if (lastChild.nodeName.toLowerCase() === 'p') {
+                            editor.selection.setCursorLocation(lastChild, lastChild.childNodes.length);
+                        } else {
+                            const p = editor.dom.create('p', { style: 'clear: both;' }, '<br data-mce-bogus="1">');
+                            body.appendChild(p);
+                            editor.selection.setCursorLocation(p, 0);
+                        }
+                        editor.focus();
+                    }
+                });
+
+                // Double click on blank canvas guarantees a fresh line at cursor
+                editor.on('dblclick', function (e) {
+                    if (e.target && e.target.nodeName.toLowerCase() === 'img') {
+                        openImageStudioModal(editor.id, e.target);
+                    } else if (!editor.selection.isCollapsed()) {
+                        return; // Leave word or text selected!
+                    } else if (e.target === editor.getBody() || e.target.nodeName.toLowerCase() === 'html') {
+                        const p = editor.dom.create('p', { style: 'clear: both;' }, '<br data-mce-bogus="1">');
+                        editor.getBody().appendChild(p);
+                        editor.selection.setCursorLocation(p, 0);
+                        editor.focus();
+                    }
+                });
+
+                // Strip out any previously applied object-fit: cover and unlock resize constraints
                 editor.on('init SetContent', function () {
                     const imgs = editor.dom.select('img');
                     imgs.forEach(img => {
                         if (img.style.objectFit === 'cover') {
                             img.style.removeProperty('object-fit');
+                        }
+                        // Remove any !important or max-width locks that freeze resizing
+                        img.style.removeProperty('max-width');
+                        const curW = img.style.getPropertyValue('width');
+                        const curH = img.style.getPropertyValue('height');
+                        img.style.removeProperty('width');
+                        img.style.removeProperty('height');
+                        if (curW) img.style.width = curW;
+                        if (curH && curH !== 'auto') img.style.height = curH;
+                        else img.style.height = 'auto';
+
+                        // If image has figure wrapper without caption, unwrap for clean native 8-point resizing
+                        const parentFigure = editor.dom.getParent(img, 'figure');
+                        if (parentFigure && !parentFigure.querySelector('figcaption')) {
+                            editor.dom.replace(img, parentFigure);
                         }
                     });
                 });
@@ -2019,11 +4580,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof tinymce !== 'undefined' && tinymce.get('create-blog-content')) {
                 tinymce.get('create-blog-content').save();
             }
+            const editor = typeof tinymce !== 'undefined' ? tinymce.get('create-blog-content') : null;
             const content = document.getElementById('create-blog-content').value;
-            if (!content.trim()) {
-                alert('Please enter article content!');
+            const textContent = editor ? editor.getContent({ format: 'text' }).trim() : content.trim();
+            const hasImages = content.includes('<img');
+
+            if (!textContent && !hasImages) {
+                alert('Kripya article me kuch content ya image likhein!');
                 e.preventDefault();
                 return false;
+            }
+
+            const btn = document.getElementById('publishBlogSubmitBtn');
+            const btnText = document.getElementById('publishBlogSubmitBtnText');
+            const btnIcon = document.getElementById('publishBlogSubmitIcon');
+            if (btn && btnText) {
+                btn.style.opacity = '0.75';
+                btn.style.pointerEvents = 'none';
+                btnText.innerText = 'Publishing Article... Please wait...';
+                if (btnIcon) btnIcon.className = 'fa-solid fa-spinner fa-spin mr-1';
             }
         });
     }
@@ -2034,14 +4609,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof tinymce !== 'undefined' && tinymce.get('edit-blog-content-input')) {
                 tinymce.get('edit-blog-content-input').save();
             }
+            const editor = typeof tinymce !== 'undefined' ? tinymce.get('edit-blog-content-input') : null;
             const content = document.getElementById('edit-blog-content-input').value;
-            if (!content.trim()) {
-                alert('Please enter article content!');
+            const textContent = editor ? editor.getContent({ format: 'text' }).trim() : content.trim();
+            const hasImages = content.includes('<img');
+
+            if (!textContent && !hasImages) {
+                alert('Kripya article me kuch content ya image likhein!');
                 e.preventDefault();
                 return false;
             }
+
+            const btn = editForm.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.style.opacity = '0.75';
+                btn.style.pointerEvents = 'none';
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Updating article...';
+            }
         });
     }
+
+    // Initialize Title Styles
+    applyTitleStyles('create');
 });
 
 // Helper: Slug Generator
@@ -2150,6 +4739,13 @@ function handleCoverImageSelect(e, type) {
 
             if (type === 'create') {
                 document.getElementById('createCoverEmptyState').classList.add('hidden');
+                
+                const hint = document.getElementById('createCoverChangeHint');
+                if (hint) hint.classList.remove('hidden');
+                
+                const placeholder = document.getElementById('createCoverPreviewPlaceholder');
+                if (placeholder) placeholder.classList.add('hidden');
+                
                 document.getElementById('createCoverPreviewBox').classList.remove('hidden');
                 document.getElementById('createCoverPreviewImg').src = dataUrl;
                 document.getElementById('createCoverDimensions').innerText = `${width} \u00d7 ${height} px`;
@@ -2170,7 +4766,15 @@ function clearCoverImage(type) {
         const input = document.getElementById('createCoverInput');
         if (input) input.value = '';
         document.getElementById('createCoverPreviewBox').classList.add('hidden');
+        
+        const placeholder = document.getElementById('createCoverPreviewPlaceholder');
+        if (placeholder) placeholder.classList.remove('hidden');
+        
         document.getElementById('createCoverEmptyState').classList.remove('hidden');
+        
+        const hint = document.getElementById('createCoverChangeHint');
+        if (hint) hint.classList.add('hidden');
+        
         document.getElementById('createCoverPreviewImg').src = '';
     } else {
         const input = document.getElementById('editCoverInput');
@@ -2249,19 +4853,95 @@ function uploadAndInsertImage(editorId, file) {
         }
 
         const cleanAlt = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
-        const imgHtml = `<p><img src="${imgUrl}" alt="${cleanAlt}" class="img-responsive" style="max-width: 100%; border-radius: 12px; margin: 16px 0;" /></p>`;
+        let imgHtml = `<img src="${imgUrl}" alt="${cleanAlt}" class="img-float-left" style="float: left; margin: 8px 24px 16px 0; width: 360px; height: auto; border-radius: 12px; display: block;" />`;
         
         editor.insertContent(imgHtml);
         editor.save();
-        updateEditorMetrics(editor);
 
-        showAdminToast('Image uploaded and inserted successfully!', 'success');
+        // Immediately focus into the paragraph beside the image so user can start typing right away
+        const imgs = editor.dom.select('img[src="' + imgUrl + '"]');
+        if (imgs.length > 0) {
+            const insertedImg = imgs[imgs.length - 1];
+            let nextPara = insertedImg.nextElementSibling;
+            if (!nextPara || nextPara.nodeName.toLowerCase() !== 'p') {
+                nextPara = editor.dom.create('p', {}, '<br data-mce-bogus="1">');
+                editor.dom.insertAfter(nextPara, insertedImg);
+            }
+            editor.selection.setCursorLocation(nextPara, 0);
+            editor.focus();
+        }
+
+        updateEditorMetrics(editor);
+        showAdminToast('Photo placed on LEFT. Typing cursor is BESIDE it on the RIGHT!', 'success');
     })
     .catch(err => {
         console.error('Image upload failed:', err);
         showAdminToast('Upload failed: ' + err.message, 'error');
         alert('Image upload failed: ' + err.message);
     });
+}
+
+// Helper: Instantly create and focus a typing paragraph at the end of the editor
+function insertTypingParagraphAtEnd(editorId) {
+    const editor = (typeof tinymce !== 'undefined') ? tinymce.get(editorId) : null;
+    if (!editor) return;
+    const body = editor.getBody();
+    const p = editor.dom.create('p', {}, '<br data-mce-bogus="1">');
+    body.appendChild(p);
+    editor.selection.setCursorLocation(p, 0);
+    editor.focus();
+    editor.save();
+    showAdminToast('New line created at bottom! Start typing.', 'info');
+}
+
+// Helper: Instantly select all content in editor
+function selectAllEditorContent(editorId) {
+    const editor = (typeof tinymce !== 'undefined') ? tinymce.get(editorId) : null;
+    if (!editor) return;
+    editor.focus();
+    editor.execCommand('SelectAll');
+    showAdminToast('All content selected! (Press Backspace or Delete to remove)', 'info');
+}
+
+// Helper: Toggle between Standard Page View and Large Full-Width Editor Canvas
+function toggleEditorCanvasSize(type) {
+    const editorId = type === 'create' ? 'create-blog-content' : 'edit-blog-content-input';
+    const btn = document.getElementById(type + 'EditorCanvasBtn');
+    const btnText = document.getElementById(type + 'EditorCanvasText');
+    const editor = (typeof tinymce !== 'undefined') ? tinymce.get(editorId) : null;
+    if (!editor || !btn) return;
+
+    const isLarge = btn.getAttribute('data-is-large') === 'true';
+    const editorContainer = editor.getContainer();
+
+    if (!isLarge) {
+        btn.setAttribute('data-is-large', 'true');
+        btn.classList.remove('bg-slate-100', 'text-slate-700');
+        btn.classList.add('bg-indigo-600', 'text-white', 'shadow-md');
+        if (btnText) btnText.innerText = 'Standard Page View';
+
+        // Expand TinyMCE height to spacious 800px
+        editor.theme.resizeTo('100%', 800);
+
+        if (editorContainer) {
+            editorContainer.style.boxShadow = '0 20px 40px -15px rgba(79, 70, 229, 0.2)';
+            editorContainer.style.borderColor = '#6366f1';
+        }
+        showAdminToast('Editor page expanded to Large Canvas (800px)!', 'success');
+    } else {
+        btn.setAttribute('data-is-large', 'false');
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+        if (btnText) btnText.innerText = 'Large Page View';
+
+        editor.theme.resizeTo('100%', 520);
+
+        if (editorContainer) {
+            editorContainer.style.boxShadow = '';
+            editorContainer.style.borderColor = '';
+        }
+        showAdminToast('Editor returned to Standard Page View (520px)', 'info');
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -2744,22 +5424,21 @@ function applyStudioImageChanges() {
         const widthStyle = `${wVal}${wUnit}`;
         const isHeightAuto = (hUnit === 'auto' || hVal === 'auto' || !hVal);
 
-        targetStudioImageNode.style.setProperty('width', widthStyle, 'important');
+        targetStudioImageNode.style.width = widthStyle;
         if (isHeightAuto) {
-            targetStudioImageNode.style.removeProperty('height');
+            targetStudioImageNode.style.height = 'auto';
             targetStudioImageNode.removeAttribute('height');
         } else {
-            const heightStyle = `${hVal}px`;
-            targetStudioImageNode.style.setProperty('height', heightStyle, 'important');
+            targetStudioImageNode.style.height = `${hVal}px`;
             targetStudioImageNode.setAttribute('height', hVal);
         }
 
         if (fit === 'fill' || fit === 'initial' || !fit) {
             targetStudioImageNode.style.removeProperty('object-fit');
         } else {
-            targetStudioImageNode.style.setProperty('object-fit', fit, 'important');
+            targetStudioImageNode.style.objectFit = fit;
         }
-        targetStudioImageNode.style.setProperty('object-position', `${posX} ${posY}`, 'important');
+        targetStudioImageNode.style.objectPosition = `${posX} ${posY}`;
         targetStudioImageNode.setAttribute('width', wUnit === 'px' ? wVal : widthStyle);
         targetStudioImageNode.setAttribute('alt', alt);
 
@@ -2773,19 +5452,21 @@ function applyStudioImageChanges() {
 
         if (studioCurrentAlign === 'float-left') {
             targetStudioImageNode.classList.add('img-float-left');
-            targetStudioImageNode.style.setProperty('float', 'left', 'important');
-            targetStudioImageNode.style.setProperty('margin', `${vMarginStyle} 1.5rem ${vMarginStyle} 0`, 'important');
+            targetStudioImageNode.style.float = 'left';
+            targetStudioImageNode.style.margin = `${vMarginStyle} 1.5rem ${vMarginStyle} 0`;
+            targetStudioImageNode.style.display = 'block';
         } else if (studioCurrentAlign === 'float-right') {
             targetStudioImageNode.classList.add('img-float-right');
-            targetStudioImageNode.style.setProperty('float', 'right', 'important');
-            targetStudioImageNode.style.setProperty('margin', `${vMarginStyle} 0 ${vMarginStyle} 1.5rem`, 'important');
+            targetStudioImageNode.style.float = 'right';
+            targetStudioImageNode.style.margin = `${vMarginStyle} 0 ${vMarginStyle} 1.5rem`;
+            targetStudioImageNode.style.display = 'block';
         } else if (studioCurrentAlign === 'center') {
             targetStudioImageNode.classList.add('img-center-block');
-            targetStudioImageNode.style.setProperty('display', 'block', 'important');
-            targetStudioImageNode.style.setProperty('margin', `${vMarginStyle} auto`, 'important');
+            targetStudioImageNode.style.display = 'block';
+            targetStudioImageNode.style.margin = `${vMarginStyle} auto`;
         } else if (studioCurrentAlign === 'inline') {
-            targetStudioImageNode.style.setProperty('display', 'inline-block', 'important');
-            targetStudioImageNode.style.setProperty('margin', `${vMarginStyle} 0.5rem`, 'important');
+            targetStudioImageNode.style.display = 'inline-block';
+            targetStudioImageNode.style.margin = `${vMarginStyle} 0.5rem`;
         }
 
         // Apply Corner & Shadow
@@ -2793,8 +5474,32 @@ function applyStudioImageChanges() {
         if (radius === 'rounded-2xl') targetStudioImageNode.classList.add('img-rounded-lg');
         if (shadow === 'shadow-lg' || shadow === 'shadow-2xl') targetStudioImageNode.classList.add('img-shadow-card');
 
-        // Handle Caption
+        // Handle Caption & Figure Sync
         const existingFigure = editor.dom.getParent(targetStudioImageNode, 'figure');
+        if (existingFigure) {
+            existingFigure.classList.remove('img-float-left', 'img-float-right', 'img-center-block');
+            existingFigure.style.removeProperty('float');
+            existingFigure.style.removeProperty('display');
+            existingFigure.style.removeProperty('margin');
+            if (studioCurrentAlign === 'float-left') {
+                existingFigure.classList.add('img-float-left');
+                existingFigure.style.setProperty('float', 'left', 'important');
+                existingFigure.style.setProperty('margin', `${vMarginStyle} 1.5rem ${vMarginStyle} 0`, 'important');
+                existingFigure.style.setProperty('display', 'inline-block', 'important');
+            } else if (studioCurrentAlign === 'float-right') {
+                existingFigure.classList.add('img-float-right');
+                existingFigure.style.setProperty('float', 'right', 'important');
+                existingFigure.style.setProperty('margin', `${vMarginStyle} 0 ${vMarginStyle} 1.5rem`, 'important');
+                existingFigure.style.setProperty('display', 'inline-block', 'important');
+            } else if (studioCurrentAlign === 'center') {
+                existingFigure.classList.add('img-center-block');
+                existingFigure.setAttribute('data-explicit-center', 'true');
+                existingFigure.style.setProperty('display', 'block', 'important');
+                existingFigure.style.setProperty('margin', `${vMarginStyle} auto`, 'important');
+                existingFigure.style.setProperty('text-align', 'center', 'important');
+            }
+        }
+
         if (caption.length > 0) {
             if (existingFigure) {
                 let figcap = existingFigure.querySelector('figcaption');
@@ -2811,8 +5516,25 @@ function applyStudioImageChanges() {
                 const figcap = editor.dom.create('figcaption', {}, caption);
                 figure.appendChild(figcap);
             }
-        } else if (existingFigure) {
-            editor.dom.replace(targetStudioImageNode, existingFigure);
+        } else if (existingFigure && !caption.length) {
+            // Keep figure wrapper if it exists or clean empty caption
+            const figcap = existingFigure.querySelector('figcaption');
+            if (figcap) figcap.remove();
+        }
+
+        // Float extraction logic:
+        // If image is floated left or right, pull it out of its paragraph and place it BEFORE the paragraph.
+        // Also if preceded by a paragraph, place it BEFORE that paragraph so text wraps nicely without pushing image down.
+        if (studioCurrentAlign === 'float-left' || studioCurrentAlign === 'float-right') {
+            const nodeToMove = editor.dom.getParent(targetStudioImageNode, 'figure') || targetStudioImageNode;
+            const parentBlock = editor.dom.getParent(nodeToMove, 'p') || editor.dom.getParent(nodeToMove, 'div');
+            
+            if (parentBlock && parentBlock !== editor.getBody()) {
+                parentBlock.parentNode.insertBefore(nodeToMove, parentBlock);
+                if (parentBlock.innerHTML.trim() === '' || parentBlock.innerHTML === '<br data-mce-bogus="1">') {
+                    parentBlock.remove();
+                }
+            }
         }
 
         editor.save();
@@ -2834,6 +5556,44 @@ function openEditBlogModal(blog) {
     document.getElementById('edit-blog-title').value = blog.title || '';
     document.getElementById('edit-blog-slug').value = blog.slug || '';
     document.getElementById('edit-blog-author').value = blog.author_name || '';
+    document.getElementById('edit-cover-link').value = blog.cover_link || '';
+
+    // Set Title Typography Values
+    document.getElementById('edit-title-color').value = blog.title_color || '#0f172a';
+    document.getElementById('edit-title-font').value = blog.title_font || 'sans';
+    document.getElementById('edit-title-size').value = blog.title_size || 'large';
+    document.getElementById('edit-title-weight').value = blog.title_weight || '900';
+    document.getElementById('edit-title-transform').value = blog.title_transform || 'none';
+    const editFontSelect = document.getElementById('editTitleFontSelect');
+    if (editFontSelect) editFontSelect.value = blog.title_font || 'sans';
+
+    // Sync Edit Color Ring
+    const editColorContainer = document.getElementById('editTitleColorPresets');
+    if (editColorContainer) {
+        let found = false;
+        editColorContainer.querySelectorAll('.title-color-btn').forEach(btn => {
+            btn.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-1');
+            const targetColor = blog.title_color || '#0f172a';
+            if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(targetColor)) {
+                btn.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-1');
+                found = true;
+            }
+        });
+    }
+
+    // Sync Edit Transform Button
+    const editTransformBtn = document.getElementById('editTitleTransformBtn');
+    if (editTransformBtn) {
+        if (blog.title_transform === 'uppercase') {
+            editTransformBtn.classList.add('bg-indigo-600', 'text-white');
+            editTransformBtn.classList.remove('bg-white', 'text-slate-700');
+        } else {
+            editTransformBtn.classList.remove('bg-indigo-600', 'text-white');
+            editTransformBtn.classList.add('bg-white', 'text-slate-700');
+        }
+    }
+
+    applyTitleStyles('edit');
 
     // Set Existing Cover Preview
     const previewImg = document.getElementById('editCoverPreviewImg');
@@ -2863,6 +5623,143 @@ function closeEditBlogModal() {
     document.getElementById('editBlogModal').classList.add('hidden');
 }
 
+function testCoverLink(inputId) {
+    let url = document.getElementById(inputId).value.trim();
+    if (!url) {
+        showAdminToast('Please enter a target link first to test!', 'error');
+        return;
+    }
+    if (!/^https?:\/\//i.test(url) && !url.startsWith('/')) {
+        url = 'https://' + url;
+    }
+    window.open(url, '_blank');
+}
+
+// -----------------------------------------------------------------------------
+// 7. Title Typography Engine (Colour, Letters Style & Size)
+// -----------------------------------------------------------------------------
+function setTitleStyle(type, property, value, btn = null) {
+    const colorInput = document.getElementById(type + '-title-color');
+    const fontInput = document.getElementById(type + '-title-font');
+    const sizeInput = document.getElementById(type + '-title-size');
+    const weightInput = document.getElementById(type + '-title-weight');
+    const transformInput = document.getElementById(type + '-title-transform');
+
+    if (property === 'color') {
+        if (colorInput) colorInput.value = value;
+        const presetContainer = document.getElementById(type + 'TitleColorPresets');
+        if (presetContainer) {
+            presetContainer.querySelectorAll('.title-color-btn').forEach(b => {
+                b.classList.remove('ring-2', 'ring-indigo-500', 'ring-offset-1');
+            });
+            if (btn && btn.classList.contains('title-color-btn')) {
+                btn.classList.add('ring-2', 'ring-indigo-500', 'ring-offset-1');
+            }
+        }
+    } else if (property === 'font') {
+        if (fontInput) fontInput.value = value;
+    } else if (property === 'size') {
+        if (sizeInput) sizeInput.value = value;
+        if (btn && btn.parentElement) {
+            btn.parentElement.querySelectorAll('.title-size-btn').forEach(b => {
+                b.classList.remove('bg-white', 'text-indigo-600', 'font-bold', 'shadow-2xs');
+                b.classList.add('text-slate-600', 'font-semibold');
+            });
+            btn.classList.add('bg-white', 'text-indigo-600', 'font-bold', 'shadow-2xs');
+            btn.classList.remove('text-slate-600');
+        }
+    } else if (property === 'weight') {
+        if (weightInput) weightInput.value = value;
+    } else if (property === 'transform') {
+        if (transformInput) transformInput.value = value;
+    }
+
+    applyTitleStyles(type);
+}
+
+function toggleTitleTransform(type) {
+    const transformInput = document.getElementById(type + '-title-transform');
+    const btn = document.getElementById(type + 'TitleTransformBtn');
+    if (!transformInput || !btn) return;
+
+    if (transformInput.value === 'uppercase') {
+        transformInput.value = 'none';
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('bg-white', 'text-slate-700');
+    } else {
+        transformInput.value = 'uppercase';
+        btn.classList.add('bg-indigo-600', 'text-white');
+        btn.classList.remove('bg-white', 'text-slate-700');
+    }
+    applyTitleStyles(type);
+}
+
+function toggleTitleItalic(type) {
+    const input = document.getElementById(type + '-blog-title');
+    const btn = document.getElementById(type + 'TitleItalicBtn');
+    if (!input || !btn) return;
+
+    if (input.style.fontStyle === 'italic') {
+        input.style.fontStyle = 'normal';
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('bg-white', 'text-slate-700');
+    } else {
+        input.style.fontStyle = 'italic';
+        btn.classList.add('bg-indigo-600', 'text-white');
+        btn.classList.remove('bg-white', 'text-slate-700');
+    }
+}
+
+function applyTitleStyles(type) {
+    const input = document.getElementById(type + '-blog-title');
+    if (!input) return;
+
+    const color = document.getElementById(type + '-title-color')?.value || '#0f172a';
+    const font = document.getElementById(type + '-title-font')?.value || 'sans';
+    const size = document.getElementById(type + '-title-size')?.value || 'large';
+    const weight = document.getElementById(type + '-title-weight')?.value || '900';
+    const transform = document.getElementById(type + '-title-transform')?.value || 'none';
+
+    input.style.color = color;
+    input.style.fontWeight = weight;
+    input.style.textTransform = transform;
+
+    if (font === 'serif') {
+        input.style.fontFamily = "'Georgia', Cambria, 'Times New Roman', serif";
+    } else if (font === 'outfit') {
+        input.style.fontFamily = "'Outfit', -apple-system, sans-serif";
+    } else if (font === 'mono') {
+        input.style.fontFamily = "ui-monospace, SFMono-Regular, Menlo, monospace";
+    } else {
+        input.style.fontFamily = "'Inter', system-ui, sans-serif";
+    }
+
+    if (size === 'medium') {
+        input.style.fontSize = '1.25rem';
+    } else if (size === 'large') {
+        input.style.fontSize = '1.5rem';
+    } else if (size === 'xl') {
+        input.style.fontSize = '1.85rem';
+    } else if (size === 'mega') {
+        input.style.fontSize = '2.25rem';
+    }
+
+    // Sync SEO preview styling
+    if (type === 'create') {
+        const seoTitle = document.getElementById('seoTitlePreview');
+        if (seoTitle) {
+            seoTitle.style.color = (color === '#0f172a') ? '#1d4ed8' : color;
+            seoTitle.style.fontFamily = input.style.fontFamily;
+        }
+    } else if (type === 'edit') {
+        const seoTitle = document.getElementById('editSeoTitlePreview');
+        if (seoTitle) {
+            seoTitle.style.color = (color === '#0f172a') ? '#1d4ed8' : color;
+            seoTitle.style.fontFamily = input.style.fontFamily;
+        }
+    }
+}
+
 function updateSliderFileName(input) {
     const label = document.getElementById('sliderFileLabel');
     if (input.files && input.files[0]) {
@@ -2888,6 +5785,515 @@ function filterBlogTable() {
             row.style.display = 'none';
         }
     });
+}
+
+// =============================================================================
+// GALLERY STUDIO ENGINE: UPLOAD MODES, PREVIEWS, LIVE FILTERS & LIGHTBOX
+// =============================================================================
+let currentAdminGalFilterType = 'all';
+
+function setGalleryUploadType(type) {
+    const inputMediaType = document.getElementById('galleryMediaTypeInput');
+    const boxImg = document.getElementById('box-upload-image');
+    const boxVidFile = document.getElementById('box-upload-video-file');
+    const boxVidUrl = document.getElementById('box-upload-video-url');
+    const btnImg = document.getElementById('btn-mode-image');
+    const btnVidFile = document.getElementById('btn-mode-video-file');
+    const btnVidUrl = document.getElementById('btn-mode-video-url');
+    const submitText = document.getElementById('gallerySubmitBtnText');
+
+    // Reset button styles
+    [btnImg, btnVidFile, btnVidUrl].forEach(b => {
+        if (b) b.className = 'px-3.5 py-2 rounded-xl transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5';
+    });
+
+    // Hide all upload boxes
+    if (boxImg) boxImg.classList.add('hidden');
+    if (boxVidFile) boxVidFile.classList.add('hidden');
+    if (boxVidUrl) boxVidUrl.classList.add('hidden');
+
+    if (type === 'image') {
+        if (btnImg) btnImg.className = 'px-3.5 py-2 rounded-xl transition bg-white text-blue-700 shadow-xs flex items-center gap-1.5 font-bold';
+        if (boxImg) boxImg.classList.remove('hidden');
+        if (inputMediaType) inputMediaType.value = 'image';
+        if (submitText) submitText.innerText = 'Upload Photo to Gallery';
+    } else if (type === 'video_file') {
+        if (btnVidFile) btnVidFile.className = 'px-3.5 py-2 rounded-xl transition bg-white text-indigo-700 shadow-xs flex items-center gap-1.5 font-bold';
+        if (boxVidFile) boxVidFile.classList.remove('hidden');
+        if (inputMediaType) inputMediaType.value = 'video';
+        if (submitText) submitText.innerText = 'Upload Video File to Gallery';
+    } else if (type === 'video_url') {
+        if (btnVidUrl) btnVidUrl.className = 'px-3.5 py-2 rounded-xl transition bg-white text-red-600 shadow-xs flex items-center gap-1.5 font-bold';
+        if (boxVidUrl) boxVidUrl.classList.remove('hidden');
+        if (inputMediaType) inputMediaType.value = 'video';
+        if (submitText) submitText.innerText = 'Save YouTube Video to Gallery';
+    }
+}
+
+function previewGalleryImage(input, context) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewImg = document.getElementById('galleryImagePreviewImg');
+            const emptyBox = document.getElementById('galleryImageEmpty');
+            if (previewImg) {
+                previewImg.src = e.target.result;
+                previewImg.classList.remove('hidden');
+            }
+            if (emptyBox) emptyBox.classList.add('hidden');
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function previewGalleryVideoFile(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const label = document.getElementById('galleryVideoFileLabel');
+        if (label) {
+            const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+            label.innerText = file.name + ' (' + sizeMb + ' MB)';
+        }
+    }
+}
+
+function previewYoutubeUrl(url) {
+    const container = document.getElementById('youtubePreviewContainer');
+    const thumbImg = document.getElementById('youtubeThumbImg');
+    if (!url || !url.trim()) {
+        if (container) container.classList.add('hidden');
+        return;
+    }
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+    const match = url.match(regExp);
+    if (match && match[2] && match[2].length === 11) {
+        if (thumbImg) thumbImg.src = 'https://img.youtube.com/vi/' + match[2] + '/hqdefault.jpg';
+        if (container) container.classList.remove('hidden');
+    } else {
+        if (container) container.classList.add('hidden');
+    }
+}
+
+function checkCustomCategory(val, mode) {
+    const input = mode === 'edit' 
+        ? document.getElementById('editCustomCategoryInput') 
+        : document.getElementById('createCustomCategoryInput');
+    if (!input) return;
+
+    if (val === '__custom__') {
+        input.classList.remove('hidden');
+        input.focus();
+    } else {
+        input.classList.add('hidden');
+        input.value = '';
+    }
+}
+
+function filterAdminGalleryType(type, btn) {
+    currentAdminGalFilterType = type;
+    const filterPills = document.querySelectorAll('#adminMediaFilterPills .gal-type-filter');
+    filterPills.forEach(pill => {
+        pill.className = 'gal-type-filter px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition';
+    });
+    if (btn) {
+        btn.className = 'gal-type-filter active px-3 py-1.5 rounded-lg bg-white text-blue-700 shadow-2xs font-bold transition';
+    }
+    filterAdminGalleryCatalog();
+}
+
+function filterAdminGalleryCatalog() {
+    const catFilter = (document.getElementById('adminGalleryCategoryFilter')?.value || 'all').toLowerCase();
+    const query = (document.getElementById('adminGallerySearchInput')?.value || '').trim().toLowerCase();
+    const cards = document.querySelectorAll('.gallery-card-item');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const itemType = card.getAttribute('data-type') || 'image';
+        const itemCat = (card.getAttribute('data-category') || '').toLowerCase();
+        const itemSearch = (card.getAttribute('data-search') || '').toLowerCase();
+
+        const matchType = (currentAdminGalFilterType === 'all') || (itemType === currentAdminGalFilterType);
+        const matchCat = (catFilter === 'all') || (itemCat === catFilter) || itemCat.includes(catFilter);
+        const matchSearch = (!query) || itemSearch.includes(query);
+
+        if (matchType && matchCat && matchSearch) {
+            card.style.display = '';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    const countEl = document.getElementById('visibleGalleryCount');
+    if (countEl) countEl.innerText = visibleCount;
+}
+
+function parseGalleryData(el) {
+    if (!el) return null;
+    const raw = el.getAttribute('data-gallery');
+    if (!raw) return null;
+    try {
+        return JSON.parse(atob(raw));
+    } catch(e) {
+        console.error('Failed to parse gallery item:', e);
+        return null;
+    }
+}
+
+function handleGalleryPreview(el) {
+    const data = parseGalleryData(el);
+    if (data) openGalleryPreview(data);
+}
+
+function openGalleryPreview(data) {
+    const modal = document.getElementById('galleryPreviewModal');
+    if (!modal) return;
+
+    // Set Text Content
+    const titleEl = document.getElementById('galPreviewTitle');
+    const catEl = document.getElementById('galPreviewCategory');
+    const dateEl = document.getElementById('galPreviewDate');
+    const descEl = document.getElementById('galPreviewDescription');
+    const typeBadge = document.getElementById('galPreviewTypeBadge');
+
+    if (titleEl) titleEl.innerText = data.title || 'SMTTC Practical Demonstration';
+    if (catEl) catEl.innerText = data.category || 'General';
+    if (dateEl) dateEl.innerText = data.created_at_formatted || '';
+    if (descEl) descEl.innerText = data.description || 'Workbench training session at SMTTC Patna.';
+
+    const imgContainer = document.getElementById('galPreviewImageContainer');
+    const iframeContainer = document.getElementById('galPreviewIframeContainer');
+    const videoContainer = document.getElementById('galPreviewVideoContainer');
+    const previewImg = document.getElementById('galPreviewImg');
+    const iframe = document.getElementById('galPreviewIframe');
+    const video = document.getElementById('galPreviewVideo');
+    const videoSrc = document.getElementById('galPreviewVideoSource');
+
+    // Reset Containers
+    if (imgContainer) imgContainer.classList.add('hidden');
+    if (iframeContainer) iframeContainer.classList.add('hidden');
+    if (videoContainer) videoContainer.classList.add('hidden');
+    if (iframe) iframe.src = '';
+    if (video) {
+        video.pause();
+        if (videoSrc) videoSrc.src = '';
+    }
+
+    if (data.media_type === 'video') {
+        if (typeBadge) {
+            typeBadge.innerText = '🎥 Video';
+            typeBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-600 text-white shadow-xs';
+        }
+
+        if (data.embed_url) {
+            const embedSrc = data.embed_url + (data.embed_url.includes('?') ? '&' : '?') + 'autoplay=1';
+            if (iframe) iframe.src = embedSrc;
+            if (iframeContainer) iframeContainer.classList.remove('hidden');
+        } else if (data.video_url) {
+            const ytMatch = data.video_url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+            if (ytMatch && ytMatch[1]) {
+                if (iframe) iframe.src = 'https://www.youtube.com/embed/' + ytMatch[1] + '?autoplay=1';
+                if (iframeContainer) iframeContainer.classList.remove('hidden');
+            } else {
+                if (video && videoSrc) {
+                    videoSrc.src = data.video_url;
+                    video.load();
+                    if (videoContainer) videoContainer.classList.remove('hidden');
+                    video.play().catch(e => console.log('Autoplay prevented:', e));
+                }
+            }
+        }
+    } else {
+        if (typeBadge) {
+            typeBadge.innerText = '📸 Photo';
+            typeBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-slate-300';
+        }
+        if (previewImg) {
+            previewImg.src = data.image_url || data.thumbnail_url || '/assets/images/g1.webp';
+        }
+        if (imgContainer) imgContainer.classList.remove('hidden');
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeGalleryPreview() {
+    const modal = document.getElementById('galleryPreviewModal');
+    if (!modal) return;
+    const iframe = document.getElementById('galPreviewIframe');
+    if (iframe) iframe.src = '';
+    const video = document.getElementById('galPreviewVideo');
+    if (video) video.pause();
+    modal.classList.add('hidden');
+}
+
+function handleGalleryEdit(el) {
+    const data = parseGalleryData(el);
+    if (data) openEditGalleryModal(data);
+}
+
+function openEditGalleryModal(data) {
+    const modal = document.getElementById('editGalleryModal');
+    if (!modal) return;
+
+    const form = document.getElementById('editGalleryForm');
+    if (form) form.action = '/admin/galleries/update/' + data.id;
+
+    const idInput = document.getElementById('editGalleryId');
+    const titleInput = document.getElementById('editGalleryTitle');
+    const descInput = document.getElementById('editGalleryDescription');
+    const mediaTypeInput = document.getElementById('editGalleryMediaType');
+
+    if (idInput) idInput.value = data.id;
+    if (titleInput) titleInput.value = data.title || '';
+    if (descInput) descInput.value = data.description || '';
+    if (mediaTypeInput) mediaTypeInput.value = data.media_type || 'image';
+
+    // Category Selector
+    const catSelect = document.getElementById('editGalleryCategory');
+    const customInput = document.getElementById('editCustomCategoryInput');
+    let matched = false;
+
+    if (catSelect) {
+        for (let i = 0; i < catSelect.options.length; i++) {
+            if (catSelect.options[i].value === data.category) {
+                catSelect.selectedIndex = i;
+                matched = true;
+                break;
+            }
+        }
+        if (!matched && data.category) {
+            catSelect.value = '__custom__';
+            if (customInput) {
+                customInput.value = data.category;
+                customInput.classList.remove('hidden');
+            }
+        } else {
+            if (customInput) {
+                customInput.classList.add('hidden');
+                customInput.value = '';
+            }
+        }
+    }
+
+    // Media Switch
+    const imgBlock = document.getElementById('editGalleryImageBlock');
+    const vidBlock = document.getElementById('editGalleryVideoBlock');
+    const currentImg = document.getElementById('editGalleryCurrentImagePreview');
+    const vidUrlInput = document.getElementById('editGalleryVideoUrl');
+
+    if (data.media_type === 'video') {
+        if (imgBlock) imgBlock.classList.add('hidden');
+        if (vidBlock) vidBlock.classList.remove('hidden');
+        if (vidUrlInput) vidUrlInput.value = data.video_url || '';
+    } else {
+        if (imgBlock) imgBlock.classList.remove('hidden');
+        if (vidBlock) vidBlock.classList.add('hidden');
+        if (currentImg) {
+            currentImg.src = data.image_url || data.thumbnail_url || '/assets/images/g1.webp';
+        }
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function closeEditGalleryModal() {
+    const modal = document.getElementById('editGalleryModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+// Close modals on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeGalleryPreview();
+        closeEditGalleryModal();
+        closeEditFeeModal();
+        closeEditCertModal();
+    }
+});
+
+// Gallery Unified Sub-tabs Switcher
+function switchAdminGallerySubTab(tab) {
+    const panes = {
+        'ba': document.getElementById('admin-gal-pane-ba'),
+        'stories': document.getElementById('admin-gal-pane-stories'),
+        'students': document.getElementById('admin-gal-pane-students'),
+        'catalog': document.getElementById('admin-gal-pane-catalog')
+    };
+    const btns = {
+        'ba': document.getElementById('subtab-btn-ba'),
+        'stories': document.getElementById('subtab-btn-stories'),
+        'students': document.getElementById('subtab-btn-students'),
+        'catalog': document.getElementById('subtab-btn-catalog')
+    };
+
+    // Hide all panes
+    Object.keys(panes).forEach(k => {
+        if (panes[k]) panes[k].classList.add('hidden');
+        if (btns[k]) {
+            btns[k].className = 'admin-gal-subtab-btn px-4 py-2.5 rounded-xl font-bold text-xs transition flex items-center gap-2 text-slate-700 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap';
+        }
+    });
+
+    if (panes[tab]) panes[tab].classList.remove('hidden');
+    if (btns[tab]) {
+        let activeColor = 'bg-emerald-600 text-white shadow-sm';
+        if (tab === 'stories') activeColor = 'bg-red-600 text-white shadow-sm';
+        else if (tab === 'students') activeColor = 'bg-sky-600 text-white shadow-sm';
+        else if (tab === 'catalog') activeColor = 'bg-blue-600 text-white shadow-sm';
+        btns[tab].className = 'admin-gal-subtab-btn px-4 py-2.5 rounded-xl font-black text-xs transition flex items-center gap-2 ' + activeColor + ' whitespace-nowrap';
+    }
+}
+
+function previewAdminBAFile(input, previewId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.getElementById(previewId);
+            if (img) {
+                img.src = e.target.result;
+                img.classList.remove('hidden');
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function previewStudentPhoto(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('studentPhotoPreview');
+            if (preview) {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function previewStoryThumbnail(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('storyThumbPreview');
+            if (preview) {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function previewStoryVideoFile(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const label = document.getElementById('storyVideoFileLabel');
+        if (label) {
+            const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+            label.innerText = file.name + ' (' + sizeMb + ' MB)';
+        }
+    }
+}
+
+// Fee Structure Discount Calculator & Modal Control
+function calculateFeeDiscounts(prefix) {
+    const feeInput = document.getElementById(prefix === 'edit' ? 'editCourseFeeInput' : 'createCourseFeeInput');
+    const boysDiscInput = document.getElementById(prefix === 'edit' ? 'editDiscountBoysInput' : 'createDiscountBoysInput');
+    const girlsDiscInput = document.getElementById(prefix === 'edit' ? 'editDiscountGirlsInput' : 'createDiscountGirlsInput');
+    const boysBadge = document.getElementById(prefix === 'edit' ? 'editBoysCalculatedBadge' : 'createBoysCalculatedBadge');
+    const girlsBadge = document.getElementById(prefix === 'edit' ? 'editGirlsCalculatedBadge' : 'createGirlsCalculatedBadge');
+
+    if (!feeInput) return;
+
+    const rawVal = feeInput.value.replace(/[^0-9]/g, '');
+    const baseFee = parseFloat(rawVal) || 0;
+    const boysDisc = Math.min(100, Math.max(0, parseFloat(boysDiscInput?.value) || 0));
+    const girlsDisc = Math.min(100, Math.max(0, parseFloat(girlsDiscInput?.value) || 0));
+
+    if (baseFee > 0) {
+        const boysFinal = Math.round(baseFee - (baseFee * boysDisc / 100));
+        const girlsFinal = Math.round(baseFee - (baseFee * girlsDisc / 100));
+        if (boysBadge) boysBadge.textContent = 'Final: ₹' + boysFinal.toLocaleString('en-IN');
+        if (girlsBadge) girlsBadge.textContent = 'Final: ₹' + girlsFinal.toLocaleString('en-IN');
+    } else {
+        if (boysBadge) boysBadge.textContent = 'Final: ₹--';
+        if (girlsBadge) girlsBadge.textContent = 'Final: ₹--';
+    }
+}
+
+function handleFeeEdit(btn) {
+    try {
+        const raw = btn.getAttribute('data-fee');
+        const fee = JSON.parse(atob(raw));
+        openEditFeeModal(fee);
+    } catch (e) {
+        console.error('Error parsing fee data', e);
+    }
+}
+
+function openEditFeeModal(fee) {
+    const modal = document.getElementById('editFeeModal');
+    const form = document.getElementById('editFeeForm');
+    if (!modal || !form) return;
+
+    form.action = '/admin/fees/update/' + fee.id;
+    document.getElementById('editFeeCourseName').value = fee.course_name || '';
+    document.getElementById('editFeeDuration').value = fee.duration || '';
+    document.getElementById('editCourseFeeInput').value = fee.course_fee || '';
+    document.getElementById('editFeeCertification').value = fee.certification || '';
+    document.getElementById('editDiscountBoysInput').value = fee.discount_boys || 0;
+    document.getElementById('editDiscountGirlsInput').value = fee.discount_girls || 0;
+    document.getElementById('editFeeOfferTag').value = fee.offer_tag || '';
+    document.getElementById('editFeeBadgeColor').value = fee.badge_color || 'amber';
+    document.getElementById('editFeeOfferActive').checked = fee.offer_active == 1;
+
+    calculateFeeDiscounts('edit');
+    modal.classList.remove('hidden');
+}
+
+function closeEditFeeModal() {
+    const modal = document.getElementById('editFeeModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+// Certificate Edit & Manual Dates Modal Control
+function handleCertEdit(btn) {
+    try {
+        const raw = btn.getAttribute('data-cert');
+        const cert = JSON.parse(atob(raw));
+        openEditCertModal(cert);
+    } catch (e) {
+        console.error('Error parsing certificate data', e);
+    }
+}
+
+function openEditCertModal(cert) {
+    const modal = document.getElementById('editCertModal');
+    const form = document.getElementById('editCertForm');
+    if (!modal || !form) return;
+
+    form.action = '/admin/certificates/update/' + cert.id;
+    document.getElementById('editCertRegdNo').value = cert.regd_no || '';
+    document.getElementById('editCertSlNo').value = cert.sl_no || '';
+    document.getElementById('editCertName').value = cert.name || '';
+    document.getElementById('editCertFatherName').value = cert.father_name || '';
+    document.getElementById('editCertDob').value = cert.dob || '';
+    document.getElementById('editCertCourse').value = cert.course || '';
+    document.getElementById('editCertFromDate').value = cert.from_date || '';
+    document.getElementById('editCertToDate').value = cert.to_date || '';
+    document.getElementById('editCertIssuedDate').value = cert.issued_date || '';
+    document.getElementById('editCertCenter').value = cert.center || 'SMTTC Institute';
+    document.getElementById('editCertLocation').value = cert.location || 'Patna';
+
+    modal.classList.remove('hidden');
+}
+
+function closeEditCertModal() {
+    const modal = document.getElementById('editCertModal');
+    if (modal) modal.classList.add('hidden');
 }
 </script>
 @endsection

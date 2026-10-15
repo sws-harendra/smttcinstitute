@@ -17,8 +17,21 @@
       
       <!-- Text Column -->
       <div class="lg:col-span-7" data-aos="fade-right" data-aos-duration="800">
-        <div class="inline-flex items-center gap-2 bg-[#FACA0A] text-slate-900 font-extrabold px-4 py-1.5 rounded-full text-sm sm:text-base mb-6 shadow-sm font-cursive tracking-wide">
-          <i class="fa-solid fa-certificate"></i> Practical Appliance Repairing Course
+        <div class="flex items-center flex-wrap gap-3 mb-6">
+          <div class="inline-flex items-center gap-2 bg-[#FACA0A] text-slate-900 font-extrabold px-4 py-1.5 rounded-full text-sm sm:text-base shadow-sm font-cursive tracking-wide">
+            <i class="fa-solid fa-certificate"></i> Practical Appliance Repairing Course
+          </div>
+          <div class="animate-offer-badge">
+            <div class="inline-flex items-center gap-1 sm:gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white font-black text-xs shadow-lg tracking-wide border border-slate-700">
+              <span class="inline-flex items-center gap-1 text-sky-400">
+                <span class="text-xs">👦</span> Boys: <span class="text-white bg-sky-600 px-1.5 py-0.2 rounded font-extrabold">25% OFF</span>
+              </span>
+              <span class="text-slate-500">|</span>
+              <span class="inline-flex items-center gap-1 text-pink-400">
+                <span class="text-xs">👧</span> Girls: <span class="text-white bg-gradient-to-r from-rose-600 to-pink-500 px-1.5 py-0.2 rounded font-extrabold shadow-xs">40% OFF</span>
+              </span>
+            </div>
+          </div>
         </div>
         
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-6 tracking-tight">
@@ -50,6 +63,19 @@
       <!-- Right Visual Component -->
       <div class="lg:col-span-5" data-aos="fade-left" data-aos-duration="800">
         <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl relative">
+          <!-- Floating Boys & Girls Discount Badge -->
+          <div class="absolute -top-3.5 right-4 sm:right-6 z-20 animate-offer-badge pointer-events-none">
+            <div class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-slate-900/95 backdrop-blur-md text-white shadow-xl border border-slate-700/80 text-[10px] sm:text-xs font-black tracking-wide">
+              <span class="inline-flex items-center gap-1 text-sky-400">
+                <span class="text-xs">👦</span> Boys: <span class="text-white bg-sky-600/80 px-1.5 py-0.2 rounded font-extrabold">25% OFF</span>
+              </span>
+              <span class="text-slate-500 font-light">|</span>
+              <span class="inline-flex items-center gap-1 text-pink-400">
+                <span class="text-xs">👧</span> Girls: <span class="text-white bg-gradient-to-r from-rose-600 to-pink-500 px-1.5 py-0.2 rounded font-extrabold shadow-xs">40% OFF</span>
+              </span>
+            </div>
+          </div>
+
           <div class="flex items-center gap-4 mb-6">
             <div class="w-14 h-14 bg-[#FACA0A] text-slate-900 rounded-2xl flex items-center justify-center text-2xl font-bold">
               <i class="fa-solid fa-[#FACA0A] fa-soap"></i>

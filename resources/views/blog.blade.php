@@ -81,7 +81,18 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
                 <!-- Cover Image Container (7 Cols) -->
                 <div class="lg:col-span-7 relative overflow-hidden bg-slate-900 aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto lg:h-[420px]">
-                    <img src="{{ $featuredImg }}" alt="{{ $featured->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out">
+                    @if(!empty($featured->cover_link))
+                        <a href="{{ $featured->cover_link }}" target="_blank" rel="noopener noreferrer" class="block w-full h-full relative group/feat" title="{{ $featured->title }} - Visit Link">
+                            <img src="{{ $featuredImg }}" alt="{{ $featured->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out">
+                            <div class="absolute bottom-4 right-4 bg-indigo-600/90 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 backdrop-blur-xs hover:bg-indigo-600 transition">
+                                <span>Visit Link</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </div>
+                        </a>
+                    @else
+                        <a href="{{ route('blog.show', $featured->slug ?? $featured->id) }}" class="block w-full h-full">
+                            <img src="{{ $featuredImg }}" alt="{{ $featured->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out">
+                        </a>
+                    @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent lg:hidden"></div>
                     <div class="absolute top-4 left-4 flex items-center gap-2">
                         <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-400 text-slate-950 shadow-md uppercase tracking-wider flex items-center gap-1.5">
@@ -144,7 +155,18 @@
                     <div>
                         <!-- Cover Image with Aspect Ratio & Zoom -->
                         <div class="relative overflow-hidden bg-gray-100 aspect-[16/10]">
-                            <img src="{{ $blogImg }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out">
+                            @if(!empty($blog->cover_link))
+                                <a href="{{ $blog->cover_link }}" target="_blank" rel="noopener noreferrer" class="block w-full h-full relative" title="{{ $blog->title }} - Visit Link">
+                                    <img src="{{ $blogImg }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out">
+                                    <div class="absolute bottom-2.5 right-2.5 bg-indigo-600/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1 backdrop-blur-xs hover:bg-indigo-600 transition">
+                                        <span>Link</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                    </div>
+                                </a>
+                            @else
+                                <a href="{{ route('blog.show', $blog->slug ?? $blog->id) }}" class="block w-full h-full">
+                                    <img src="{{ $blogImg }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out">
+                                </a>
+                            @endif
                             
                             <!-- Badges Overlay -->
                             <div class="absolute top-3 left-3 flex items-center gap-1.5">

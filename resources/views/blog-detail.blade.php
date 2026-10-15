@@ -19,19 +19,34 @@
 <div id="readingProgressBar" class="fixed top-0 left-0 h-1.5 bg-gradient-to-r from-amber-400 to-[#FACA0A] z-[120] transition-all duration-150" style="width: 0%;"></div>
 
 <section class="py-10 sm:py-16 bg-slate-50 min-h-screen">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
+    <div id="blogPageContainer" class="max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 transition-all duration-300">
         
-        <!-- Breadcrumbs Navigation -->
-        <nav class="flex items-center gap-2 text-xs sm:text-sm text-gray-500 flex-wrap" aria-label="Breadcrumb">
-            <a href="/" class="hover:text-black transition">Home</a>
-            <span>&rsaquo;</span>
-            <a href="{{ route('blog.index') }}" class="hover:text-black transition">Technical Blogs</a>
-            <span>&rsaquo;</span>
-            <span class="text-gray-900 font-semibold truncate max-w-[280px] sm:max-w-md">{{ $blog->title }}</span>
-        </nav>
+        <div class="flex items-center justify-between flex-wrap gap-3">
+            <!-- Breadcrumbs Navigation -->
+            <nav class="flex items-center gap-2 text-xs sm:text-sm text-gray-500 flex-wrap" aria-label="Breadcrumb">
+                <a href="/" class="hover:text-black transition">Home</a>
+                <span>&rsaquo;</span>
+                <a href="{{ route('blog.index') }}" class="hover:text-black transition">Technical Blogs</a>
+                <span>&rsaquo;</span>
+                <span class="text-gray-900 font-semibold truncate max-w-[280px] sm:max-w-md">{{ $blog->title }}</span>
+            </nav>
+
+            <!-- Responsive Reading Page View Mode Switcher -->
+            <div class="flex items-center gap-1.5 bg-white border border-slate-200/90 rounded-xl p-1 shadow-2xs text-xs">
+                <span class="text-[11px] font-bold text-slate-500 px-2 flex items-center gap-1">
+                    <i class="fa-solid fa-desktop text-indigo-500"></i> Page View:
+                </span>
+                <button type="button" onclick="setBlogPageWidth('standard')" id="btnWidthStandard" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition" title="Standard width reading mode (1024px)">
+                    Standard
+                </button>
+                <button type="button" onclick="setBlogPageWidth('large')" id="btnWidthLarge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition" title="Large spacious canvas (1360px)">
+                    <i class="fa-solid fa-expand text-[10px] mr-1"></i> Large (Wide)
+                </button>
+            </div>
+        </div>
 
         <!-- Main Article Container -->
-        <article class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-6 sm:p-10 md:p-14 space-y-8">
+        <article class="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-10 md:p-12 space-y-8" style="overflow-x: clip;">
             
             <!-- Article Header & Meta -->
             <header class="space-y-4 border-b border-gray-100 pb-8">
@@ -56,7 +71,37 @@
                     @endif
                 </div>
 
-                <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-gray-950 leading-tight tracking-tight">
+                @php
+                    $titleColorStyle = !empty($blog->title_color) ? "color: {$blog->title_color};" : '';
+                    $titleFontStyle = '';
+                    if ($blog->title_font === 'serif') {
+                        $titleFontStyle = "font-family: 'Georgia', Cambria, 'Times New Roman', serif;";
+                    } elseif ($blog->title_font === 'outfit') {
+                        $titleFontStyle = "font-family: 'Outfit', -apple-system, sans-serif;";
+                    } elseif ($blog->title_font === 'mono') {
+                        $titleFontStyle = "font-family: ui-monospace, SFMono-Regular, Menlo, monospace;";
+                    } elseif ($blog->title_font === 'sans') {
+                        $titleFontStyle = "font-family: 'Inter', system-ui, sans-serif;";
+                    }
+
+                    $titleSizeStyle = '';
+                    if ($blog->title_size === 'medium') {
+                        $titleSizeStyle = "font-size: clamp(1.5rem, 3.5vw, 2.25rem);";
+                    } elseif ($blog->title_size === 'large') {
+                        $titleSizeStyle = "font-size: clamp(1.85rem, 4.5vw, 2.85rem);";
+                    } elseif ($blog->title_size === 'xl') {
+                        $titleSizeStyle = "font-size: clamp(2.2rem, 5.5vw, 3.5rem);";
+                    } elseif ($blog->title_size === 'mega') {
+                        $titleSizeStyle = "font-size: clamp(2.6rem, 6.5vw, 4.2rem);";
+                    }
+
+                    $titleWeightStyle = !empty($blog->title_weight) ? "font-weight: {$blog->title_weight};" : '';
+                    $titleTransformStyle = !empty($blog->title_transform) && $blog->title_transform !== 'none' ? "text-transform: {$blog->title_transform};" : '';
+
+                    $titleCustomStyle = trim("$titleColorStyle $titleFontStyle $titleSizeStyle $titleWeightStyle $titleTransformStyle");
+                @endphp
+                                        
+                <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-gray-950 leading-tight tracking-tight" <?php if(!empty($titleCustomStyle)) echo 'style="' . htmlspecialchars($titleCustomStyle) . '"'; ?>>
                     {{ $blog->title }}
                 </h1>
             </header>
@@ -66,49 +111,83 @@
                 @php
                     $coverSrc = Str::startsWith($blog->image_url, 'http') ? $blog->image_url : (Str::startsWith($blog->image_url, '/') ? asset($blog->image_url) : asset($blog->image_url));
                 @endphp
-                <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-gray-100 bg-slate-900 group">
-                    <img src="{{ $coverSrc }}" alt="{{ $blog->title }}" class="w-full max-h-[500px] object-cover cursor-zoom-in" onclick="openLightbox('{{ $coverSrc }}', '{{ addslashes($blog->title) }}')">
-                    <div class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg pointer-events-none">
-                        <i class="fa-solid fa-expand mr-1"></i> Click to enlarge
-                    </div>
+                <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-gray-100 bg-slate-900 group flex items-center justify-center">
+                    @if(!empty($blog->cover_link))
+                        <a href="{{ $blog->cover_link }}" target="_blank" rel="noopener noreferrer" class="w-full block relative group/banner cursor-pointer" title="{{ $blog->title }} - Click to visit link">
+                            <img src="{{ $coverSrc }}" alt="{{ $blog->title }}" class="w-full max-h-[500px] object-cover object-center mx-auto transition duration-300 group-hover/banner:scale-[1.01] group-hover/banner:opacity-95">
+                            
+                            <!-- Interactive Backlink Callout Badge on Banner -->
+                            <div class="absolute bottom-3 right-3 bg-indigo-600/90 hover:bg-indigo-600 backdrop-blur-md text-white text-xs font-bold px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 shadow-lg transition transform group-hover/banner:scale-105">
+                                <span>Visit Link</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+                            </div>
+
+                            <!-- Optional Lightbox Zoom Trigger Button -->
+                            <button type="button" onclick="event.preventDefault(); event.stopPropagation(); openLightbox('{{ $coverSrc }}', '{{ addslashes($blog->title) }}')" class="absolute top-3 right-3 bg-slate-950/70 hover:bg-slate-900 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-md backdrop-blur-xs transition" title="Click to zoom image">
+                                <i class="fa-solid fa-expand text-[11px]"></i>
+                                <span class="hidden sm:inline">Zoom</span>
+                            </button>
+                        </a>
+                    @else
+                        <img src="{{ $coverSrc }}" alt="{{ $blog->title }}" class="w-full max-h-[500px] object-cover object-center mx-auto cursor-zoom-in" onclick="openLightbox('{{ $coverSrc }}', '{{ addslashes($blog->title) }}')">
+                        <div class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg pointer-events-none">
+                            <i class="fa-solid fa-expand mr-1"></i> Click to enlarge
+                        </div>
+                    @endif
                 </div>
             @endif
 
-            <!-- High-Detail Typography & Responsive Sizing Styles -->
+            <!-- High-Detail Typography & Responsive Sizing Styles (Matches Editor WYSIWYG 1:1) -->
             <style>
                 .blog-article-content {
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     font-size: 1.0625rem;
-                    line-height: 1.8;
+                    line-height: 1.85;
                     color: #1e293b;
+                    overflow-wrap: anywhere !important;
+                    word-break: break-word !important;
+                    word-wrap: break-word !important;
+                    hyphens: auto;
+                }
+                .blog-article-content p,
+                .blog-article-content li,
+                .blog-article-content td,
+                .blog-article-content th {
+                    font-family: inherit;
                 }
                 .blog-article-content h1 {
-                    font-size: 2rem;
+                    font-family: inherit;
+                    font-size: 1.85rem;
                     font-weight: 800;
-                    margin-top: 2.25rem;
-                    margin-bottom: 1rem;
+                    margin-top: 2rem;
+                    margin-bottom: 0.85rem;
                     color: #0f172a;
                     line-height: 1.3;
                     border-bottom: 2px solid #f1f5f9;
                     padding-bottom: 0.5rem;
                 }
                 .blog-article-content h2 {
-                    font-size: 1.625rem;
+                    font-family: inherit;
+                    font-size: 1.45rem;
                     font-weight: 800;
-                    margin-top: 2rem;
-                    margin-bottom: 0.85rem;
+                    margin-top: 1.75rem;
+                    margin-bottom: 0.75rem;
                     color: #0f172a;
                     line-height: 1.35;
                 }
                 .blog-article-content h3 {
-                    font-size: 1.275rem;
+                    font-family: inherit;
+                    font-size: 1.25rem;
                     font-weight: 700;
                     margin-top: 1.5rem;
-                    margin-bottom: 0.65rem;
+                    margin-bottom: 0.6rem;
                     color: #1e293b;
                 }
                 .blog-article-content p {
+                    margin-top: 0;
                     margin-bottom: 1.25rem;
                     color: #334155;
+                    line-height: 1.8;
                 }
                 .blog-article-content a {
                     color: #4f46e5;
@@ -179,31 +258,49 @@
                 .blog-article-content img:hover {
                     box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.18);
                 }
-                .blog-article-content img.img-float-left,
-                .blog-article-content img[style*="float: left"],
+
+                /* Centered, Block & Wide Images: NEVER float! Stay in normal document flow with clean margins */
+                .blog-article-content img.img-center-block,
+                .blog-article-content img[style*="auto"],
+                .blog-article-content img[style*="display: block"]:not([style*="float: left"]):not([style*="float: right"]),
+                .blog-article-content img.mx-auto,
+                .blog-article-content img[style*="width: 10"],
+                .blog-article-content img[style*="width: 9"],
+                .blog-article-content img[style*="width: 8"],
+                .blog-article-content img[style*="width: 7"],
+                .blog-article-content img[style*="width: 6"],
+                .blog-article-content img[style*="width: 100%"] {
+                    float: none !important;
+                    display: block !important;
+                    margin: 1.25rem auto !important;
+                    clear: both !important;
+                }
+
+                /* Floated images: only float if explicitly floated AND NOT centered with auto margins or wide */
+                .blog-article-content img.img-float-left:not([style*="auto"]):not([style*="width: 10"]):not([style*="width: 9"]):not([style*="width: 8"]):not([style*="width: 7"]):not([style*="width: 6"]):not([style*="width: 100%"]),
+                .blog-article-content img[style*="float: left"]:not([style*="auto"]):not([style*="width: 10"]):not([style*="width: 9"]):not([style*="width: 8"]):not([style*="width: 7"]):not([style*="width: 6"]):not([style*="width: 100%"]),
                 .blog-article-content .float-left {
                     float: left !important;
-                    margin: 0.5rem 1.75rem 1.25rem 0 !important;
-                    max-width: 50% !important;
+                    margin: 0.35rem 2rem 1.25rem 0 !important;
+                    max-width: 48% !important;
+                    height: auto;
                 }
-                .blog-article-content img.img-float-right,
-                .blog-article-content img[style*="float: right"],
+                .blog-article-content img.img-float-right:not([style*="auto"]):not([style*="width: 10"]):not([style*="width: 9"]):not([style*="width: 8"]):not([style*="width: 7"]):not([style*="width: 6"]):not([style*="width: 100%"]),
+                .blog-article-content img[style*="float: right"]:not([style*="auto"]):not([style*="width: 10"]):not([style*="width: 9"]):not([style*="width: 8"]):not([style*="width: 7"]):not([style*="width: 6"]):not([style*="width: 100%"]),
                 .blog-article-content .float-right {
                     float: right !important;
-                    margin: 0.5rem 0 1.25rem 1.75rem !important;
-                    max-width: 50% !important;
+                    margin: 0.35rem 0 1.25rem 2rem !important;
+                    max-width: 48% !important;
+                    height: auto;
                 }
-                .blog-article-content img.img-center-block,
-                .blog-article-content img[style*="margin-left: auto"][style*="margin-right: auto"],
-                .blog-article-content img[style*="margin: auto"],
-                .blog-article-content .mx-auto {
-                    display: block !important;
-                    margin: 2rem auto !important;
-                }
+
                 .blog-article-content img.img-full-width {
                     width: 100% !important;
                     height: auto !important;
                     display: block !important;
+                    float: none !important;
+                    margin: 1.25rem auto !important;
+                    clear: both !important;
                 }
                 .blog-article-content img.img-rounded-lg {
                     border-radius: 1.25rem !important;
@@ -211,10 +308,80 @@
                 .blog-article-content img.img-shadow-card {
                     box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.2) !important;
                 }
+
+                /* Parent P clearing: centered & full-width images clear, while floated images allow text wrapping */
+                .blog-article-content p:has(> img.img-center-block),
+                .blog-article-content p:has(> img.img-full-width) {
+                    clear: both !important;
+                    margin: 1.5rem auto !important;
+                }
+                .blog-article-content p:has(> img.img-float-left),
+                .blog-article-content p:has(> img.img-float-right) {
+                    clear: none !important;
+                    margin-bottom: 1.25rem !important;
+                }
+
+                /* Collapsible empty ghost paragraphs */
+                .blog-article-content p:empty,
+                .blog-article-content p:blank {
+                    display: none !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    height: 0 !important;
+                    line-height: 0 !important;
+                }
+
+                /* Adjacent text / headings align flush with top of the floated image */
+                .blog-article-content p:has(> img.img-float-left) + h1,
+                .blog-article-content p:has(> img.img-float-left) + h2,
+                .blog-article-content p:has(> img.img-float-left) + h3,
+                .blog-article-content p:has(> img.img-float-left) + h4,
+                .blog-article-content p:has(> img.img-float-left) + p,
+                .blog-article-content p:has(> img.img-float-right) + h1,
+                .blog-article-content p:has(> img.img-float-right) + h2,
+                .blog-article-content p:has(> img.img-float-right) + h3,
+                .blog-article-content p:has(> img.img-float-right) + h4,
+                .blog-article-content p:has(> img.img-float-right) + p,
+                .blog-article-content img.img-float-left + h1,
+                .blog-article-content img.img-float-left + h2,
+                .blog-article-content img.img-float-left + h3,
+                .blog-article-content img.img-float-left + h4,
+                .blog-article-content img.img-float-left + p,
+                .blog-article-content img.img-float-right + h1,
+                .blog-article-content img.img-float-right + h2,
+                .blog-article-content img.img-float-right + h3,
+                .blog-article-content img.img-float-right + h4,
+                .blog-article-content img.img-float-right + p {
+                    margin-top: 0 !important;
+                }
+
                 .blog-article-content figure {
-                    margin: 2rem auto;
+                    margin: 1.5rem auto;
                     text-align: center;
                     max-width: 100%;
+                }
+                .blog-article-content figure.img-float-left,
+                .blog-article-content figure[style*="float: left"],
+                .blog-article-content figure:has(img.img-float-left) {
+                    float: left !important;
+                    margin: 0.25rem 1.75rem 1rem 0 !important;
+                    max-width: 100%;
+                    text-align: left !important;
+                }
+                .blog-article-content figure.img-float-right,
+                .blog-article-content figure[style*="float: right"],
+                .blog-article-content figure:has(img.img-float-right) {
+                    float: right !important;
+                    margin: 0.25rem 0 1rem 1.75rem !important;
+                    max-width: 100%;
+                    text-align: right !important;
+                }
+                .blog-article-content figure.img-center-block,
+                .blog-article-content figure[style*="margin: 20px auto"] {
+                    display: block !important;
+                    margin: 2rem auto !important;
+                    text-align: center !important;
+                    clear: both !important;
                 }
                 .blog-article-content figure img {
                     margin: 0 auto;
@@ -227,17 +394,26 @@
                     font-style: italic;
                     text-align: center;
                 }
+                .blog-article-content::after {
+                    content: "";
+                    display: table;
+                    clear: both;
+                }
 
-                /* Mobile float reset so narrow screens don't choke text */
-                @media (max-width: 640px) {
+                /* Mobile & Tablet float reset so narrow screens don't choke text */
+                @media (max-width: 768px) {
                     .blog-article-content img.img-float-left,
                     .blog-article-content img.img-float-right,
                     .blog-article-content img[style*="float: left"],
-                    .blog-article-content img[style*="float: right"] {
+                    .blog-article-content img[style*="float: right"],
+                    .blog-article-content .float-left,
+                    .blog-article-content .float-right {
                         float: none !important;
                         margin: 1.25rem auto !important;
                         max-width: 100% !important;
+                        height: auto !important;
                         display: block !important;
+                        clear: both !important;
                     }
                 }
 
@@ -269,7 +445,32 @@
 
             <!-- Rendered Rich Text Content -->
             <div id="blogContentBody" class="blog-article-content">
-                {!! $blog->content !!}
+                @php
+                    $cleanedArticleContent = $blog->content;
+                    // 1. Remove empty ghost paragraphs generated by editor (<p>&nbsp;</p>, <p><br></p>, etc.)
+                    $cleanedArticleContent = preg_replace('/<p[^>]*>(?:\s|&nbsp;|<br[^>]*>)*<\/p>/i', '', $cleanedArticleContent);
+
+                    // 2. Fix floated images placed inside paragraphs after text:
+                    // Hoist the floated image to the start of that paragraph so text wraps neatly from line 1
+                    $cleanedArticleContent = preg_replace_callback(
+                        '/<p([^>]*)>((?:(?!<p|<\/p>).)*?)(<img[^>]+(?:class="[^"]*img-float-(?:left|right)[^"]*"|style="[^"]*float:\s*(?:left|right)[^"]*")[^>]*>)((?:(?!<p|<\/p>).)*?)<\/p>/is',
+                        function ($matches) {
+                            $pAttrs = $matches[1];
+                            $beforeImg = trim($matches[2]);
+                            $img = $matches[3];
+                            $afterImg = trim($matches[4]);
+
+                            if (empty($beforeImg)) {
+                                return $matches[0];
+                            }
+
+                            $combinedText = $beforeImg . ($beforeImg && $afterImg ? ' ' : '') . $afterImg;
+                            return '<p' . $pAttrs . '>' . $img . $combinedText . '</p>';
+                        },
+                        $cleanedArticleContent
+                    );
+                @endphp
+                {!! $cleanedArticleContent !!}
             </div>
 
             <!-- Social Share Bar & Actions -->
@@ -431,6 +632,34 @@ function copyArticleLink() {
             }, 2500);
         }
     });
+}
+
+// 4. Responsive Reading Page Width Switcher (Standard 1024px vs Large 1360px Canvas)
+function setBlogPageWidth(mode) {
+    const container = document.getElementById('blogPageContainer');
+    const btnStd = document.getElementById('btnWidthStandard');
+    const btnLrg = document.getElementById('btnWidthLarge');
+    if (!container || !btnStd || !btnLrg) return;
+
+    if (mode === 'standard') {
+        container.className = 'max-w-5xl mx-auto px-4 sm:px-6 space-y-8 transition-all duration-300';
+        btnStd.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition';
+        btnLrg.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition';
+        localStorage.setItem('smttc_blog_page_width', 'standard');
+    } else {
+        container.className = 'max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 transition-all duration-300';
+        btnLrg.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition';
+        btnStd.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition';
+        localStorage.setItem('smttc_blog_page_width', 'large');
+    }
+}
+
+// Auto-restore saved width preference
+const savedPageWidth = localStorage.getItem('smttc_blog_page_width');
+if (savedPageWidth === 'standard') {
+    setBlogPageWidth('standard');
+} else {
+    setBlogPageWidth('large');
 }
 </script>
 
