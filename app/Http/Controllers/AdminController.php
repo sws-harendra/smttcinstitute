@@ -824,6 +824,13 @@ class AdminController extends Controller
 
         $cert->update($validated);
 
+        // Also sync the exact course & photo with the admission record if it exists
+        $admissionUpdate = ['course' => $validated['course'], 'name' => $validated['name'], 'father_name' => $validated['father_name']];
+        if (!empty($validated['photo'])) {
+            $admissionUpdate['photo'] = $validated['photo'];
+        }
+        \App\Models\Admission::where('enrollment_no', $cert->regd_no)->update($admissionUpdate);
+
         return back()->with('cert_success', 'Certificate for ' . $cert->name . ' updated successfully!');
     }
 

@@ -349,7 +349,7 @@
                             <span class="font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1.5">
                                 <i class="fa-solid fa-screwdriver-wrench text-amber-600 text-[8px]"></i> Course
                             </span>
-                            <span class="font-extrabold text-[#0c1938] text-right max-w-[170px] truncate uppercase">
+                            <span class="font-extrabold text-[#0c1938] text-right max-w-[185px] leading-tight text-[8.5px] uppercase">
                                 {{ $student->course }}
                             </span>
                         </div>

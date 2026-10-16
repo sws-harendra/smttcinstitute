@@ -115,20 +115,28 @@ Route::get('/id-card/{id}', function($id) {
         $admission = \App\Models\Admission::where('id', $id)->orWhere('username', $id)->first();
     }
 
+    if (!$certificate && $admission) {
+        $certificate = \App\Models\Certificate::where('regd_no', $admission->enrollment_no)->first();
+    }
+    if (!$admission && $certificate) {
+        $admission = \App\Models\Admission::where('enrollment_no', $certificate->regd_no)->first();
+    }
+
     if (!$admission && !$certificate) {
         abort(404, 'Student Identity Card not found for: ' . $id);
     }
 
-    $name = $admission ? $admission->name : $certificate->name;
-    $rawFather = $admission ? $admission->father_name : ($certificate ? $certificate->father_name : null);
+    $name = $certificate ? $certificate->name : ($admission ? $admission->name : 'Student');
+    $rawFather = $certificate ? $certificate->father_name : ($admission ? $admission->father_name : null);
     $fatherName = ($rawFather && strtolower(trim($rawFather)) !== 'null' && strtolower(trim($rawFather)) !== 'nill' && strtolower(trim($rawFather)) !== '') ? strtoupper($rawFather) : '—';
     
-    $dob = $admission ? $admission->dob : ($certificate ? $certificate->dob : null);
-    $course = $admission ? $admission->course : ($certificate ? $certificate->course : 'Technical Training');
+    $dob = $certificate ? $certificate->dob : ($admission ? $admission->dob : null);
+    // Certificate course has first priority so ID card always matches Certificate 100%
+    $course = ($certificate && !empty($certificate->course)) ? $certificate->course : ($admission ? $admission->course : 'Technical Training');
     $mobile = $admission ? $admission->mobile_no : '—';
     $email = $admission ? $admission->email : '—';
-    $enrollment_no = $admission ? $admission->enrollment_no : $certificate->regd_no;
-    $photo = ($admission && $admission->photo) ? $admission->photo : ($certificate ? $certificate->photo : null);
+    $enrollment_no = $certificate ? $certificate->regd_no : ($admission ? $admission->enrollment_no : $id);
+    $photo = ($certificate && $certificate->photo) ? $certificate->photo : ($admission ? $admission->photo : null);
     $address = $admission ? ($admission->address . ', ' . $admission->district . ', ' . $admission->state) : ($certificate->location ?? 'Patna, Bihar');
     $validFrom = $certificate ? ($certificate->from_date ? \Carbon\Carbon::parse($certificate->from_date)->format('M Y') : null) : ($admission ? \Carbon\Carbon::parse($admission->created_at)->format('M Y') : date('M Y'));
     $validTo = $certificate ? ($certificate->to_date ? \Carbon\Carbon::parse($certificate->to_date)->addYears(2)->format('M Y') : null) : date('M Y', strtotime('+2 years'));
