@@ -66,12 +66,28 @@ Route::post('/admin/sliders', [AdminController::class, 'storeSlider'])->name('ad
 Route::post('/admin/sliders/delete/{id}', [AdminController::class, 'deleteSlider'])->name('admin.sliders.delete');
 
 Route::post('/admin/fees', [AdminController::class, 'storeFee'])->name('admin.fees.store');
+Route::post('/admin/fees/update/{id}', [AdminController::class, 'updateFee'])->name('admin.fees.update');
 Route::post('/admin/fees/delete/{id}', [AdminController::class, 'deleteFee'])->name('admin.fees.delete');
 
 Route::post('/admin/galleries', [AdminController::class, 'storeGallery'])->name('admin.galleries.store');
+Route::post('/admin/galleries/update/{id}', [AdminController::class, 'updateGallery'])->name('admin.galleries.update');
 Route::post('/admin/galleries/delete/{id}', [AdminController::class, 'deleteGallery'])->name('admin.galleries.delete');
 
+Route::post('/admin/before-after', [AdminController::class, 'storeBeforeAfter'])->name('admin.before_after.store');
+Route::post('/admin/before-after/update/{id}', [AdminController::class, 'updateBeforeAfter'])->name('admin.before_after.update');
+Route::post('/admin/before-after/delete/{id}', [AdminController::class, 'deleteBeforeAfter'])->name('admin.before_after.delete');
+Route::post('/api/before-after/like/{id}', [PageController::class, 'likeBeforeAfter'])->name('before_after.like');
+
+Route::post('/admin/successful-students', [AdminController::class, 'storeSuccessfulStudent'])->name('admin.students.store');
+Route::post('/admin/successful-students/update/{id}', [AdminController::class, 'updateSuccessfulStudent'])->name('admin.students.update');
+Route::post('/admin/successful-students/delete/{id}', [AdminController::class, 'deleteSuccessfulStudent'])->name('admin.students.delete');
+
+Route::post('/admin/story-videos', [AdminController::class, 'storeSuccessStoryVideo'])->name('admin.story_videos.store');
+Route::post('/admin/story-videos/update/{id}', [AdminController::class, 'updateSuccessStoryVideo'])->name('admin.story_videos.update');
+Route::post('/admin/story-videos/delete/{id}', [AdminController::class, 'deleteSuccessStoryVideo'])->name('admin.story_videos.delete');
+
 Route::post('/admin/certificates', [AdminController::class, 'storeCertificate'])->name('admin.certificates.store');
+Route::post('/admin/certificates/update/{id}', [AdminController::class, 'updateCertificate'])->name('admin.certificates.update');
 Route::post('/admin/certificates/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('admin.certificates.delete');
 Route::post('/admin/certificates/signatures', [AdminController::class, 'storeCertSignatures'])->name('admin.certificates.signatures');
 Route::post('/admin/admissions/approve/{id}', [AdminController::class, 'approveAdmissionCertificate'])->name('admin.admissions.approve');
@@ -90,3 +106,60 @@ Route::get('/certificate/{regd_no}', function($regd_no) {
     ];
     return view('certificate', compact('student'));
 })->name('certificate.view');
+
+Route::get('/id-card/{id}', function($id) {
+    $admission = \App\Models\Admission::where('enrollment_no', $id)->first();
+    $certificate = \App\Models\Certificate::where('regd_no', $id)->first();
+
+    if (!$admission && !$certificate) {
+        $admission = \App\Models\Admission::where('id', $id)->orWhere('username', $id)->first();
+    }
+
+    if (!$certificate && $admission) {
+        $certificate = \App\Models\Certificate::where('regd_no', $admission->enrollment_no)->first();
+    }
+    if (!$admission && $certificate) {
+        $admission = \App\Models\Admission::where('enrollment_no', $certificate->regd_no)->first();
+    }
+
+    if (!$admission && !$certificate) {
+        abort(404, 'Student Identity Card not found for: ' . $id);
+    }
+
+    $name = $certificate ? $certificate->name : ($admission ? $admission->name : 'Student');
+    $rawFather = $certificate ? $certificate->father_name : ($admission ? $admission->father_name : null);
+    $fatherName = ($rawFather && strtolower(trim($rawFather)) !== 'null' && strtolower(trim($rawFather)) !== 'nill' && strtolower(trim($rawFather)) !== '') ? strtoupper($rawFather) : '—';
+    
+    $dob = $certificate ? $certificate->dob : ($admission ? $admission->dob : null);
+    // Certificate course has first priority so ID card always matches Certificate 100%
+    $course = ($certificate && !empty($certificate->course)) ? $certificate->course : ($admission ? $admission->course : 'Technical Training');
+    $mobile = $admission ? $admission->mobile_no : '—';
+    $email = $admission ? $admission->email : '—';
+    $enrollment_no = $certificate ? $certificate->regd_no : ($admission ? $admission->enrollment_no : $id);
+    $photo = ($certificate && $certificate->photo) ? $certificate->photo : ($admission ? $admission->photo : null);
+    $address = $admission ? ($admission->address . ', ' . $admission->district . ', ' . $admission->state) : ($certificate->location ?? 'Patna, Bihar');
+    $validFrom = $certificate ? ($certificate->from_date ? \Carbon\Carbon::parse($certificate->from_date)->format('M Y') : null) : ($admission ? \Carbon\Carbon::parse($admission->created_at)->format('M Y') : date('M Y'));
+    $validTo = $certificate ? ($certificate->to_date ? \Carbon\Carbon::parse($certificate->to_date)->addYears(2)->format('M Y') : null) : date('M Y', strtotime('+2 years'));
+
+    $student = (object)[
+        'id' => $admission ? $admission->id : ($certificate ? $certificate->id : 1),
+        'name' => $name,
+        'father_name' => $fatherName,
+        'dob' => $dob,
+        'course' => $course,
+        'mobile_no' => $mobile,
+        'email' => $email,
+        'enrollment_no' => $enrollment_no,
+        'photo' => $photo,
+        'address' => $address,
+        'valid_from' => $validFrom,
+        'valid_to' => $validTo,
+        'admission' => $admission,
+        'certificate' => $certificate,
+    ];
+
+    return view('idcard', compact('student'));
+})->name('idcard.view');
+
+Route::post('/id-card/upload-photo/{id}', [AdminController::class, 'uploadIdCardPhoto'])->name('idcard.uploadPhoto');
+

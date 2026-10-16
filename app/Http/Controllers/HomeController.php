@@ -12,7 +12,8 @@ class HomeController extends Controller
     {
         $sliders = SliderImage::latest()->get();
         $blogs = Blog::latest()->take(6)->get();
+        $fees = \App\Models\FeeStructure::all();
 
-        return view('index', compact('sliders', 'blogs'));
+        return view('index', compact('sliders', 'blogs', 'fees'));
     }
 }

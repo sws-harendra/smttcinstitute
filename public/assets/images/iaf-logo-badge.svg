@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240 240" width="100%" height="100%">
+  <defs>
+    <!-- Metallic Silver Bevel Gradient -->
+    <linearGradient id="iafSilverRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="18%" stop-color="#e2e8f0"/>
+      <stop offset="42%" stop-color="#64748b"/>
+      <stop offset="70%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <!-- Royal Blue Radial Sphere Gradient -->
+    <radialGradient id="iafBlueSphere" cx="38%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="30%" stop-color="#1d4ed8"/>
+      <stop offset="70%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0b1736"/>
+    </radialGradient>
+
+    <!-- Center Globe Fill -->
+    <radialGradient id="iafGlobeGrad" cx="45%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="70%" stop-color="#0f265c"/>
+      <stop offset="100%" stop-color="#050e24"/>
+    </radialGradient>
+
+    <!-- Text Arcs (Both 100% Upright) -->
+    <path id="iafTopArc" d="M 32,120 A 88,88 0 0,1 208,120" fill="none"/>
+    <path id="iafBotArc" d="M 32,120 A 88,88 0 0,0 208,120" fill="none"/>
+  </defs>
+
+  <!-- Outer Silver Frame Ring -->
+  <circle cx="120" cy="120" r="116" fill="url(#iafSilverRim)"/>
+  <circle cx="120" cy="120" r="110" fill="#0b1736"/>
+  <circle cx="120" cy="120" r="108" fill="url(#iafBlueSphere)"/>
+
+  <!-- Concentric Hairline Rings -->
+  <circle cx="120" cy="120" r="104" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+  <circle cx="120" cy="120" r="72" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+
+  <!-- Top Curved Text: INTERNATIONAL -->
+  <text fill="#ffffff" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="13" font-weight="900" letter-spacing="3.2">
+    <textPath href="#iafTopArc" xlink:href="#iafTopArc" startOffset="50%" text-anchor="middle">
+      INTERNATIONAL
+    </textPath>
+  </text>
+
+  <!-- Bottom Curved Text: ACCREDITATION FORUM (100% Upright & Clear) -->
+  <text fill="#ffffff" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="11.5" font-weight="900" letter-spacing="1.8">
+    <textPath href="#iafBotArc" xlink:href="#iafBotArc" startOffset="50%" text-anchor="middle">
+      ACCREDITATION FORUM
+    </textPath>
+  </text>
+
+  <!-- Center Globe Sphere -->
+  <g transform="translate(120, 120)">
+    <!-- Oval Globe Base -->
+    <ellipse cx="0" cy="0" rx="68" ry="42" fill="url(#iafGlobeGrad)" stroke="url(#iafSilverRim)" stroke-width="2.5"/>
+
+    <!-- Latitude Lines -->
+    <ellipse cx="0" cy="-20" rx="55" ry="14" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.2"/>
+    <ellipse cx="0" cy="0" rx="68" ry="18" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>
+    <ellipse cx="0" cy="20" rx="55" ry="14" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.2"/>
+
+    <!-- Longitude Lines -->
+    <ellipse cx="0" cy="0" rx="22" ry="42" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.2"/>
+    <ellipse cx="0" cy="0" rx="44" ry="42" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.2"/>
+    <line x1="0" y1="-42" x2="0" y2="42" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+    <line x1="-68" y1="0" x2="68" y2="0" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+
+    <!-- Large Bold IAF Emblem Text -->
+    <text x="0" y="17" fill="#020617" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="48" font-weight="900" text-anchor="middle" letter-spacing="3" opacity="0.8" transform="translate(2, 2.5)">IAF</text>
+    <text x="0" y="17" fill="#ffffff" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="48" font-weight="900" text-anchor="middle" letter-spacing="3">IAF</text>
+  </g>
+</svg>

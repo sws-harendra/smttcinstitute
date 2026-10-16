@@ -65,6 +65,35 @@
             animation: floatSlow 4s ease-in-out infinite;
         }
 
+        /* Professional Floating Offer Badge Animation */
+        @keyframes offerBadgeFloat {
+            0%, 100% {
+                transform: translateY(0px);
+                box-shadow: 0 8px 18px -2px rgba(220, 38, 38, 0.4);
+            }
+            50% {
+                transform: translateY(-5px);
+                box-shadow: 0 14px 24px -2px rgba(220, 38, 38, 0.6);
+            }
+        }
+        .animate-offer-badge {
+            animation: offerBadgeFloat 2.6s ease-in-out infinite;
+        }
+
+        /* Infinite Smooth Marquee Right to Left */
+        @keyframes marqueeScrollRTL {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee-rtl {
+            display: flex;
+            width: max-content;
+            animation: marqueeScrollRTL 36s linear infinite;
+        }
+        .animate-marquee-rtl:hover {
+            animation-play-state: paused;
+        }
+
         /* Pulse Glow Animation */
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 15px rgba(250, 202, 10, 0.4); }
@@ -193,7 +222,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 0.75rem sm:padding:1.25rem;
+            padding: 0.75rem;
             background: linear-gradient(to top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.4), transparent);
             color: white;
             backdrop-filter: blur(6px);
@@ -264,21 +293,44 @@
 
             <!-- Services Dropdown -->
             <div class="relative group">
-                <button class="flex items-center gap-0.5 hover:text-[#FACA0A] transition whitespace-nowrap">
+                <button class="flex items-center gap-1.5 hover:text-[#FACA0A] transition whitespace-nowrap">
                 <span>Our Courses</span>
+                <span class="inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-black bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 text-white animate-offer-badge shadow-xs tracking-wider">
+                  OFF
+                </span>
                 <svg class="w-3.5 h-3.5 mt-[1px]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div class="absolute left-0 top-full mt-2 w-60 bg-white shadow-xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100 py-1.5">
-                <ul class="text-gray-700 text-xs xl:text-sm">
-                    <li><a href="{{ route('courses.ac') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">AC Repairing</a></li>
-                    <li><a href="{{ route('courses.washing') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">Washing Machine Repairing</a></li>
-                    <li><a href="{{ route('courses.fridge') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">Fridge Repairing</a></li>
-                    <li><a href="{{ route('courses.mobile') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">Mobile Repairing</a></li>
-                    <li><a href="{{ route('courses.laptop') }}" class="block px-4 py-2 hover:bg-[#FACA0A] hover:text-black font-medium">Laptop Repairing</a></li>
+                <div class="absolute left-0 top-full mt-2 w-56 bg-white shadow-xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100 py-1.5 overflow-hidden">
+                <ul class="text-gray-700 text-xs xl:text-sm divide-y divide-gray-50">
+                    <li>
+                      <a href="{{ route('courses.ac') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        AC Repairing
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ route('courses.washing') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        Washing Machine
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ route('courses.fridge') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        Fridge Repairing
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ route('courses.mobile') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        Mobile Repairing
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ route('courses.laptop') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        Laptop Repairing
+                      </a>
+                    </li>
                 </ul>
                 </div>
             </div>
@@ -348,18 +400,33 @@
             <!-- Services Dropdown (Mobile) -->
             <div>
               <button onclick="toggleServices()" class="flex w-full items-center justify-between text-left hover:text-[#FACA0A] transition py-1">
-                <span>Our Courses</span>
+                <span class="inline-flex items-center gap-1.5">
+                  <span>Our Courses</span>
+                  <span class="inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-black bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 text-white animate-offer-badge">
+                    OFF
+                  </span>
+                </span>
                 <svg id="serviceArrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
               <div id="servicesMenu" class="mt-2 ml-3 hidden flex-col gap-2 text-gray-600 text-xs sm:text-sm">
-                <a href="{{ route('courses.ac') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">AC Repairing</a>
-                <a href="{{ route('courses.washing') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Washing Machine Repairing</a>
-                <a href="{{ route('courses.fridge') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Fridge Repairing</a>
-                <a href="{{ route('courses.mobile') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Mobile Repairing</a>
-                <a href="{{ route('courses.laptop') }}" onclick="closeMenu()" class="block py-1 hover:text-[#FACA0A]">Laptop Repairing</a>
+                <a href="{{ route('courses.ac') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  AC Repairing
+                </a>
+                <a href="{{ route('courses.washing') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  Washing Machine
+                </a>
+                <a href="{{ route('courses.fridge') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  Fridge Repairing
+                </a>
+                <a href="{{ route('courses.mobile') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  Mobile Repairing
+                </a>
+                <a href="{{ route('courses.laptop') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  Laptop Repairing
+                </a>
               </div>
             </div>
 
