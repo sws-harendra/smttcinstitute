@@ -67,11 +67,17 @@ class PageController extends Controller
             'Varanasi' => ['SMTTC Varanasi']
         ];
         $courses = [
+            'Smartphone & iPhone Chip-Level Repairing',
+            'Laptop Motherboard & MacBook Repairing',
+            'AC Repairing & Inverter PCB Course',
+            'Washing Machine Repairing (Semi & Fully Auto)',
+            'Refrigerator & Inverter Fridge Repairing',
+            'LED TV & Smart Android TV Repairing',
+            'Mobile Phone Repairing',
+            'Laptop Repairing',
             'AC Repairing',
-            'Washing Machine Repairing',
             'Fridge Repairing',
-            'Mobile Repairing',
-            'Laptop Repairing'
+            'Washing Machine Repairing',
         ];
 
         $latestAdmission = \App\Models\Admission::latest()->first();
@@ -139,6 +145,7 @@ class PageController extends Controller
                 'regd_no' => $validated['enrollment_no'],
                 'sl_no' => $sl_no,
                 'name' => $validated['name'],
+                'photo' => $validated['photo'] ?? null,
                 'father_name' => $validated['father_name'],
                 'dob' => $validated['dob'] ?? null,
                 'course' => $validated['course'],

@@ -916,6 +916,7 @@ class AdminController extends Controller
             'regd_no' => $admission->enrollment_no,
             'sl_no' => $sl_no,
             'name' => $admission->name,
+            'photo' => $admission->photo,
             'father_name' => $admission->father_name,
             'dob' => $admission->dob,
             'course' => $admission->course,

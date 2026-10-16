@@ -2033,7 +2033,20 @@
             </div>
             <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Course Completed *</label>
-                <input type="text" name="course" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+                <select name="course" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition font-bold text-slate-800">
+                    <option value="">-- Select Completed Course --</option>
+                    <option value="Smartphone & iPhone Chip-Level Repairing">Smartphone & iPhone Chip-Level Repairing</option>
+                    <option value="Laptop Motherboard & MacBook Repairing">Laptop Motherboard & MacBook Repairing</option>
+                    <option value="AC Repairing & Inverter PCB Course">AC Repairing & Inverter PCB Course</option>
+                    <option value="Washing Machine Repairing (Semi & Fully Auto)">Washing Machine Repairing (Semi & Fully Auto)</option>
+                    <option value="Refrigerator & Inverter Fridge Repairing">Refrigerator & Inverter Fridge Repairing</option>
+                    <option value="LED TV & Smart Android TV Repairing">LED TV & Smart Android TV Repairing</option>
+                    <option value="Mobile Phone Repairing">Mobile Phone Repairing</option>
+                    <option value="Laptop Repairing">Laptop Repairing</option>
+                    <option value="AC Repairing">AC Repairing</option>
+                    <option value="Fridge Repairing">Fridge Repairing</option>
+                    <option value="Washing Machine Repairing">Washing Machine Repairing</option>
+                </select>
             </div>
             <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">From Date</label>
@@ -2365,7 +2378,19 @@
                 </div>
                 <div class="space-y-1.5">
                     <label class="block text-xs font-bold text-slate-700">Course Completed <span class="text-red-500">*</span></label>
-                    <input type="text" name="course" id="editCertCourse" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                    <select name="course" id="editCertCourse" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                        <option value="Smartphone & iPhone Chip-Level Repairing">Smartphone & iPhone Chip-Level Repairing</option>
+                        <option value="Laptop Motherboard & MacBook Repairing">Laptop Motherboard & MacBook Repairing</option>
+                        <option value="AC Repairing & Inverter PCB Course">AC Repairing & Inverter PCB Course</option>
+                        <option value="Washing Machine Repairing (Semi & Fully Auto)">Washing Machine Repairing (Semi & Fully Auto)</option>
+                        <option value="Refrigerator & Inverter Fridge Repairing">Refrigerator & Inverter Fridge Repairing</option>
+                        <option value="LED TV & Smart Android TV Repairing">LED TV & Smart Android TV Repairing</option>
+                        <option value="Mobile Phone Repairing">Mobile Phone Repairing</option>
+                        <option value="Laptop Repairing">Laptop Repairing</option>
+                        <option value="AC Repairing">AC Repairing</option>
+                        <option value="Fridge Repairing">Fridge Repairing</option>
+                        <option value="Washing Machine Repairing">Washing Machine Repairing</option>
+                    </select>
                 </div>
             </div>
 

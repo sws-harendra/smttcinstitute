@@ -247,7 +247,7 @@
                         </div>
 
                         <!-- Period of Training & Institution Sign-off -->
-                        <div class="flex items-center justify-between text-[11.5px] font-['Montserrat'] pt-1 px-2">
+                        <div class="flex items-center justify-center text-[11.5px] font-['Montserrat'] pt-1 px-2">
                             <div>
                                 <span class="font-semibold text-slate-600">Period of Training : From</span>
                                 <span class="font-bold text-[#0c1938] border-b border-slate-300 pb-0.5 px-1">
@@ -258,8 +258,9 @@
                                     {{ $student->certificate->to_date ? \Carbon\Carbon::parse($student->certificate->to_date)->format('d.m.Y') : '—' }}
                                 </span>
                             </div>
+                            <span class="mx-3 text-slate-400 font-medium">|</span>
                             <div class="font-bold text-[11.5px] text-[#0c1938] tracking-wide">
-                                For A to Z Smart Technical Training Centre
+                                For Smart Technical Training Centre
                             </div>
                         </div>
                     </div>
@@ -268,10 +269,10 @@
             </div>
 
             <!-- ================= 3. BOTTOM: SIGNATURES & ACCREDITATION SEALS (ISO + IAF IN CENTER) ================= -->
-            <div class="w-full pb-6">
-                <div class="max-w-[560px] mx-auto flex items-end justify-between px-2">
+            <div class="w-full pb-7">
+                <div class="max-w-[475px] mx-auto flex items-end justify-between px-1">
                     <!-- Left: Training Incharge Signature -->
-                    <div class="text-center flex flex-col items-center w-36">
+                    <div class="text-center flex flex-col items-center w-32">
                         <div class="h-10 flex items-center justify-center">
                             @if($certInchargeSig)
                                 <img src="{{ asset($certInchargeSig) }}" class="max-h-10 object-contain">
@@ -279,27 +280,27 @@
                                 <span class="font-['Great_Vibes'] text-2xl text-slate-800">Signature</span>
                             @endif
                         </div>
-                        <div class="w-32 h-[1.5px] bg-slate-600 mt-1"></div>
-                        <div class="font-['Montserrat'] font-bold text-[10px] text-[#0c1938] tracking-wider mt-1.5 uppercase whitespace-nowrap">
+                        <div class="w-28 h-[1.5px] bg-slate-600 mt-1"></div>
+                        <div class="font-['Montserrat'] font-bold text-[9.5px] text-[#0c1938] tracking-wider mt-1.5 uppercase whitespace-nowrap">
                             Training Incharge
                         </div>
                     </div>
 
                     <!-- Center: ISO 9001:2015 & IAF Accredited Badges Side-by-Side (Replacing the medal badge) -->
-                    <div class="flex items-center justify-center gap-4 shrink-0 pb-1">
+                    <div class="flex items-center justify-center gap-3 shrink-0 pb-0.5">
                         <!-- ISO 9001:2015 Certified Logo Badge -->
-                        <div class="w-[78px] h-[78px] shrink-0 flex items-center justify-center drop-shadow-lg transition-transform hover:scale-105" title="ISO 9001:2015 Certified">
+                        <div class="w-[70px] h-[70px] shrink-0 flex items-center justify-center drop-shadow-lg transition-transform hover:scale-105" title="ISO 9001:2015 Certified">
                             <img src="{{ asset('assets/images/iso-9001-badge.svg') }}?v={{ time() }}" alt="ISO 9001:2015 Certified" class="w-full h-full object-contain">
                         </div>
 
                         <!-- IAF Accredited Logo Badge -->
-                        <div class="w-[78px] h-[78px] shrink-0 flex items-center justify-center drop-shadow-lg transition-transform hover:scale-105" title="IAF Accredited">
+                        <div class="w-[70px] h-[70px] shrink-0 flex items-center justify-center drop-shadow-lg transition-transform hover:scale-105" title="IAF Accredited">
                             <img src="{{ asset('assets/images/iaf-logo-badge.svg') }}?v={{ time() }}" alt="IAF Accredited" class="w-full h-full object-contain">
                         </div>
                     </div>
 
-                    <!-- Right: Authorised Signatory Signature -->
-                    <div class="text-center flex flex-col items-center w-36">
+                    <!-- Right: Authorised Signatory Signature (Safe Distance from Navy/Gold Wave) -->
+                    <div class="text-center flex flex-col items-center w-32">
                         <div class="h-10 flex items-center justify-center">
                             @if($certSignature)
                                 <img src="{{ asset($certSignature) }}" class="max-h-10 object-contain">
@@ -307,8 +308,8 @@
                                 <span class="font-['Great_Vibes'] text-2xl text-slate-800">Signature</span>
                             @endif
                         </div>
-                        <div class="w-32 h-[1.5px] bg-slate-600 mt-1"></div>
-                        <div class="font-['Montserrat'] font-bold text-[10px] text-[#0c1938] tracking-wider mt-1.5 uppercase whitespace-nowrap">
+                        <div class="w-28 h-[1.5px] bg-slate-600 mt-1"></div>
+                        <div class="font-['Montserrat'] font-bold text-[9.5px] text-[#0c1938] tracking-wider mt-1.5 uppercase whitespace-nowrap">
                             Authorised Signatory
                         </div>
                     </div>
