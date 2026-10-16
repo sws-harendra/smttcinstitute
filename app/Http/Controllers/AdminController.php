@@ -775,9 +775,19 @@ class AdminController extends Controller
             'course' => 'required',
             'center' => 'required',
             'location' => 'required',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
 
-        \App\Models\Certificate::create($request->all());
+        $data = $request->except('photo');
+
+        if ($request->hasFile('photo')) {
+            $photoFile = $request->file('photo');
+            $photoName = time() . '-cert-' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
+            $photoFile->move(public_path('uploads/students'), $photoName);
+            $data['photo'] = '/uploads/students/' . $photoName;
+        }
+
+        \App\Models\Certificate::create($data);
 
         return back()->with('cert_success', 'Certificate generated successfully!');
     }
@@ -802,11 +812,45 @@ class AdminController extends Controller
             'center' => 'required|string',
             'location' => 'required|string',
             'issued_date' => 'nullable|date',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
         ]);
+
+        if ($request->hasFile('photo')) {
+            $photoFile = $request->file('photo');
+            $photoName = time() . '-cert-' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
+            $photoFile->move(public_path('uploads/students'), $photoName);
+            $validated['photo'] = '/uploads/students/' . $photoName;
+        }
 
         $cert->update($validated);
 
         return back()->with('cert_success', 'Certificate for ' . $cert->name . ' updated successfully!');
+    }
+
+    public function uploadIdCardPhoto(Request $request, $id)
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
+        ]);
+
+        $photoFile = $request->file('photo');
+        $photoName = time() . '-idcard-' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
+        $photoFile->move(public_path('uploads/students'), $photoName);
+        $photoPath = '/uploads/students/' . $photoName;
+
+        $admission = \App\Models\Admission::where('enrollment_no', $id)->orWhere('id', $id)->first();
+        if ($admission) {
+            $admission->photo = $photoPath;
+            $admission->save();
+        }
+
+        $certificate = \App\Models\Certificate::where('regd_no', $id)->orWhere('id', $id)->first();
+        if ($certificate) {
+            $certificate->photo = $photoPath;
+            $certificate->save();
+        }
+
+        return back()->with('photo_success', 'Student photo updated successfully!');
     }
 
     public function deleteCertificate($id)

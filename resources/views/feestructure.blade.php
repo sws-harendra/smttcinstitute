@@ -28,7 +28,7 @@
         </h1>
 
         <p class="text-sm sm:text-base md:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
-            High-earning chip-level technical courses with industry-standard practical training. Special discounts for boys and up to <strong class="text-[#FACA0A]">40% Beti Padhao Scholarships</strong> for girl students.
+            High-earning chip-level technical courses with industry-standard practical training. Special discounts for boys and up to <strong class="text-[#FACA0A]">40% </strong> for girl students.
         </p>
 
         <!-- Quick Trust Badges -->
@@ -398,7 +398,7 @@
                     <i class="fa-solid fa-circle-question text-[#FACA0A]"></i> Kya girls ke liye scholarship direct milti hai?
                 </h4>
                 <p class="text-slate-300 leading-relaxed">
-                    Haan, SMTTC me Beti Padhao Abhiyan ke tehat female candidates ko direct 30% se 40% tak scholarship milti hai. Admission ke waqt keval ek valid photo ID/Aadhaar card jama karna hota hai.
+                    Haan, SMTTC me <strong>female candidates</strong> ko direct 50% scholarship milti hai. Admission ke waqt keval ek valid photo ID/Aadhaar card jama karna hota hai.
                 </p>
             </div>
 

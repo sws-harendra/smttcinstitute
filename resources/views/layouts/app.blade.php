@@ -304,51 +304,31 @@
                 </button>
 
                 <!-- Dropdown Menu -->
-                <div class="absolute left-0 top-full mt-2 w-72 bg-white shadow-xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100 py-1.5 overflow-hidden">
+                <div class="absolute left-0 top-full mt-2 w-56 bg-white shadow-xl rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 border border-gray-100 py-1.5 overflow-hidden">
                 <ul class="text-gray-700 text-xs xl:text-sm divide-y divide-gray-50">
                     <li>
-                      <a href="{{ route('courses.ac') }}" class="flex items-center justify-between px-3.5 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
-                        <span>AC Repairing</span>
-                        <div class="flex items-center gap-1 text-[10px] font-black shrink-0">
-                          <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 20%</span>
-                          <span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 40% OFF</span>
-                        </div>
+                      <a href="{{ route('courses.ac') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        AC Repairing
                       </a>
                     </li>
                     <li>
-                      <a href="{{ route('courses.washing') }}" class="flex items-center justify-between px-3.5 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
-                        <span>Washing Machine</span>
-                        <div class="flex items-center gap-1 text-[10px] font-black shrink-0">
-                          <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 25%</span>
-                          <span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 40% OFF</span>
-                        </div>
+                      <a href="{{ route('courses.washing') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        Washing Machine
                       </a>
                     </li>
                     <li>
-                      <a href="{{ route('courses.fridge') }}" class="flex items-center justify-between px-3.5 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
-                        <span>Fridge Repairing</span>
-                        <div class="flex items-center gap-1 text-[10px] font-black shrink-0">
-                          <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 20%</span>
-                          <span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 35% OFF</span>
-                        </div>
+                      <a href="{{ route('courses.fridge') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        Fridge Repairing
                       </a>
                     </li>
                     <li>
-                      <a href="{{ route('courses.mobile') }}" class="flex items-center justify-between px-3.5 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
-                        <span>Mobile Repairing</span>
-                        <div class="flex items-center gap-1 text-[10px] font-black shrink-0">
-                          <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 15%</span>
-                          <span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 35% OFF</span>
-                        </div>
+                      <a href="{{ route('courses.mobile') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        Mobile Repairing
                       </a>
                     </li>
                     <li>
-                      <a href="{{ route('courses.laptop') }}" class="flex items-center justify-between px-3.5 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
-                        <span>Laptop Repairing</span>
-                        <div class="flex items-center gap-1 text-[10px] font-black shrink-0">
-                          <span class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 15%</span>
-                          <span class="px-1.5 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 30% OFF</span>
-                        </div>
+                      <a href="{{ route('courses.laptop') }}" class="block px-4 py-2.5 hover:bg-[#FACA0A] hover:text-black font-medium transition">
+                        Laptop Repairing
                       </a>
                     </li>
                 </ul>
@@ -432,40 +412,20 @@
               </button>
 
               <div id="servicesMenu" class="mt-2 ml-3 hidden flex-col gap-2 text-gray-600 text-xs sm:text-sm">
-                <a href="{{ route('courses.ac') }}" onclick="closeMenu()" class="flex items-center justify-between py-1.5 hover:text-[#FACA0A]">
-                  <span>AC Repairing</span>
-                  <div class="flex items-center gap-1 text-[10px] font-black">
-                    <span class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 20%</span>
-                    <span class="px-1.5 py-0.2 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 40% OFF</span>
-                  </div>
+                <a href="{{ route('courses.ac') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  AC Repairing
                 </a>
-                <a href="{{ route('courses.washing') }}" onclick="closeMenu()" class="flex items-center justify-between py-1.5 hover:text-[#FACA0A]">
-                  <span>Washing Machine</span>
-                  <div class="flex items-center gap-1 text-[10px] font-black">
-                    <span class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 25%</span>
-                    <span class="px-1.5 py-0.2 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 40% OFF</span>
-                  </div>
+                <a href="{{ route('courses.washing') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  Washing Machine
                 </a>
-                <a href="{{ route('courses.fridge') }}" onclick="closeMenu()" class="flex items-center justify-between py-1.5 hover:text-[#FACA0A]">
-                  <span>Fridge Repairing</span>
-                  <div class="flex items-center gap-1 text-[10px] font-black">
-                    <span class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 20%</span>
-                    <span class="px-1.5 py-0.2 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 35% OFF</span>
-                  </div>
+                <a href="{{ route('courses.fridge') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  Fridge Repairing
                 </a>
-                <a href="{{ route('courses.mobile') }}" onclick="closeMenu()" class="flex items-center justify-between py-1.5 hover:text-[#FACA0A]">
-                  <span>Mobile Repairing</span>
-                  <div class="flex items-center gap-1 text-[10px] font-black">
-                    <span class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 15%</span>
-                    <span class="px-1.5 py-0.2 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 35% OFF</span>
-                  </div>
+                <a href="{{ route('courses.mobile') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  Mobile Repairing
                 </a>
-                <a href="{{ route('courses.laptop') }}" onclick="closeMenu()" class="flex items-center justify-between py-1.5 hover:text-[#FACA0A]">
-                  <span>Laptop Repairing</span>
-                  <div class="flex items-center gap-1 text-[10px] font-black">
-                    <span class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200">👦 15%</span>
-                    <span class="px-1.5 py-0.2 rounded bg-rose-50 text-rose-600 border border-rose-200">👧 30% OFF</span>
-                  </div>
+                <a href="{{ route('courses.laptop') }}" onclick="closeMenu()" class="py-1.5 hover:text-[#FACA0A] transition">
+                  Laptop Repairing
                 </a>
               </div>
             </div>

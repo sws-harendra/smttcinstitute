@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240 240" width="100%" height="100%">
+  <defs>
+    <!-- Metallic Silver Bevel Gradient -->
+    <linearGradient id="isoSilverRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="18%" stop-color="#e2e8f0"/>
+      <stop offset="42%" stop-color="#64748b"/>
+      <stop offset="70%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <!-- Deep Royal Blue Sphere Radial Gradient -->
+    <radialGradient id="isoBlueSphere" cx="38%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="30%" stop-color="#1d4ed8"/>
+      <stop offset="70%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0b1736"/>
+    </radialGradient>
+
+    <!-- Center Medallion Gradient -->
+    <radialGradient id="isoCenterGrad" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="65%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+
+    <!-- Silver Accent Gradient -->
+    <linearGradient id="isoTickGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="40%" stop-color="#ffffff"/>
+      <stop offset="80%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Text Arcs (Both 100% Upright) -->
+    <path id="isoTopArc" d="M 32,120 A 88,88 0 0,1 208,120" fill="none"/>
+    <path id="isoBotArc" d="M 32,120 A 88,88 0 0,0 208,120" fill="none"/>
+  </defs>
+
+  <!-- Outer Silver Metallic Frame Ring -->
+  <circle cx="120" cy="120" r="116" fill="url(#isoSilverRim)"/>
+  <circle cx="120" cy="120" r="110" fill="#0b1736"/>
+  <circle cx="120" cy="120" r="108" fill="url(#isoBlueSphere)"/>
+
+  <!-- Outer Concentric Pinstripes -->
+  <circle cx="120" cy="120" r="104" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+  <circle cx="120" cy="120" r="72" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+
+  <!-- Top Curved Text: CERTIFIED QUALITY SYSTEM -->
+  <text fill="#ffffff" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="12" font-weight="900" letter-spacing="1.5">
+    <textPath href="#isoTopArc" xlink:href="#isoTopArc" startOffset="50%" text-anchor="middle">
+      CERTIFIED QUALITY SYSTEM
+    </textPath>
+  </text>
+
+  <!-- Bottom Curved Text: ★ ISO 9001:2015 ★ (100% Upright & Clear) -->
+  <text fill="#ffffff" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="12" font-weight="900" letter-spacing="2.2">
+    <textPath href="#isoBotArc" xlink:href="#isoBotArc" startOffset="50%" text-anchor="middle">
+      ★ ISO 9001:2015 ★
+    </textPath>
+  </text>
+
+  <!-- Inner Core Circle -->
+  <circle cx="120" cy="120" r="69" fill="url(#isoCenterGrad)" stroke="url(#isoSilverRim)" stroke-width="2.5"/>
+  <circle cx="120" cy="120" r="65" fill="none" stroke="rgba(255,255,255,0.25)" stroke-dasharray="2.5 2"/>
+
+  <!-- Subtle Elegant Metallic Checkmark -->
+  <path d="M 74,120 L 98,144 L 166,74 L 156,66 L 98,126 L 84,112 Z" fill="url(#isoTickGrad)" opacity="0.6"/>
+
+  <!-- Big Bold ISO Header -->
+  <text x="120" y="113" fill="#020617" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="46" font-weight="900" text-anchor="middle" letter-spacing="3" opacity="0.75" transform="translate(1.5, 2.5)">ISO</text>
+  <text x="120" y="113" fill="#ffffff" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="46" font-weight="900" text-anchor="middle" letter-spacing="3">ISO</text>
+
+  <!-- Sub-badge Pill for 9001:2015 Standard -->
+  <rect x="49" y="125" width="142" height="27" rx="13.5" fill="#0b1736" stroke="url(#isoSilverRim)" stroke-width="2"/>
+  <text x="120" y="144" fill="#ffffff" font-family="'Montserrat', Arial, Helvetica, sans-serif" font-size="14.5" font-weight="900" text-anchor="middle" letter-spacing="2">9001:2015</text>
+</svg>

@@ -2009,7 +2009,7 @@
     <!-- Generate Form -->
     <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8">
         <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-file-circle-plus text-yellow-500"></i> Generate New Certificate</h3>
-        <form action="{{ route('admin.certificates.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <form action="{{ route('admin.certificates.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @csrf
             <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Registration No. *</label>
@@ -2042,6 +2042,10 @@
             <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">To Date</label>
                 <input type="date" name="to_date" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 transition">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Student Photo (Passport Size)</label>
+                <input type="file" name="photo" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:ring-2 focus:ring-indigo-500 transition file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200">
             </div>
             <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Training Center *</label>
@@ -2089,6 +2093,9 @@
                             <td class="p-4 text-right flex justify-end gap-2">
                                 <a href="{{ route('certificate.view', $cert->regd_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold text-xs transition flex items-center gap-1.5" title="View/Print Certificate">
                                     <i class="fa-solid fa-eye"></i> View/Print
+                                </a>
+                                <a href="{{ route('idcard.view', $cert->regd_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-purple-200 text-purple-700 bg-purple-50/60 hover:bg-purple-100 font-bold text-xs transition flex items-center gap-1.5" title="Print Student Identity Card">
+                                    <i class="fa-solid fa-id-card"></i> ID Card
                                 </a>
                                 @php
                                     $certJson = base64_encode(json_encode([
@@ -2179,6 +2186,10 @@
                                 <button type="button" onclick="document.getElementById('profile-modal-{{ $admission->id }}').classList.remove('hidden')" class="px-3.5 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition flex items-center gap-1.5" title="View Full Profile">
                                     <i class="fa-solid fa-user"></i> <span class="hidden xl:inline">View Profile</span>
                                 </button>
+
+                                <a href="{{ route('idcard.view', $admission->enrollment_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-purple-200 text-purple-700 bg-purple-50/60 hover:bg-purple-100 font-bold text-xs transition flex items-center gap-1.5" title="Print Student Identity Card">
+                                    <i class="fa-solid fa-id-card"></i> <span class="hidden xl:inline">ID Card</span>
+                                </a>
                                 
                                 @if($hasCertificate)
                                     @php
@@ -2320,7 +2331,7 @@
             <button type="button" onclick="closeEditCertModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg transition">&times;</button>
         </div>
 
-        <form id="editCertForm" method="POST" action="" class="p-6 sm:p-8 space-y-5">
+        <form id="editCertForm" method="POST" action="" enctype="multipart/form-data" class="p-6 sm:p-8 space-y-5">
             @csrf
 
             <!-- Identifiers (Regd & Serial) -->
@@ -2356,6 +2367,12 @@
                     <label class="block text-xs font-bold text-slate-700">Course Completed <span class="text-red-500">*</span></label>
                     <input type="text" name="course" id="editCertCourse" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition">
                 </div>
+            </div>
+
+            <!-- Student Photo Upload -->
+            <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-slate-700">Student Photo (For ID Card & Records)</label>
+                <input type="file" name="photo" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-amber-500 transition file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200">
             </div>
 
             <!-- MANUAL DATES SECTION (HIGHLIGHTED BOX) -->

@@ -99,6 +99,42 @@
                     @endif
                 </div>
 
+                <!-- Student Identity Card -->
+                <div class="bg-white rounded-[2rem] p-8 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+                        <i class="fa-solid fa-id-card text-9xl"></i>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-id-card text-purple-600"></i> Student Identity Card
+                        </h3>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Active
+                        </span>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-purple-50 via-indigo-50/50 to-blue-50 border border-purple-100 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-900 to-slate-950 p-2 shadow-lg flex items-center justify-center text-amber-400 text-2xl shrink-0">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-base">Official SMTTC Identity Badge</h4>
+                                <p class="text-xs text-slate-500 mt-0.5 font-medium">Valid for lab entry, theory classes, and campus verification.</p>
+                                <div class="mt-2 flex items-center gap-3 text-xs font-semibold text-purple-700">
+                                    <span><i class="fa-solid fa-qrcode mr-1"></i> QR Verified</span>
+                                    <span>&#8226;</span>
+                                    <span><i class="fa-solid fa-print mr-1"></i> Print Ready (A4 / CR80)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ route('idcard.view', $student->enrollment_no) }}" target="_blank" class="shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-sm shadow-lg shadow-indigo-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                            <i class="fa-solid fa-eye"></i> View & Print ID Card
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Personal Info Tab -->
                 <div class="bg-white rounded-[2rem] p-8 md:p-10 border border-slate-100 shadow-xl shadow-slate-200/40">
                     <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2 mb-6">

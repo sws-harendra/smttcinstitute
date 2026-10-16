@@ -13,6 +13,7 @@ class Certificate extends Model
         'regd_no',
         'sl_no',
         'name',
+        'photo',
         'father_name',
         'dob',
         'course',
