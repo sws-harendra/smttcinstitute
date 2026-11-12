@@ -47,3 +47,6 @@ Thumbs.db
 
 # Ignore the storage link symlink to prevent Windows Git issues
 /public/storage
+
+# Apache Server Config
+.htaccess
