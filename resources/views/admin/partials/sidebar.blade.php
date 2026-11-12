@@ -74,6 +74,15 @@
                 <span class="sidebar-text bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">{{ \App\Models\Certificate::count() }}</span>
             </button>
 
+            <!-- ID Cards Link -->
+            <button id="nav-idcards" onclick="showTab('idcards')" title="Student ID Cards" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-id-card text-lg text-slate-400 shrink-0"></i>
+                    <span class="sidebar-text truncate">ID Cards</span>
+                </div>
+                <span class="sidebar-text bg-purple-100 text-purple-800 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">{{ \Illuminate\Support\Facades\Schema::hasTable('id_cards') ? \App\Models\IdCard::count() : 0 }}</span>
+            </button>
+
             <!-- Admissions Link -->
             <button id="nav-admissions" onclick="showTab('admissions')" title="Admissions" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
                 <div class="flex items-center gap-3 overflow-hidden">

@@ -27,6 +27,9 @@
 
         /* Sidebar Minimized / Collapsed Rules */
         @media (min-width: 768px) {
+            #mainContentWrapper {
+                padding-left: 16rem !important; /* 256px */
+            }
             body.sidebar-collapsed #sidebar {
                 width: 5rem !important; /* 80px */
             }
@@ -104,7 +107,7 @@
     }
 
     function showTab(tabName) {
-        const tabs = ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'];
+        const tabs = ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'];
         
         tabs.forEach(t => {
             const el = document.getElementById('tab-' + t);
@@ -160,6 +163,9 @@
             } else if (tabName === 'admissions') {
                 titleEl.innerText = 'Student Admissions';
                 subTitleEl.innerText = 'Manage incoming student admissions and generate certificates';
+            } else if (tabName === 'idcards') {
+                titleEl.innerText = 'Student ID Cards Management';
+                subTitleEl.innerText = 'Generate, issue, and print official student identity cards';
             }
         }
 
@@ -182,11 +188,11 @@
             if (icon2) icon2.className = 'fa-solid fa-outdent text-sm';
         }
 
-        const serverTab = "{{ (session('blog_success') || session('blog_error') || $errors->has('title') || $errors->has('content') || $errors->has('image') || $errors->has('slug')) ? 'blogs' : (session('slider_success') || session('slider_error') ? 'sliders' : (session('fee_success') || session('fee_error') ? 'fees' : (session('gallery_success') || session('gallery_error') ? 'galleries' : (session('cert_success') || session('cert_error') ? 'certificates' : '')))) }}";
+        const serverTab = "{{ (session('blog_success') || session('blog_error') || $errors->has('title') || $errors->has('content') || $errors->has('image') || $errors->has('slug')) ? 'blogs' : (session('slider_success') || session('slider_error') ? 'sliders' : (session('fee_success') || session('fee_error') ? 'fees' : (session('gallery_success') || session('gallery_error') ? 'galleries' : (session('cert_success') || session('cert_error') ? 'certificates' : (session('idcard_success') || session('idcard_error') ? 'idcards' : ''))))) }}";
         const hash = window.location.hash.replace('#', '');
-        if (serverTab && ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'].includes(serverTab)) {
+        if (serverTab && ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'].includes(serverTab)) {
             showTab(serverTab);
-        } else if (hash && ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions'].includes(hash)) {
+        } else if (hash && ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'].includes(hash)) {
             showTab(hash);
         } else {
             showTab('overview');

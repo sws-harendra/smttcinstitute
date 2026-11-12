@@ -92,6 +92,11 @@ Route::post('/admin/certificates/delete/{id}', [AdminController::class, 'deleteC
 Route::post('/admin/certificates/signatures', [AdminController::class, 'storeCertSignatures'])->name('admin.certificates.signatures');
 Route::post('/admin/admissions/approve/{id}', [AdminController::class, 'approveAdmissionCertificate'])->name('admin.admissions.approve');
 
+// Admin ID Cards Management Routes
+Route::post('/admin/id-cards', [AdminController::class, 'storeIdCard'])->name('admin.idcards.store');
+Route::post('/admin/id-cards/update/{id}', [AdminController::class, 'updateIdCard'])->name('admin.idcards.update');
+Route::post('/admin/id-cards/delete/{id}', [AdminController::class, 'deleteIdCard'])->name('admin.idcards.delete');
+
 // Student Portal Routes
 Route::get('/student/login', [StudentController::class, 'loginView'])->name('student.login');
 Route::post('/student/login', [StudentController::class, 'login'])->name('student.login.submit');
@@ -108,10 +113,15 @@ Route::get('/certificate/{regd_no}', function($regd_no) {
 })->name('certificate.view');
 
 Route::get('/id-card/{id}', function($id) {
+    $idcard = null;
+    if (\Illuminate\Support\Facades\Schema::hasTable('id_cards')) {
+        $idcard = \App\Models\IdCard::where('enrollment_no', $id)->orWhere('id', $id)->first();
+    }
+
     $admission = \App\Models\Admission::where('enrollment_no', $id)->first();
     $certificate = \App\Models\Certificate::where('regd_no', $id)->first();
 
-    if (!$admission && !$certificate) {
+    if (!$admission && !$certificate && !$idcard) {
         $admission = \App\Models\Admission::where('id', $id)->orWhere('username', $id)->first();
     }
 
@@ -122,27 +132,41 @@ Route::get('/id-card/{id}', function($id) {
         $admission = \App\Models\Admission::where('enrollment_no', $certificate->regd_no)->first();
     }
 
-    if (!$admission && !$certificate) {
+    if (!$idcard && !$admission && !$certificate) {
         abort(404, 'Student Identity Card not found for: ' . $id);
     }
 
-    $name = $certificate ? $certificate->name : ($admission ? $admission->name : 'Student');
-    $rawFather = $certificate ? $certificate->father_name : ($admission ? $admission->father_name : null);
+    if ($idcard) {
+        $name = $idcard->name;
+        $rawFather = $idcard->father_name;
+        $dob = $idcard->dob;
+        $course = $idcard->course;
+        $mobile = $idcard->mobile_no ?? ($admission ? $admission->mobile_no : '—');
+        $email = $idcard->email ?? ($admission ? $admission->email : '—');
+        $enrollment_no = $idcard->enrollment_no;
+        $photo = $idcard->photo ?? ($admission ? $admission->photo : ($certificate ? $certificate->photo : null));
+        $address = $idcard->address ?? ($admission ? ($admission->address . ', ' . $admission->district . ', ' . $admission->state) : ($certificate->location ?? 'Patna, Bihar'));
+        $validFrom = $idcard->valid_from ? \Carbon\Carbon::parse($idcard->valid_from)->format('M Y') : ($certificate ? ($certificate->from_date ? \Carbon\Carbon::parse($certificate->from_date)->format('M Y') : null) : ($admission ? \Carbon\Carbon::parse($admission->created_at)->format('M Y') : date('M Y')));
+        $validTo = $idcard->valid_to ? \Carbon\Carbon::parse($idcard->valid_to)->format('M Y') : ($certificate ? ($certificate->to_date ? \Carbon\Carbon::parse($certificate->to_date)->addYears(2)->format('M Y') : null) : date('M Y', strtotime('+2 years')));
+    } else {
+        $name = $certificate ? $certificate->name : ($admission ? $admission->name : 'Student');
+        $rawFather = $certificate ? $certificate->father_name : ($admission ? $admission->father_name : null);
+        $dob = $certificate ? $certificate->dob : ($admission ? $admission->dob : null);
+        // Certificate course has first priority so ID card always matches Certificate 100%
+        $course = ($certificate && !empty($certificate->course)) ? $certificate->course : ($admission ? $admission->course : 'Technical Training');
+        $mobile = $admission ? $admission->mobile_no : '—';
+        $email = $admission ? $admission->email : '—';
+        $enrollment_no = $certificate ? $certificate->regd_no : ($admission ? $admission->enrollment_no : $id);
+        $photo = ($certificate && $certificate->photo) ? $certificate->photo : ($admission ? $admission->photo : null);
+        $address = $admission ? ($admission->address . ', ' . $admission->district . ', ' . $admission->state) : ($certificate->location ?? 'Patna, Bihar');
+        $validFrom = $certificate ? ($certificate->from_date ? \Carbon\Carbon::parse($certificate->from_date)->format('M Y') : null) : ($admission ? \Carbon\Carbon::parse($admission->created_at)->format('M Y') : date('M Y'));
+        $validTo = $certificate ? ($certificate->to_date ? \Carbon\Carbon::parse($certificate->to_date)->addYears(2)->format('M Y') : null) : date('M Y', strtotime('+2 years'));
+    }
+
     $fatherName = ($rawFather && strtolower(trim($rawFather)) !== 'null' && strtolower(trim($rawFather)) !== 'nill' && strtolower(trim($rawFather)) !== '') ? strtoupper($rawFather) : '—';
-    
-    $dob = $certificate ? $certificate->dob : ($admission ? $admission->dob : null);
-    // Certificate course has first priority so ID card always matches Certificate 100%
-    $course = ($certificate && !empty($certificate->course)) ? $certificate->course : ($admission ? $admission->course : 'Technical Training');
-    $mobile = $admission ? $admission->mobile_no : '—';
-    $email = $admission ? $admission->email : '—';
-    $enrollment_no = $certificate ? $certificate->regd_no : ($admission ? $admission->enrollment_no : $id);
-    $photo = ($certificate && $certificate->photo) ? $certificate->photo : ($admission ? $admission->photo : null);
-    $address = $admission ? ($admission->address . ', ' . $admission->district . ', ' . $admission->state) : ($certificate->location ?? 'Patna, Bihar');
-    $validFrom = $certificate ? ($certificate->from_date ? \Carbon\Carbon::parse($certificate->from_date)->format('M Y') : null) : ($admission ? \Carbon\Carbon::parse($admission->created_at)->format('M Y') : date('M Y'));
-    $validTo = $certificate ? ($certificate->to_date ? \Carbon\Carbon::parse($certificate->to_date)->addYears(2)->format('M Y') : null) : date('M Y', strtotime('+2 years'));
 
     $student = (object)[
-        'id' => $admission ? $admission->id : ($certificate ? $certificate->id : 1),
+        'id' => $idcard ? $idcard->id : ($admission ? $admission->id : ($certificate ? $certificate->id : 1)),
         'name' => $name,
         'father_name' => $fatherName,
         'dob' => $dob,
@@ -156,6 +180,7 @@ Route::get('/id-card/{id}', function($id) {
         'valid_to' => $validTo,
         'admission' => $admission,
         'certificate' => $certificate,
+        'idcard' => $idcard,
     ];
 
     return view('idcard', compact('student'));

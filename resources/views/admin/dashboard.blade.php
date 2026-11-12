@@ -86,7 +86,7 @@
 <div id="tab-overview" class="space-y-8 animate-fade-in">
     
     <!-- METRIC STAT CARDS GRID -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
 
         <!-- Card 1: Total Blogs -->
         <div onclick="showTab('blogs')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
@@ -141,6 +141,20 @@
             </div>
             <div class="w-14 h-14 rounded-2xl bg-yellow-50 text-yellow-600 flex items-center justify-center text-2xl font-bold">
                 <i class="fa-solid fa-certificate"></i>
+            </div>
+        </div>
+
+        <!-- Card 5: ID Cards -->
+        <div onclick="showTab('idcards')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">ID Cards</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">{{ count($idcards ?? []) }}</h3>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-600 mt-1">
+                    <i class="fa-solid fa-id-card"></i> Issued
+                </span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl font-bold">
+                <i class="fa-solid fa-id-card"></i>
             </div>
         </div>
 
@@ -230,6 +244,23 @@
                 <span class="text-xs font-bold text-slate-400">{{ count($certificates ?? []) }} Certificates</span>
                 <button onclick="showTab('certificates')" class="px-4 py-2 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-white font-bold text-xs transition shadow-sm">
                     Open Certificates &rarr;
+                </button>
+            </div>
+        </div>
+
+        <!-- ID Cards Shortcut Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+                <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+                <h3 class="text-lg font-extrabold text-slate-900">Student ID Cards</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Generate, issue, and print official student ID cards with photos, QR codes, and barcodes.</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                <span class="text-xs font-bold text-slate-400">{{ count($idcards ?? []) }} ID Cards</span>
+                <button onclick="showTab('idcards')" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition shadow-sm">
+                    Open ID Cards &rarr;
                 </button>
             </div>
         </div>
@@ -2251,6 +2282,279 @@
     </section>
 </div>
 
+<!-- ================= TAB 8: ID CARDS MANAGEMENT ================= -->
+<div id="tab-idcards" class="hidden space-y-8 animate-fade-in">
+    <!-- Feedback Alerts -->
+    @if(session('idcard_success'))
+        <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl flex items-center justify-between shadow-xs">
+            <span class="flex items-center gap-2 text-sm font-bold">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                {{ session('idcard_success') }}
+            </span>
+            <button onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-900 font-bold">&times;</button>
+        </div>
+    @endif
+    @if(session('idcard_error'))
+        <div class="p-4 bg-red-50 border border-red-200 text-red-800 rounded-2xl flex items-center justify-between shadow-xs">
+            <span class="flex items-center gap-2 text-sm font-bold">
+                <i class="fa-solid fa-circle-exclamation text-red-600"></i>
+                {{ session('idcard_error') }}
+            </span>
+            <button onclick="this.parentElement.remove()" class="text-red-600 hover:text-red-900 font-bold">&times;</button>
+        </div>
+    @endif
+
+    <!-- ID Card Generation Form -->
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 border-b border-slate-100 pb-5">
+            <div>
+                <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2.5">
+                    <span class="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-base">
+                        <i class="fa-solid fa-id-card"></i>
+                    </span>
+                    Generate Student Identity Card
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">Issue official PVC student identity card with scannable QR Code & Barcode.</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold self-start md:self-auto">
+                <i class="fa-solid fa-shield-halved"></i> Official SMTTC Format
+            </span>
+        </div>
+
+        <!-- Quick Import / Auto-Fill from Admitted Students Helper -->
+        <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-purple-50/80 via-indigo-50/50 to-purple-50/80 border border-purple-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center text-lg shadow-sm shrink-0">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wide">Quick Auto-Fill From Admitted Students</h4>
+                    <p class="text-[11px] text-slate-500">Pick a student from admissions to instantly populate their particulars, or fill manually below.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <select id="quickAdmissionSelect" onchange="autoFillFromAdmission(this)" class="w-full md:w-72 bg-white border border-purple-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-2xs">
+                    <option value="">-- Choose Admitted Student --</option>
+                    @foreach($admissions ?? [] as $adm)
+                        @php
+                            $admData = base64_encode(json_encode([
+                                'enrollment_no' => $adm->enrollment_no,
+                                'name' => $adm->name,
+                                'father_name' => $adm->father_name,
+                                'course' => $adm->course,
+                                'dob' => $adm->dob ? \Carbon\Carbon::parse($adm->dob)->format('Y-m-d') : '',
+                                'mobile_no' => $adm->mobile_no,
+                                'email' => $adm->email,
+                                'address' => $adm->address . ', ' . $adm->district . ', ' . $adm->state,
+                                'photo' => $adm->photo,
+                                'center' => $adm->center ?? 'SMTTC Institute'
+                            ]));
+                        @endphp
+                        <option value="{{ $admData }}">{{ $adm->enrollment_no }} - {{ $adm->name }}</option>
+                    @endforeach
+                </select>
+                <button type="button" onclick="clearIdCardForm()" class="px-3 py-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold transition flex items-center gap-1 shadow-2xs whitespace-nowrap" title="Reset form to enter custom details manually">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+            </div>
+        </div>
+
+        <form action="{{ route('admin.idcards.store') }}" method="POST" enctype="multipart/form-data" id="createIdCardForm" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @csrf
+            <input type="hidden" name="existing_photo" id="idCardExistingPhoto" value="">
+
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Enrollment / Card No. *</label>
+                    <button type="button" onclick="generateAutoCardNo()" class="text-[11px] font-bold text-purple-600 hover:text-purple-800 flex items-center gap-1">
+                        <i class="fa-solid fa-arrows-rotate text-[10px]"></i> Auto Suggest
+                    </button>
+                </div>
+                <input type="text" name="enrollment_no" id="idCardEnrollmentNo" required placeholder="e.g. SMTTC-ID-{{ date('Y') }}-{{ str_pad(($idcards->count() ?? 0) + 1, 4, '0', STR_PAD_LEFT) }}" value="SMTTC-ID-{{ date('Y') }}-{{ str_pad(($idcards->count() ?? 0) + 1, 4, '0', STR_PAD_LEFT) }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Student Full Name *</label>
+                <input type="text" name="name" id="idCardName" required placeholder="e.g. Rahul Kumar" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Father's Name *</label>
+                <input type="text" name="father_name" id="idCardFatherName" required placeholder="e.g. Suresh Prasad" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Course Name *</label>
+                <input type="text" name="course" id="idCardCourse" list="coursesList" required placeholder="Select or type course..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+                <datalist id="coursesList">
+                    <option value="Smart Phone & Mobile Repairing Course">
+                    <option value="Laptop & Desktop Repairing Course">
+                    <option value="AC & Refrigerator Repairing Course">
+                    <option value="Washing Machine Repairing Course">
+                    <option value="All-in-One Home Appliances Repairing">
+                    <option value="Advance Chip Level Training">
+                </datalist>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Date of Birth (DOB)</label>
+                <input type="date" name="dob" id="idCardDob" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Mobile Number</label>
+                <input type="text" name="mobile_no" id="idCardMobile" placeholder="e.g. 9876543210" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email Address (Optional)</label>
+                <input type="email" name="email" id="idCardEmail" placeholder="e.g. student@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Valid From</label>
+                <input type="date" name="valid_from" id="idCardValidFrom" value="{{ date('Y-m-d') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Valid Upto</label>
+                <input type="date" name="valid_to" id="idCardValidTo" value="{{ date('Y-m-d', strtotime('+2 years')) }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Training Center</label>
+                <input type="text" name="center" id="idCardCenter" value="SMTTC Institute" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Student Location / Address</label>
+                <input type="text" name="address" id="idCardAddress" value="Patna, Bihar" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Student Photo (Passport Size)</label>
+                <div class="flex items-center gap-3">
+                    <input type="file" name="photo" id="idCardPhotoInput" accept="image/*" onchange="previewIdCardUpload(this)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:ring-2 focus:ring-purple-500 transition file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-purple-100 file:text-purple-800 hover:file:bg-purple-200">
+                    <div id="idCardPhotoPreviewBox" class="w-11 h-11 rounded-xl border border-slate-200 overflow-hidden bg-slate-100 shrink-0 hidden items-center justify-center">
+                        <img id="idCardPhotoPreviewImg" src="" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-3 flex justify-end mt-4 pt-4 border-t border-slate-100">
+                <button type="submit" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-8 py-3.5 rounded-xl font-bold text-sm shadow-md transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-id-card"></i> Generate Student ID Card
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Issued ID Cards List Table -->
+    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div class="p-6 md:p-8 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                    <i class="fa-solid fa-id-card-clip text-purple-600"></i> Issued Student ID Cards
+                </h2>
+                <p class="text-xs text-slate-400 font-medium mt-1">Manage, view, and print official identity cards for students.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <input type="text" id="searchIdCardsInput" onkeyup="filterIdCardsTable()" placeholder="Search student name, ID..." class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500 w-56">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                </div>
+                <span class="text-xs font-bold text-purple-700 bg-purple-50 px-3 py-1.5 rounded-full border border-purple-200 whitespace-nowrap">
+                    {{ count($idcards ?? []) }} ID Cards
+                </span>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left" id="idCardsTable">
+                <thead class="bg-slate-50 border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    <tr>
+                        <th class="p-4 text-center">Photo</th>
+                        <th class="p-4">Card / Regd No.</th>
+                        <th class="p-4">Student Name</th>
+                        <th class="p-4">Father's Name</th>
+                        <th class="p-4">Course</th>
+                        <th class="p-4">Mobile</th>
+                        <th class="p-4">Valid Upto</th>
+                        <th class="p-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                    @forelse($idcards ?? [] as $card)
+                        <tr class="hover:bg-slate-50/80 transition duration-150 idcard-row">
+                            <td class="p-4 text-center">
+                                @if($card->photo)
+                                    @php
+                                        $cPhoto = Str::startsWith($card->photo, 'http') ? $card->photo : (Str::startsWith($card->photo, '/') ? $card->photo : asset($card->photo));
+                                    @endphp
+                                    <a href="{{ $cPhoto }}" target="_blank">
+                                        <img src="{{ $cPhoto }}" class="w-10 h-10 rounded-full object-cover border border-purple-200 inline-block shadow-2xs" onerror="this.onerror=null; this.src='/assets/images/placeholder-user.jpg';">
+                                    </a>
+                                @else
+                                    <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-xs mx-auto border border-purple-200">
+                                        {{ strtoupper(substr($card->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                            </td>
+                            <td class="p-4 font-bold text-purple-700 font-mono text-xs card-regd">{{ $card->enrollment_no }}</td>
+                            <td class="p-4 font-bold text-slate-900 card-name">{{ $card->name }}</td>
+                            <td class="p-4 text-slate-600 text-xs card-father">{{ $card->father_name }}</td>
+                            <td class="p-4 text-slate-600 text-xs card-course">{{ $card->course }}</td>
+                            <td class="p-4 text-slate-600 text-xs font-mono">{{ $card->mobile_no ?? '—' }}</td>
+                            <td class="p-4 text-slate-600 text-xs font-mono">
+                                {{ $card->valid_to ? \Carbon\Carbon::parse($card->valid_to)->format('M Y') : '—' }}
+                            </td>
+                            <td class="p-4 text-right flex justify-end items-center gap-2">
+                                <a href="{{ route('idcard.view', $card->enrollment_no) }}" target="_blank" class="px-3 py-1.5 rounded-lg border border-purple-200 text-purple-700 bg-purple-50/60 hover:bg-purple-100 font-bold text-xs transition flex items-center gap-1.5" title="Print/View ID Card">
+                                    <i class="fa-solid fa-print"></i> Print ID Card
+                                </a>
+
+                                @php
+                                    $cardJson = base64_encode(json_encode([
+                                        'id' => $card->id,
+                                        'enrollment_no' => $card->enrollment_no,
+                                        'name' => $card->name,
+                                        'father_name' => $card->father_name,
+                                        'dob' => $card->dob ? \Carbon\Carbon::parse($card->dob)->format('Y-m-d') : '',
+                                        'course' => $card->course,
+                                        'mobile_no' => $card->mobile_no,
+                                        'email' => $card->email,
+                                        'valid_from' => $card->valid_from ? \Carbon\Carbon::parse($card->valid_from)->format('Y-m-d') : '',
+                                        'valid_to' => $card->valid_to ? \Carbon\Carbon::parse($card->valid_to)->format('Y-m-d') : '',
+                                        'center' => $card->center,
+                                        'address' => $card->address,
+                                        'photo' => $card->photo
+                                    ]));
+                                @endphp
+                                <button type="button" data-card="{{ $cardJson }}" onclick="handleIdCardEdit(this)" class="px-3 py-1.5 rounded-lg border border-amber-200 text-amber-700 hover:bg-amber-50 font-bold text-xs transition flex items-center gap-1.5" title="Edit ID Card Details">
+                                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                                </button>
+
+                                <form action="{{ route('admin.idcards.delete', $card->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this ID card?')">
+                                    @csrf
+                                    <button type="submit" class="px-3 py-1.5 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 font-bold text-xs transition flex items-center gap-1.5" title="Delete ID Card">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr id="noIdCardsRow">
+                            <td colspan="8" class="text-center py-12 text-slate-400 text-sm font-medium">
+                                <i class="fa-solid fa-id-card text-3xl mb-2 block text-slate-300"></i>
+                                No student ID cards generated yet. Use the form above to generate one!
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
 
 @endsection
 
@@ -2444,6 +2748,92 @@
                 <button type="button" onclick="closeEditCertModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition">Cancel</button>
                 <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-black text-xs shadow-md transition flex items-center gap-1.5">
                     <i class="fa-solid fa-check"></i> Update Certificate
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- EDIT ID CARD MODAL -->
+<div id="editIdCardModal" class="fixed inset-0 z-[105] hidden flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeEditIdCardModal()"></div>
+    
+    <!-- Modal Dialog -->
+    <div class="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in max-h-[92vh] overflow-y-auto z-10">
+        <!-- Modal Header -->
+        <div class="bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-800 p-6 text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold">Edit Student ID Card</h3>
+                    <p class="text-xs text-purple-100 font-medium">Update student particulars, validity period, course or photo</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeEditIdCardModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg transition">&times;</button>
+        </div>
+
+        <form id="editIdCardForm" method="POST" action="" enctype="multipart/form-data" class="p-6 sm:p-8 space-y-5">
+            @csrf
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Enrollment / Card No. *</label>
+                    <input type="text" name="enrollment_no" id="editCardEnrollmentNo" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Student Name *</label>
+                    <input type="text" name="name" id="editCardName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Father's Name *</label>
+                    <input type="text" name="father_name" id="editCardFatherName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Course *</label>
+                    <input type="text" name="course" id="editCardCourse" list="coursesList" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Date of Birth</label>
+                    <input type="date" name="dob" id="editCardDob" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Mobile No.</label>
+                    <input type="text" name="mobile_no" id="editCardMobile" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Email Address</label>
+                    <input type="email" name="email" id="editCardEmail" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Valid From</label>
+                    <input type="date" name="valid_from" id="editCardValidFrom" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Valid Upto</label>
+                    <input type="date" name="valid_to" id="editCardValidTo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Center</label>
+                    <input type="text" name="center" id="editCardCenter" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Address</label>
+                    <input type="text" name="address" id="editCardAddress" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Change Student Photo</label>
+                    <input type="file" name="photo" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-purple-500 transition file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-purple-100 file:text-purple-800 hover:file:bg-purple-200">
+                </div>
+            </div>
+
+            <!-- Modal Footer Actions -->
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                <button type="button" onclick="closeEditIdCardModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition">Cancel</button>
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-black text-xs shadow-md transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-check"></i> Save Changes
                 </button>
             </div>
         </form>
@@ -6151,6 +6541,7 @@ document.addEventListener('keydown', function(e) {
         closeEditGalleryModal();
         closeEditFeeModal();
         closeEditCertModal();
+        closeEditIdCardModal();
     }
 });
 
@@ -6336,6 +6727,122 @@ function openEditCertModal(cert) {
 function closeEditCertModal() {
     const modal = document.getElementById('editCertModal');
     if (modal) modal.classList.add('hidden');
+}
+
+// ================= ID CARD MANAGEMENT CONTROLLERS =================
+function autoFillFromAdmission(selectEl) {
+    if (!selectEl || !selectEl.value) return;
+    try {
+        const data = JSON.parse(atob(selectEl.value));
+        if (data.enrollment_no) document.getElementById('idCardEnrollmentNo').value = data.enrollment_no;
+        if (data.name) document.getElementById('idCardName').value = data.name;
+        if (data.father_name) document.getElementById('idCardFatherName').value = data.father_name;
+        if (data.course) document.getElementById('idCardCourse').value = data.course;
+        if (data.dob) document.getElementById('idCardDob').value = data.dob;
+        if (data.mobile_no) document.getElementById('idCardMobile').value = data.mobile_no;
+        if (data.email) document.getElementById('idCardEmail').value = data.email;
+        if (data.address) document.getElementById('idCardAddress').value = data.address;
+        if (data.center) document.getElementById('idCardCenter').value = data.center;
+        if (data.photo) {
+            document.getElementById('idCardExistingPhoto').value = data.photo;
+            const previewBox = document.getElementById('idCardPhotoPreviewBox');
+            const previewImg = document.getElementById('idCardPhotoPreviewImg');
+            if (previewBox && previewImg) {
+                previewImg.src = data.photo;
+                previewBox.classList.remove('hidden');
+                previewBox.classList.add('flex');
+            }
+        }
+    } catch (e) {
+        console.error('Error auto-filling from admission', e);
+    }
+}
+
+function clearIdCardForm() {
+    const form = document.getElementById('createIdCardForm');
+    if (form) form.reset();
+    const existingPhoto = document.getElementById('idCardExistingPhoto');
+    if (existingPhoto) existingPhoto.value = '';
+    const sel = document.getElementById('quickAdmissionSelect');
+    if (sel) sel.value = '';
+    const previewBox = document.getElementById('idCardPhotoPreviewBox');
+    if (previewBox) {
+        previewBox.classList.add('hidden');
+        previewBox.classList.remove('flex');
+    }
+    generateAutoCardNo();
+}
+
+function generateAutoCardNo() {
+    const year = new Date().getFullYear();
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    const input = document.getElementById('idCardEnrollmentNo');
+    if (input) input.value = 'SMTTC-ID-' + year + '-' + rand;
+}
+
+function previewIdCardUpload(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const previewBox = document.getElementById('idCardPhotoPreviewBox');
+            const previewImg = document.getElementById('idCardPhotoPreviewImg');
+            if (previewBox && previewImg) {
+                previewImg.src = e.target.result;
+                previewBox.classList.remove('hidden');
+                previewBox.classList.add('flex');
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function handleIdCardEdit(btn) {
+    try {
+        const raw = btn.getAttribute('data-card');
+        const card = JSON.parse(atob(raw));
+        openEditIdCardModal(card);
+    } catch (e) {
+        console.error('Error parsing ID card data', e);
+    }
+}
+
+function openEditIdCardModal(card) {
+    const modal = document.getElementById('editIdCardModal');
+    const form = document.getElementById('editIdCardForm');
+    if (!modal || !form) return;
+
+    form.action = '/admin/id-cards/update/' + card.id;
+    document.getElementById('editCardEnrollmentNo').value = card.enrollment_no || '';
+    document.getElementById('editCardName').value = card.name || '';
+    document.getElementById('editCardFatherName').value = card.father_name || '';
+    document.getElementById('editCardCourse').value = card.course || '';
+    document.getElementById('editCardDob').value = card.dob || '';
+    document.getElementById('editCardMobile').value = card.mobile_no || '';
+    document.getElementById('editCardEmail').value = card.email || '';
+    document.getElementById('editCardValidFrom').value = card.valid_from || '';
+    document.getElementById('editCardValidTo').value = card.valid_to || '';
+    document.getElementById('editCardCenter').value = card.center || 'SMTTC Institute';
+    document.getElementById('editCardAddress').value = card.address || 'Patna, Bihar';
+
+    modal.classList.remove('hidden');
+}
+
+function closeEditIdCardModal() {
+    const modal = document.getElementById('editIdCardModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function filterIdCardsTable() {
+    const filter = (document.getElementById('searchIdCardsInput').value || '').toLowerCase();
+    const rows = document.querySelectorAll('.idcard-row');
+    rows.forEach(r => {
+        const text = r.innerText.toLowerCase();
+        if (text.includes(filter)) {
+            r.style.display = '';
+        } else {
+            r.style.display = 'none';
+        }
+    });
 }
 </script>
 @endsection

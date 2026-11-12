@@ -61,7 +61,16 @@ class AdminController extends Controller
         $successfulStudents = \App\Models\SuccessfulStudent::orderBy('order_num', 'asc')->latest()->get();
         $successVideos = \App\Models\SuccessStoryVideo::orderBy('order_num', 'asc')->latest()->get();
 
-        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'beforeAfters', 'successfulStudents', 'successVideos'));
+        if (!\Illuminate\Support\Facades\Schema::hasTable('id_cards')) {
+            try {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+            } catch (\Throwable $e) {}
+        }
+        $idcards = \Illuminate\Support\Facades\Schema::hasTable('id_cards')
+            ? \App\Models\IdCard::latest()->get()
+            : collect();
+
+        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'beforeAfters', 'successfulStudents', 'successVideos', 'idcards'));
     }
 
     public function logout()
@@ -845,6 +854,14 @@ class AdminController extends Controller
         $photoFile->move(public_path('uploads/students'), $photoName);
         $photoPath = '/uploads/students/' . $photoName;
 
+        if (\Illuminate\Support\Facades\Schema::hasTable('id_cards')) {
+            $idcard = \App\Models\IdCard::where('enrollment_no', $id)->orWhere('id', $id)->first();
+            if ($idcard) {
+                $idcard->photo = $photoPath;
+                $idcard->save();
+            }
+        }
+
         $admission = \App\Models\Admission::where('enrollment_no', $id)->orWhere('id', $id)->first();
         if ($admission) {
             $admission->photo = $photoPath;
@@ -858,6 +875,109 @@ class AdminController extends Controller
         }
 
         return back()->with('photo_success', 'Student photo updated successfully!');
+    }
+
+    public function storeIdCard(Request $request)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        if (!\Illuminate\Support\Facades\Schema::hasTable('id_cards')) {
+            try {
+                \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+            } catch (\Throwable $e) {}
+        }
+
+        $request->validate([
+            'enrollment_no' => 'required|unique:id_cards,enrollment_no',
+            'name' => 'required|string|max:255',
+            'father_name' => 'required|string|max:255',
+            'course' => 'required|string|max:255',
+            'dob' => 'nullable|date',
+            'mobile_no' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'valid_from' => 'nullable|date',
+            'valid_to' => 'nullable|date',
+            'center' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:500',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+        ]);
+
+        $data = $request->except(['photo', 'existing_photo']);
+
+        if (empty($data['center'])) {
+            $data['center'] = 'SMTTC Institute';
+        }
+        if (empty($data['address'])) {
+            $data['address'] = 'Patna, Bihar';
+        }
+        if (empty($data['valid_from'])) {
+            $data['valid_from'] = now()->format('Y-m-d');
+        }
+        if (empty($data['valid_to'])) {
+            $data['valid_to'] = now()->addYears(2)->format('Y-m-d');
+        }
+
+        if ($request->hasFile('photo')) {
+            $photoFile = $request->file('photo');
+            $photoName = time() . '-idcard-' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
+            $photoFile->move(public_path('uploads/students'), $photoName);
+            $data['photo'] = '/uploads/students/' . $photoName;
+        } elseif ($request->filled('existing_photo')) {
+            $data['photo'] = $request->input('existing_photo');
+        }
+
+        \App\Models\IdCard::create($data);
+
+        return redirect()->to(route('admin.dashboard') . '#idcards')->with('idcard_success', 'Student ID Card generated successfully for ' . $data['name'] . '!');
+    }
+
+    public function updateIdCard(Request $request, $id)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $card = \App\Models\IdCard::findOrFail($id);
+
+        $validated = $request->validate([
+            'enrollment_no' => 'required|string|unique:id_cards,enrollment_no,' . $card->id,
+            'name' => 'required|string|max:255',
+            'father_name' => 'required|string|max:255',
+            'course' => 'required|string|max:255',
+            'dob' => 'nullable|date',
+            'mobile_no' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'valid_from' => 'nullable|date',
+            'valid_to' => 'nullable|date',
+            'center' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:500',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $photoFile = $request->file('photo');
+            $photoName = time() . '-idcard-' . uniqid() . '.' . $photoFile->getClientOriginalExtension();
+            $photoFile->move(public_path('uploads/students'), $photoName);
+            $validated['photo'] = '/uploads/students/' . $photoName;
+        }
+
+        $card->update($validated);
+
+        return redirect()->to(route('admin.dashboard') . '#idcards')->with('idcard_success', 'ID Card for ' . $card->name . ' updated successfully!');
+    }
+
+    public function deleteIdCard($id)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $card = \App\Models\IdCard::findOrFail($id);
+        $card->delete();
+
+        return redirect()->to(route('admin.dashboard') . '#idcards')->with('idcard_success', 'ID Card deleted successfully!');
     }
 
     public function deleteCertificate($id)
