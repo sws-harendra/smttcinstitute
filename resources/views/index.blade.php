@@ -11,8 +11,8 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ route('home') }}" />
     <meta property="og:image" content="{{ asset('assets/images/logonewblack.webp') }}" />
-    <link rel="preload" as="image" href="{{ asset('assets/images/hero1-mobile.webp') }}" type="image/webp" media="(max-width: 640px)" fetchpriority="high">
-    <link rel="preload" as="image" href="{{ asset('assets/images/hero1.webp') }}" type="image/webp" media="(min-width: 641px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('assets/images/hero1-mobile.webp') }}?v=2" type="image/webp" media="(max-width: 640px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('assets/images/hero1.webp') }}?v=2" type="image/webp" media="(min-width: 641px)" fetchpriority="high">
 @endsection
 
 @section('content')
@@ -30,8 +30,8 @@
     @else
         <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 opacity-100">
           <picture>
-            <source media="(max-width: 640px)" srcset="{{ asset('assets/images/hero1-mobile.webp') }}" type="image/webp">
-            <img src="{{ asset('assets/images/hero1.webp') }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
+            <source media="(max-width: 640px)" srcset="{{ asset('assets/images/hero1-mobile.webp') }}?v=2" type="image/webp">
+            <img src="{{ asset('assets/images/hero1.webp') }}?v=2" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
           </picture>
         </div>
     @endif
@@ -168,9 +168,9 @@
           <!-- Discount / Fee Teaser Box -->
           <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 mb-5 flex items-center justify-between">
             <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Course Fee Starting</span>
+              <span class="text-[10px] uppercase font-bold text-slate-500 block">Course Fee Starting</span>
               <div class="flex items-baseline gap-1.5">
-                <span class="text-slate-400 line-through text-xs font-semibold">{{ $acFee->course_fee ?? '₹15,000' }}</span>
+                <span class="text-slate-500 line-through text-xs font-semibold">{{ $acFee->course_fee ?? '₹15,000' }}</span>
                 <span class="text-base sm:text-lg font-black text-slate-900">{{ $acFee->girls_discounted_fee ?? '₹9,000' }}*</span>
               </div>
             </div>
@@ -223,9 +223,9 @@
           <!-- Discount / Fee Teaser Box -->
           <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 mb-5 flex items-center justify-between">
             <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Course Fee Starting</span>
+              <span class="text-[10px] uppercase font-bold text-slate-500 block">Course Fee Starting</span>
               <div class="flex items-baseline gap-1.5">
-                <span class="text-slate-400 line-through text-xs font-semibold">{{ $washFee->course_fee ?? '₹10,000' }}</span>
+                <span class="text-slate-500 line-through text-xs font-semibold">{{ $washFee->course_fee ?? '₹10,000' }}</span>
                 <span class="text-base sm:text-lg font-black text-slate-900">{{ $washFee->girls_discounted_fee ?? '₹6,000' }}*</span>
               </div>
             </div>
@@ -278,9 +278,9 @@
           <!-- Discount / Fee Teaser Box -->
           <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 mb-5 flex items-center justify-between">
             <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Course Fee Starting</span>
+              <span class="text-[10px] uppercase font-bold text-slate-500 block">Course Fee Starting</span>
               <div class="flex items-baseline gap-1.5">
-                <span class="text-slate-400 line-through text-xs font-semibold">{{ $fridgeFee->course_fee ?? '₹10,000' }}</span>
+                <span class="text-slate-500 line-through text-xs font-semibold">{{ $fridgeFee->course_fee ?? '₹10,000' }}</span>
                 <span class="text-base sm:text-lg font-black text-slate-900">{{ $fridgeFee->girls_discounted_fee ?? '₹6,500' }}*</span>
               </div>
             </div>
@@ -333,9 +333,9 @@
           <!-- Discount / Fee Teaser Box -->
           <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 mb-5 flex items-center justify-between">
             <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Course Fee Starting</span>
+              <span class="text-[10px] uppercase font-bold text-slate-500 block">Course Fee Starting</span>
               <div class="flex items-baseline gap-1.5">
-                <span class="text-slate-400 line-through text-xs font-semibold">{{ $mobFee->course_fee ?? '₹18,000' }}</span>
+                <span class="text-slate-500 line-through text-xs font-semibold">{{ $mobFee->course_fee ?? '₹18,000' }}</span>
                 <span class="text-base sm:text-lg font-black text-slate-900">{{ $mobFee->girls_discounted_fee ?? '₹11,700' }}*</span>
               </div>
             </div>
@@ -388,9 +388,9 @@
           <!-- Discount / Fee Teaser Box -->
           <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 mb-5 flex items-center justify-between flex-wrap gap-2">
             <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block">Course Fee Starting</span>
+              <span class="text-[10px] uppercase font-bold text-slate-500 block">Course Fee Starting</span>
               <div class="flex items-baseline gap-1.5">
-                <span class="text-slate-400 line-through text-xs font-semibold">{{ $laptopFee->course_fee ?? '₹20,000' }}</span>
+                <span class="text-slate-500 line-through text-xs font-semibold">{{ $laptopFee->course_fee ?? '₹20,000' }}</span>
                 <span class="text-base sm:text-lg font-black text-slate-900">{{ $laptopFee->girls_discounted_fee ?? '₹14,000' }}*</span>
               </div>
             </div>
