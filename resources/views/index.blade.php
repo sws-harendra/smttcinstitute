@@ -23,8 +23,19 @@
   <div id="dynamic-slider-container">
     @if(isset($sliders) && count($sliders) > 0)
         @foreach($sliders as $index => $slider)
+            @php
+                $sliderSrc = Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url);
+                $isHero1 = str_contains($slider->image_url, 'hero1.webp');
+            @endphp
             <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}">
-              <img src="{{ Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url) }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" {!! $index === 0 ? 'fetchpriority="high"' : '' !!}/>
+              @if($isHero1)
+                <picture>
+                  <source media="(max-width: 640px)" srcset="{{ asset('assets/images/hero1-mobile.webp') }}?v=2" type="image/webp">
+                  <img src="{{ asset('assets/images/hero1.webp') }}?v=2" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" {!! $index === 0 ? 'fetchpriority="high"' : '' !!}/>
+                </picture>
+              @else
+                <img src="{{ $sliderSrc }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" {!! $index === 0 ? 'fetchpriority="high"' : '' !!}/>
+              @endif
             </div>
         @endforeach
     @else
