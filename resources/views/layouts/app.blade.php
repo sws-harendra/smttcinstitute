@@ -495,10 +495,11 @@
             </p>
 
             <div class="flex gap-4 mt-6">
-              <a href="#" target="_blank" class="footer-icon text-xl hover:text-blue-600 transition" aria-label="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" target="_blank" class="footer-icon text-xl hover:text-pink-600 transition" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
-              <a href="#" target="_blank" class="footer-icon text-xl hover:text-red-600 transition" aria-label="Subscribe to our YouTube channel"><i class="fab fa-youtube"></i></a>
-              <a href="https://wa.me/917870516006" target="_blank" class="footer-icon text-xl hover:text-green-500 transition" aria-label="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+              <a href="https://www.facebook.com/profile.php?id=61583969564683" target="_blank" rel="noopener noreferrer" class="footer-icon text-xl hover:text-blue-600 transition" aria-label="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://www.instagram.com/a2zsmttc/" target="_blank" rel="noopener noreferrer" class="footer-icon text-xl hover:text-pink-600 transition" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com/in/ripendrakr/" target="_blank" rel="noopener noreferrer" class="footer-icon text-xl hover:text-blue-500 transition" aria-label="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="footer-icon text-xl hover:text-red-600 transition" aria-label="Subscribe to our YouTube channel"><i class="fab fa-youtube"></i></a>
+              <a href="https://wa.me/917870516006" target="_blank" rel="noopener noreferrer" class="footer-icon text-xl hover:text-green-500 transition" aria-label="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
             </div>
           </div>
 
