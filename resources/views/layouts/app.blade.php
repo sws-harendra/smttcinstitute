@@ -533,7 +533,9 @@
             <ul class="space-y-3 text-sm">
               <li>Near Hi-Tech Hospital saguna more Balaji Nagar new Tarachak danapur patna bihar 801503</li>
               <li>📞 <a href="tel:7870516006" class="footer-link hover:text-[#FACA0A]">7870516006</a></li>
+              <!--email_off-->
               <li>✉️ <a href="mailto:info@technicalcentre.com" class="footer-link hover:text-[#FACA0A]">info@technicalcentre.com</a></li>
+              <!--/email_off-->
               <li>🕒 Mon – Sat: 9:00 AM – 7:00 PM</li>
             </ul>
           </div>
@@ -593,7 +595,7 @@
             setTimeout(() => {
                 popup.classList.remove("hidden");
                 popup.classList.add("flex");
-            }, 1500);
+            }, 4500);
             sessionStorage.setItem("popupShown", "true");
         }
         if (closeBtn) {
@@ -632,7 +634,7 @@
     <!-- AOS Animation Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('load', function() {
             // 1. Initialize AOS (deferred slightly to avoid forced reflow during initial paint)
             if (typeof AOS !== 'undefined') {
                 setTimeout(function() {
@@ -789,24 +791,26 @@
         });
     </script>
 
-    <!-- Google tag (gtag.js) - Loaded on Idle to ensure zero main-thread blocking -->
+    <!-- Google tag (gtag.js) - Loaded on user interaction or fallback timer to eliminate TBT -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'AW-18339178212');
 
+      var gaLoaded = false;
       function loadGoogleAnalytics() {
+          if (gaLoaded) return;
+          gaLoaded = true;
           var ga = document.createElement('script');
           ga.async = true;
           ga.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18339178212';
           document.body.appendChild(ga);
       }
-      if ('requestIdleCallback' in window) {
-          requestIdleCallback(loadGoogleAnalytics, { timeout: 3000 });
-      } else {
-          window.addEventListener('load', loadGoogleAnalytics);
-      }
+      ['scroll', 'mousemove', 'touchstart', 'click'].forEach(function(e) {
+          window.addEventListener(e, loadGoogleAnalytics, { once: true, passive: true });
+      });
+      setTimeout(loadGoogleAnalytics, 4000);
     </script>
 
     @yield('scripts')
