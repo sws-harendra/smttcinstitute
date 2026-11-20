@@ -23,16 +23,23 @@
     <!-- Premium Google Fonts (Outfit + Dancing Script & Caveat Cursive Fonts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         @font-face {
             font-family: 'Font Awesome 6 Free';
+            font-style: normal;
+            font-weight: 900;
             font-display: swap;
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2') format('woff2');
         }
         @font-face {
             font-family: 'Font Awesome 6 Brands';
+            font-style: normal;
+            font-weight: 400;
             font-display: swap;
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-brands-400.woff2') format('woff2');
         }
         body, h1, h2, h3, h4, h5, h6, p, a, span, div, button, input {
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -284,7 +291,7 @@
       <div class="max-w-[1440px] mx-auto px-2.5 sm:px-4 lg:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-2">
 
         <!-- Logo -->
-        <a class="flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0" href="{{ route('home') }}">
+        <a class="flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0" href="{{ route('home') }}" aria-label="Smart Technical Training Institute Home">
             <img class="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 xl:w-[46px] object-contain shrink-0" width="46" height="46" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
             <span class="text-xs sm:text-sm lg:text-[13px] xl:text-base font-roboto font-bold text-gray-900 leading-tight tracking-tight">
               Smart Technical<span class="hidden min-[420px]:inline"> Institute</span><span class="hidden sm:inline lg:hidden xl:inline"> Patna</span>
@@ -349,7 +356,7 @@
 
         <!-- Right Actions (Always visible, responsive & never overflows on any mobile) -->
         <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          <a href="tel:7870516006" class="hidden sm:flex items-center justify-center gap-1 border border-[#FACA0A] text-yellow-800 bg-yellow-50/70 hover:bg-[#FACA0A] hover:text-black px-2 sm:px-2.5 xl:px-3.5 py-1 sm:py-1.5 rounded-full font-semibold transition whitespace-nowrap shadow-xs text-[11px] xl:text-xs">
+          <a href="tel:7870516006" aria-label="Call 7870516006" class="hidden sm:flex items-center justify-center gap-1 border border-[#FACA0A] text-yellow-800 bg-yellow-50/70 hover:bg-[#FACA0A] hover:text-black px-2 sm:px-2.5 xl:px-3.5 py-1 sm:py-1.5 rounded-full font-semibold transition whitespace-nowrap shadow-xs text-[11px] xl:text-xs">
             <i class="fa-solid fa-phone text-[#FACA0A]"></i> <span class="hidden xl:inline">7870516006</span>
           </a>
           <a href="tel:7870516006" class="sm:hidden flex items-center justify-center w-7 h-7 rounded-full border border-[#FACA0A] text-yellow-800 bg-yellow-50 hover:bg-[#FACA0A] transition" aria-label="Call Us">
@@ -365,7 +372,7 @@
           </a>
 
           <!-- Admin Portal (Visible on tablet/desktop; on mobile it is in the drawer menu) -->
-          <a href="{{ route('admin.login') }}" class="hidden md:flex items-center gap-1 text-[11px] sm:text-xs text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg font-semibold transition shadow-xs whitespace-nowrap">
+          <a href="{{ route('admin.login') }}" aria-label="Admin Portal" class="hidden md:flex items-center gap-1 text-[11px] sm:text-xs text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg font-semibold transition shadow-xs whitespace-nowrap">
             <i class="fa-solid fa-user-shield text-slate-500 text-[10px] sm:text-xs"></i> <span>Admin</span>
           </a>
           
@@ -386,7 +393,7 @@
       <div class="absolute right-0 top-0 h-full w-[85vw] max-w-xs sm:w-80 bg-white shadow-2xl p-6 overflow-y-auto animate-slide-in flex flex-col justify-between">
         <div>
           <div class="flex justify-between items-center mb-6 border-b pb-4">
-              <a class="flex items-center gap-2" href="{{ route('home') }}">
+              <a class="flex items-center gap-2" href="{{ route('home') }}" aria-label="Smart Technical Training Institute Home">
                   <div class="w-[45px] shrink-0">
                     <img class="w-full" width="80" height="80" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo">
                   </div>

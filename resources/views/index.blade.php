@@ -180,7 +180,7 @@
           <a href="{{ route('courses.ac') }}" aria-label="View AC Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
-          <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
+          <a href="{{ route('feestructure') }}" aria-label="View AC Repairing Fee Breakdown" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
           </a>
@@ -235,7 +235,7 @@
           <a href="{{ route('courses.washing') }}" aria-label="View Washing Machine Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
-          <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
+          <a href="{{ route('feestructure') }}" aria-label="View Washing Machine Repairing Fee Breakdown" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
           </a>
@@ -290,7 +290,7 @@
           <a href="{{ route('courses.fridge') }}" aria-label="View Fridge Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
-          <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
+          <a href="{{ route('feestructure') }}" aria-label="View Fridge Repairing Fee Breakdown" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
           </a>
@@ -345,7 +345,7 @@
           <a href="{{ route('courses.mobile') }}" aria-label="View Mobile Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
-          <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
+          <a href="{{ route('feestructure') }}" aria-label="View Mobile Repairing Fee Breakdown" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
           </a>
@@ -400,7 +400,7 @@
           <a href="{{ route('courses.laptop') }}" aria-label="View Laptop Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
-          <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
+          <a href="{{ route('feestructure') }}" aria-label="View Laptop Repairing Fee Breakdown" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
           </a>
