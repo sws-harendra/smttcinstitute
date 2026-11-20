@@ -24,7 +24,7 @@
     @if(isset($sliders) && count($sliders) > 0)
         @foreach($sliders as $index => $slider)
             <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}">
-              <img src="{{ Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url) }}" width="1600" height="716" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
+              <img src="{{ Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url) }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" {!! $index === 0 ? 'fetchpriority="high"' : '' !!}/>
             </div>
         @endforeach
     @else
@@ -459,7 +459,7 @@
       </ul>
     </div>
     <div data-aos="fade-left">
-      <img src="{{ asset('assets/images/lab.webp') }}" width="800" height="360" loading="lazy" class="rounded-xl shadow-lg transform hover:scale-105 transition duration-500 w-full h-auto object-cover max-h-[400px]" alt="practical training image"/>
+      <img src="{{ asset('assets/images/lab.webp') }}?v=2" width="800" height="360" loading="lazy" class="rounded-xl shadow-lg transform hover:scale-105 transition duration-500 w-full h-auto object-cover max-h-[400px]" alt="practical training image"/>
     </div>
   </div>
 </section>
@@ -526,7 +526,7 @@
         
         <div class="gallery-3d-card" data-index="0">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/g1.webp') }}" width="440" height="310" loading="lazy" alt="AC Repairing Lab">
+            <img src="{{ asset('assets/images/g1.webp') }}?v=2" width="440" height="310" loading="lazy" alt="AC Repairing Lab">
             <div class="card-caption">
               <h3>AC Repairing Lab</h3>
               <p>Real faulty ACs & Live Servicing Bench</p>
@@ -536,7 +536,7 @@
 
         <div class="gallery-3d-card" data-index="1">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/g2.webp') }}" width="440" height="310" loading="lazy" alt="Washing Machine Lab">
+            <img src="{{ asset('assets/images/g2.webp') }}?v=2" width="440" height="310" loading="lazy" alt="Washing Machine Lab">
             <div class="card-caption">
               <h3>Washing Machine Setup</h3>
               <p>Automatic & Semi-Automatic Troubleshooting</p>
@@ -546,7 +546,7 @@
 
         <div class="gallery-3d-card" data-index="2">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/g3.webp') }}" width="440" height="310" loading="lazy" alt="Mobile Repairing Desk">
+            <img src="{{ asset('assets/images/g3.webp') }}?v=2" width="440" height="310" loading="lazy" alt="Mobile Repairing Desk">
             <div class="card-caption">
               <h3>Mobile Repairing Desk</h3>
               <p>Hardware Micro-soldering & IC Replacement</p>
@@ -556,7 +556,7 @@
 
         <div class="gallery-3d-card" data-index="3">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/lab.webp') }}" width="440" height="310" loading="lazy" alt="Practical Lab Practice">
+            <img src="{{ asset('assets/images/g4.webp') }}?v=2" width="440" height="310" loading="lazy" alt="Practical Lab Practice">
             <div class="card-caption">
               <h3>Practical Lab Practice</h3>
               <p>Individual Student Workstations</p>
@@ -566,7 +566,7 @@
 
         <div class="gallery-3d-card" data-index="4">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/hero1.webp') }}" width="440" height="310" loading="lazy" alt="Expert Guidance Session">
+            <img src="{{ asset('assets/images/g5.webp') }}?v=2" width="440" height="310" loading="lazy" alt="Expert Guidance Session">
             <div class="card-caption">
               <h3>Expert Guidance Session</h3>
               <p>Step-by-step Technical Mentorship</p>
