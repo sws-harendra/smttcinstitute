@@ -11,6 +11,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ route('home') }}" />
     <meta property="og:image" content="{{ asset('assets/images/logonewblack.webp') }}" />
+    <link rel="preload" as="image" href="{{ asset('assets/images/hero1.webp') }}" type="image/webp" fetchpriority="high">
 @endsection
 
 @section('content')
@@ -454,7 +455,7 @@
       </ul>
     </div>
     <div data-aos="fade-left">
-      <img src="{{ asset('assets/images/lab.webp') }}" width="821" height="576" loading="lazy" class="rounded-xl shadow-lg transform hover:scale-105 transition duration-500 w-full h-auto object-cover max-h-[400px]" alt="practical training image"/>
+      <img src="{{ asset('assets/images/lab.webp') }}" width="800" height="360" loading="lazy" class="rounded-xl shadow-lg transform hover:scale-105 transition duration-500 w-full h-auto object-cover max-h-[400px]" alt="practical training image"/>
     </div>
   </div>
 </section>
@@ -628,7 +629,7 @@
                     </div>
                 </div>
                 <div class="px-5 sm:px-6 pb-6">
-                    <a href="{{ route('blog.show', $blog->slug ?? $blog->id) }}" class="text-[#FACA0A] font-semibold hover:underline text-sm">Read More &rarr;</a>
+                    <a href="{{ route('blog.show', $blog->slug ?? $blog->id) }}" aria-label="Read more about {{ $blog->title }}" class="text-[#FACA0A] font-semibold hover:underline text-sm">Read More &rarr;</a>
                 </div>
             </div>
         @endforeach

@@ -18,13 +18,20 @@
     <script src="{{ asset('script.min.js') }}?v={{ file_exists(public_path('script.min.js')) ? filemtime(public_path('script.min.js')) : '1.1' }}" defer></script>
     
     <!-- AOS Animation Library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"></noscript>
     
     <!-- Premium Google Fonts (Outfit + Dancing Script & Caveat Cursive Fonts) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    </noscript>
     
     <style>
         @font-face {
@@ -644,26 +651,45 @@
                 });
             }
 
-            // 2. Scroll Progress Bar
+            // 2. Scroll Progress Bar (High Performance, Passive & RequestAnimationFrame)
             const progressBar = document.getElementById('scroll-progress');
-            window.addEventListener('scroll', () => {
-                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-                if (totalHeight > 0) {
-                    const progress = (window.scrollY / totalHeight) * 100;
-                    progressBar.style.width = progress + '%';
-                }
-            });
+            if (progressBar) {
+                let scrollTicking = false;
+                window.addEventListener('scroll', () => {
+                    if (!scrollTicking) {
+                        window.requestAnimationFrame(() => {
+                            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                            if (totalHeight > 0) {
+                                const progress = (window.scrollY / totalHeight) * 100;
+                                progressBar.style.width = progress + '%';
+                            }
+                            scrollTicking = false;
+                        });
+                        scrollTicking = true;
+                    }
+                }, { passive: true });
+            }
 
-            // 3. Custom Interactive Cursor Glow
+            // 3. Custom Interactive Cursor Glow (Passive & RequestAnimationFrame)
             const cursorGlow = document.getElementById('custom-cursor-glow');
             if (cursorGlow && window.innerWidth > 768) {
+                let mouseTicking = false;
+                let mouseX = 0, mouseY = 0;
                 document.addEventListener('mousemove', (e) => {
-                    cursorGlow.style.opacity = '1';
-                    cursorGlow.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-                });
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    if (!mouseTicking) {
+                        window.requestAnimationFrame(() => {
+                            cursorGlow.style.opacity = '1';
+                            cursorGlow.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+                            mouseTicking = false;
+                        });
+                        mouseTicking = true;
+                    }
+                }, { passive: true });
                 document.addEventListener('mouseleave', () => {
                     cursorGlow.style.opacity = '0';
-                });
+                }, { passive: true });
             }
 
             // 4. Interactive 3D Card Tilt Effect
@@ -679,7 +705,7 @@
                     const rotateY = (centerX - x) / 12;
 
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
-                });
+                }, { passive: true });
 
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
