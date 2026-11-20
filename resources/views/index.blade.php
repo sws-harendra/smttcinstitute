@@ -20,30 +20,39 @@
 <!-- Hero Section -->
 <section class="relative w-full min-h-[80vh] py-12 md:py-20 flex items-center overflow-hidden">
   <!-- Dynamic Slider Container -->
-  <div id="dynamic-slider-container">
+  <div id="dynamic-slider-container" class="absolute inset-0 w-full h-full overflow-hidden">
     @if(isset($sliders) && count($sliders) > 0)
         @foreach($sliders as $index => $slider)
             @php
                 $sliderSrc = Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url);
                 $isHero1 = str_contains($slider->image_url, 'hero1.webp');
             @endphp
-            <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}">
+            <div class="carousel-slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out {{ $index === 0 ? 'opacity-100 z-[1]' : 'opacity-0 z-0 pointer-events-none' }}">
               @if($isHero1)
-                <picture>
+                <picture class="w-full h-full block">
                   <source media="(max-width: 640px)" srcset="{{ asset('assets/images/hero1-mobile.webp') }}?v=2" type="image/webp">
-                  <img src="{{ asset('assets/images/hero1.webp') }}?v=2" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" {!! $index === 0 ? 'fetchpriority="high"' : '' !!}/>
+                  <img src="{{ asset('assets/images/hero1.webp') }}?v=2" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="Smart Technical Training Institute Hero Banner" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" {!! $index === 0 ? 'fetchpriority="high"' : '' !!}/>
                 </picture>
               @else
-                <img src="{{ $sliderSrc }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" {!! $index === 0 ? 'fetchpriority="high"' : '' !!}/>
+                <img src="{{ $sliderSrc }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="Smart Technical Training Institute Banner {{ $index + 1 }}" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" {!! $index === 0 ? 'fetchpriority="high"' : '' !!}/>
               @endif
             </div>
         @endforeach
     @else
-        <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 opacity-100">
-          <picture>
+        <div class="carousel-slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-100 z-[1]">
+          <picture class="w-full h-full block">
             <source media="(max-width: 640px)" srcset="{{ asset('assets/images/hero1-mobile.webp') }}?v=2" type="image/webp">
-            <img src="{{ asset('assets/images/hero1.webp') }}?v=2" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
+            <img src="{{ asset('assets/images/hero1.webp') }}?v=2" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="Smart Technical Training Institute Hero Banner" loading="eager" fetchpriority="high"/>
           </picture>
+        </div>
+        <div class="carousel-slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0 z-0 pointer-events-none">
+          <img src="{{ asset('assets/images/hero2.webp') }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="Smart Technical Training Institute Banner 2" loading="lazy"/>
+        </div>
+        <div class="carousel-slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0 z-0 pointer-events-none">
+          <img src="{{ asset('assets/images/hero3.webp') }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="Smart Technical Training Institute Banner 3" loading="lazy"/>
+        </div>
+        <div class="carousel-slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0 z-0 pointer-events-none">
+          <img src="{{ asset('assets/images/hero4.webp') }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="Smart Technical Training Institute Banner 4" loading="lazy"/>
         </div>
     @endif
   </div>
@@ -76,11 +85,13 @@
   </div>
 
   <!-- Dots -->
-  <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 z-20">
-    <span class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white rounded-full opacity-100"></span>
-    <span class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white rounded-full opacity-40"></span>
-    <span class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white rounded-full opacity-40"></span>
-    <span class="dot w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white rounded-full opacity-40"></span>
+  <div id="hero-slider-dots" class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 z-20">
+    @php
+      $slideCount = (isset($sliders) && count($sliders) > 0) ? count($sliders) : 4;
+    @endphp
+    @for($i = 0; $i < $slideCount; $i++)
+      <button type="button" aria-label="Go to slide {{ $i + 1 }}" data-slide-index="{{ $i }}" class="dot h-2.5 sm:h-3 rounded-full transition-all duration-300 {{ $i === 0 ? 'bg-amber-400 w-6 sm:w-8 opacity-100' : 'bg-white/60 hover:bg-white w-2.5 sm:w-3 opacity-60' }}"></button>
+    @endfor
   </div>
 </section>
 
@@ -676,21 +687,67 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const slides = document.querySelectorAll(".carousel-slide");
+    const dots = document.querySelectorAll("#hero-slider-dots .dot");
     let current = 0;
+    let timer = null;
 
     function showSlide(index) {
+      if (!slides.length) return;
+      current = (index + slides.length) % slides.length;
+
       slides.forEach((slide, i) => {
-        slide.classList.toggle("opacity-100", i === index);
-        slide.classList.toggle("opacity-0", i !== index);
+        const isActive = i === current;
+        slide.classList.toggle("opacity-100", isActive);
+        slide.classList.toggle("z-[1]", isActive);
+        slide.classList.toggle("opacity-0", !isActive);
+        slide.classList.toggle("z-0", !isActive);
+        slide.classList.toggle("pointer-events-none", !isActive);
+      });
+
+      dots.forEach((dot, i) => {
+        const isActive = i === current;
+        if (isActive) {
+          dot.classList.add("bg-amber-400", "w-6", "sm:w-8", "opacity-100");
+          dot.classList.remove("bg-white/60", "w-2.5", "sm:w-3", "opacity-60");
+        } else {
+          dot.classList.remove("bg-amber-400", "w-6", "sm:w-8", "opacity-100");
+          dot.classList.add("bg-white/60", "w-2.5", "sm:w-3", "opacity-60");
+        }
       });
     }
 
-    if (slides.length > 1) {
-      setInterval(() => {
-        current = (current + 1) % slides.length;
-        showSlide(current);
+    function startAutoSlide() {
+      if (slides.length <= 1) return;
+      stopAutoSlide();
+      timer = setInterval(() => {
+        showSlide(current + 1);
       }, 4000);
     }
+
+    function stopAutoSlide() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        const targetIndex = parseInt(dot.getAttribute("data-slide-index") || "0", 10);
+        showSlide(targetIndex);
+        startAutoSlide();
+      });
+    });
+
+    const heroContainer = document.getElementById("dynamic-slider-container");
+    if (heroContainer) {
+      heroContainer.parentElement.addEventListener("mouseenter", stopAutoSlide);
+      heroContainer.parentElement.addEventListener("mouseleave", startAutoSlide);
+      heroContainer.parentElement.addEventListener("touchstart", stopAutoSlide, { passive: true });
+      heroContainer.parentElement.addEventListener("touchend", startAutoSlide, { passive: true });
+    }
+
+    startAutoSlide();
 });
 </script>
 @endsection

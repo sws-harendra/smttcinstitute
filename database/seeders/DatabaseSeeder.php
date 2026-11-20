@@ -19,11 +19,17 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('admin123'),
             ]);
         }
-        // Seed Sample Slider Image if empty
+        // Seed Default Slider Images if empty
         if (SliderImage::count() === 0) {
-            SliderImage::create([
-                'image_url' => '/assets/images/hero1.webp',
-            ]);
+            $defaultSlides = [
+                '/assets/images/hero1.webp',
+                '/assets/images/hero2.webp',
+                '/assets/images/hero3.webp',
+                '/assets/images/hero4.webp',
+            ];
+            foreach ($defaultSlides as $slide) {
+                SliderImage::create(['image_url' => $slide]);
+            }
         }
 
         // Seed Sample Blog Post if empty
