@@ -155,7 +155,7 @@
             </span>
           </div>
 
-          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition">AC Repairing</h3>
+          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition"><a href="{{ route('courses.ac') }}">AC Repairing</a></h3>
           <p class="text-gray-600 text-xs sm:text-sm mb-4 leading-relaxed">
             Our <b>AC REPAIRING TRAINING INSTITUTE IN PATNA</b> offers a complete practical course that focuses on air conditioner installation, servicing, gas charging, and PCB circuit repair.
           </p>
@@ -177,9 +177,9 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <button type="button" onclick="openCourse('ac')" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.ac') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
-          </button>
+          </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
@@ -210,7 +210,7 @@
             </span>
           </div>
 
-          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition">Washing Machine Repairing</h3>
+          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition"><a href="{{ route('courses.washing') }}">Washing Machine Repairing</a></h3>
           <p class="text-gray-600 text-xs sm:text-sm mb-4 leading-relaxed">
             The <b>WASHING MACHINE REPAIRING TRAINING INSTITUTE COURSE</b> gives complete practical knowledge of semi-automatic and front/top-load inverter washing machines.
           </p>
@@ -232,9 +232,9 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <button type="button" onclick="openCourse('washing')" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.washing') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
-          </button>
+          </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
@@ -265,7 +265,7 @@
             </span>
           </div>
 
-          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition">Fridge Repairing</h3>
+          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition"><a href="{{ route('courses.fridge') }}">Fridge Repairing</a></h3>
           <p class="text-gray-600 text-xs sm:text-sm mb-4 leading-relaxed">
             Our <b>FRIDGE REPAIRING TRAINING INSTITUTE IN PATNA</b> trains students in single/double door and frost-free inverter refrigerators with compressor & gas charging practicals.
           </p>
@@ -287,9 +287,9 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <button type="button" onclick="openCourse('fridge')" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.fridge') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
-          </button>
+          </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
@@ -320,7 +320,7 @@
             </span>
           </div>
 
-          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition">Mobile Repairing</h3>
+          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition"><a href="{{ route('courses.mobile') }}">Mobile Repairing</a></h3>
           <p class="text-gray-600 text-xs sm:text-sm mb-4 leading-relaxed">
             Our <b>MOBILE REPAIRING TRAINING INSTITUTE IN PATNA</b> covers Android & iPhone hardware, schematic diagrams, CPU/eMMC reballing, and flashing.
           </p>
@@ -342,9 +342,9 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <button type="button" onclick="openCourse('mobile')" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.mobile') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
-          </button>
+          </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
@@ -375,7 +375,7 @@
             </span>
           </div>
 
-          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition">Laptop Repairing</h3>
+          <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-2 group-hover:text-amber-600 transition"><a href="{{ route('courses.laptop') }}">Laptop Repairing</a></h3>
           <p class="text-gray-600 text-xs sm:text-sm mb-4 leading-relaxed">
             Our <b>LAPTOP REPAIRING TRAINING INSTITUTE IN PATNA</b> provides motherboard chip-level repair, CRO/DSO testing, BIOS programming, and power section troubleshooting.
           </p>
@@ -397,9 +397,9 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <button type="button" onclick="openCourse('laptop')" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.laptop') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
-          </button>
+          </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
             <i class="fa-solid fa-indian-rupee-sign text-[11px]"></i>
             <span>View Fee Breakdown</span>
