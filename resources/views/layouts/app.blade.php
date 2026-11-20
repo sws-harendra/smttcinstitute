@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Smart Technical Training Institute - Patna')</title>
+    @yield('meta')
     
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('build.css') }}">
@@ -270,8 +271,6 @@
             }
         }
     </style>
-    
-    @yield('meta')
 </head>
 <body class="font-sans text-gray-800 bg-white relative">
 
@@ -634,15 +633,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 1. Initialize AOS
+            // 1. Initialize AOS (deferred slightly to avoid forced reflow during initial paint)
             if (typeof AOS !== 'undefined') {
-                AOS.init({
-                    duration: 900,
-                    easing: 'ease-out-cubic',
-                    once: true,
-                    offset: 60,
-                    delay: 50
-                });
+                setTimeout(function() {
+                    AOS.init({
+                        duration: 800,
+                        easing: 'ease-out-cubic',
+                        once: true,
+                        offset: 40
+                    });
+                }, 80);
             }
 
             // 2. Scroll Progress Bar (High Performance, Passive & RequestAnimationFrame)
@@ -789,14 +789,24 @@
         });
     </script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18339178212"></script>
+    <!-- Google tag (gtag.js) - Loaded on Idle to ensure zero main-thread blocking -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'AW-18339178212');
+
+      function loadGoogleAnalytics() {
+          var ga = document.createElement('script');
+          ga.async = true;
+          ga.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18339178212';
+          document.body.appendChild(ga);
+      }
+      if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGoogleAnalytics, { timeout: 3000 });
+      } else {
+          window.addEventListener('load', loadGoogleAnalytics);
+      }
     </script>
 
     @yield('scripts')

@@ -54,17 +54,17 @@
   <!-- Content -->
   <div class="relative z-10 w-full flex items-center">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 text-white text-center">
-      <h1 data-aos="fade-down" data-aos-duration="1000" class="text-2xl sm:text-4xl md:text-6xl font-extrabold leading-tight">
+      <h1 class="text-2xl sm:text-4xl md:text-6xl font-extrabold leading-tight">
         Learn Future-Ready <br />
         <span class="text-[#FACA0A] drop-shadow-md">Technical Skills</span>
       </h1>
 
-      <p data-aos="fade-up" data-aos-delay="200" class="mt-4 sm:mt-6 max-w-xl mx-auto text-sm sm:text-base md:text-lg text-gray-200 px-2">
+      <p class="mt-4 sm:mt-6 max-w-xl mx-auto text-sm sm:text-base md:text-lg text-gray-200 px-2">
         Professional training in AC, Washing Machine, 
         LED TV & Mobile Repairing with real-world practical experience.
       </p>
 
-      <div data-aos="zoom-in" data-aos-delay="400" class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+      <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
         <a href="#courses" class="btn-shine bg-[#FACA0A] hover:bg-yellow-500 text-black px-6 sm:px-8 py-3 rounded-full font-semibold shadow-lg transition transform hover:scale-105 w-full sm:w-auto text-center">
             Explore Courses
         </a>
