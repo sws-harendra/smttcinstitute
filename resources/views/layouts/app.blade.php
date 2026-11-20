@@ -7,8 +7,12 @@
     
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('build.css') }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Non-blocking Font Awesome with Preload -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
+
     <script>
         function openMenu(){var m=document.getElementById("mobileMenu");if(m)m.classList.remove("hidden");}
         function closeMenu(){var m=document.getElementById("mobileMenu");if(m)m.classList.add("hidden");var s=document.getElementById("servicesMenu");if(s)s.classList.add("hidden");var a=document.getElementById("serviceArrow");if(a)a.classList.remove("rotate-180");}
@@ -16,17 +20,29 @@
     </script>
     <script src="{{ asset('script.min.js') }}?v={{ file_exists(public_path('script.min.js')) ? filemtime(public_path('script.min.js')) : '1.1' }}" defer></script>
     
-    <!-- AOS Animation Library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <!-- AOS Animation Library (Non-blocking) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" as="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"></noscript>
     
-    <!-- Premium Google Fonts (Outfit + Dancing Script & Caveat Cursive Fonts) -->
+    <!-- Premium Google Fonts (Outfit + Dancing Script & Caveat Cursive Fonts with Preload & display=swap) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
     
     <style>
+        @font-face {
+            font-family: 'Font Awesome 6 Free';
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Font Awesome 6 Brands';
+            font-display: swap;
+        }
         body, h1, h2, h3, h4, h5, h6, p, a, span, div, button, input {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
         .font-cursive {
             font-family: 'Dancing Script', 'Caveat', cursive !important;
@@ -65,19 +81,19 @@
             animation: floatSlow 4s ease-in-out infinite;
         }
 
-        /* Professional Floating Offer Badge Animation */
+        /* Professional Floating Offer Badge Animation (GPU-Composited) */
         @keyframes offerBadgeFloat {
             0%, 100% {
-                transform: translateY(0px);
-                box-shadow: 0 8px 18px -2px rgba(220, 38, 38, 0.4);
+                transform: translate3d(0, 0px, 0);
             }
             50% {
-                transform: translateY(-5px);
-                box-shadow: 0 14px 24px -2px rgba(220, 38, 38, 0.6);
+                transform: translate3d(0, -5px, 0);
             }
         }
         .animate-offer-badge {
+            will-change: transform;
             animation: offerBadgeFloat 2.6s ease-in-out infinite;
+            filter: drop-shadow(0 6px 12px rgba(220, 38, 38, 0.45));
         }
 
         /* Infinite Smooth Marquee Right to Left */
@@ -148,17 +164,11 @@
         }
 
         /* Text Shimmer */
-        @keyframes shimmerText {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
         .text-shimmer {
-            background: linear-gradient(90deg, #1e293b 0%, #FACA0A 50%, #1e293b 100%);
-            background-size: 200% auto;
+            background: linear-gradient(135deg, #FACA0A 0%, #f59e0b 50%, #d97706 100%);
             color: transparent;
             -webkit-background-clip: text;
             background-clip: text;
-            animation: shimmerText 5s linear infinite;
         }
 
         /* Custom Interactive Mouse Glow Cursor Follower */
@@ -227,6 +237,7 @@
             color: white;
             backdrop-filter: blur(6px);
         }
+        .gallery-3d-card .card-caption h3,
         .gallery-3d-card .card-caption h4 {
             font-weight: 800;
             font-size: 0.95rem;
@@ -234,6 +245,7 @@
             letter-spacing: -0.02em;
         }
         @media (min-width: 640px) {
+            .gallery-3d-card .card-caption h3,
             .gallery-3d-card .card-caption h4 {
                 font-size: 1.15rem;
             }
@@ -280,7 +292,7 @@
 
         <!-- Logo -->
         <a class="flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0" href="{{ route('home') }}">
-            <img class="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 xl:w-[46px] object-contain shrink-0" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
+            <img class="w-8 h-8 sm:w-10 sm:h-10 lg:w-10 xl:w-[46px] object-contain shrink-0" width="46" height="46" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="eager" fetchpriority="high">
             <span class="text-xs sm:text-sm lg:text-[13px] xl:text-base font-roboto font-bold text-gray-900 leading-tight tracking-tight">
               Smart Technical<span class="hidden min-[420px]:inline"> Institute</span><span class="hidden sm:inline lg:hidden xl:inline"> Patna</span>
             </span>
@@ -383,7 +395,7 @@
           <div class="flex justify-between items-center mb-6 border-b pb-4">
               <a class="flex items-center gap-2" href="{{ route('home') }}">
                   <div class="w-[45px] shrink-0">
-                    <img class="w-full" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo">
+                    <img class="w-full" width="80" height="80" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo">
                   </div>
                   <span class="text-sm sm:text-base font-roboto font-bold drop-shadow-md leading-snug">
                     Smart Technical Training Institute
@@ -473,7 +485,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pb-12 sm:pb-16 border-b border-gray-700">
           <div>
             <div class="flex gap-1 items-center">
-              <img class="w-[80px]" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo">
+              <img class="w-[80px]" width="80" height="80" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="lazy">
               <h3 class="text-2xl font-bold text-white mb-4">
                 Smart Technical Training Institute
               </h3>
@@ -484,10 +496,10 @@
             </p>
 
             <div class="flex gap-4 mt-6">
-              <a href="#" target="_blank" class="footer-icon text-xl hover:text-blue-600 transition"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" target="_blank" class="footer-icon text-xl hover:text-pink-600 transition"><i class="fab fa-instagram"></i></a>
-              <a href="#" target="_blank" class="footer-icon text-xl hover:text-red-600 transition"><i class="fab fa-youtube"></i></a>
-              <a href="https://wa.me/917870516006" target="_blank" class="footer-icon text-xl hover:text-green-500 transition"><i class="fab fa-whatsapp"></i></a>
+              <a href="#" target="_blank" class="footer-icon text-xl hover:text-blue-600 transition" aria-label="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" target="_blank" class="footer-icon text-xl hover:text-pink-600 transition" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" target="_blank" class="footer-icon text-xl hover:text-red-600 transition" aria-label="Subscribe to our YouTube channel"><i class="fab fa-youtube"></i></a>
+              <a href="https://wa.me/917870516006" target="_blank" class="footer-icon text-xl hover:text-green-500 transition" aria-label="Chat with us on WhatsApp"><i class="fab fa-whatsapp"></i></a>
             </div>
           </div>
 
@@ -536,21 +548,36 @@
     <!-- Enquiry Popup -->
     <div id="enquiryPopup" class="fixed inset-0 bg-black/70 z-[99999] hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg relative p-8">
-            <button id="closePopup" class="absolute top-4 right-4 text-2xl font-bold text-gray-500 hover:text-red-500">&times;</button>
+            <button id="closePopup" aria-label="Close Enquiry Popup" class="absolute top-4 right-4 text-2xl font-bold text-gray-500 hover:text-red-500">&times;</button>
             <h3 class="text-2xl font-bold mb-6 text-center">Enroll Now</h3>
             <form id="popupEnquiryForm" class="space-y-4">
-                <input type="text" id="popupName" placeholder="Full Name" class="w-full border border-gray-300 rounded-lg px-4 py-3" required>
-                <input type="tel" id="popupPhone" placeholder="Mobile Number" class="w-full border border-gray-300 rounded-lg px-4 py-3" required>
-                <input type="text" id="popupCity" placeholder="City" class="w-full border border-gray-300 rounded-lg px-4 py-3">
-                <select id="popupCourse" class="w-full border border-gray-300 rounded-lg px-4 py-3" required>
-                    <option value="">Select Course</option>
-                    <option>AC Repairing Training</option>
-                    <option>Refrigerator Repairing Training</option>
-                    <option>Washing Machine Repairing Training</option>
-                    <option>Mobile Repairing Training</option>
-                    <option>Laptop Repairing Training</option>
-                </select>
-                <textarea id="popupMessage" rows="4" placeholder="Write your query..." class="w-full border border-gray-300 rounded-lg px-4 py-3"></textarea>
+                <div>
+                    <label for="popupName" class="sr-only">Full Name</label>
+                    <input type="text" id="popupName" placeholder="Full Name" aria-label="Full Name" class="w-full border border-gray-300 rounded-lg px-4 py-3" required>
+                </div>
+                <div>
+                    <label for="popupPhone" class="sr-only">Mobile Number</label>
+                    <input type="tel" id="popupPhone" placeholder="Mobile Number" aria-label="Mobile Number" class="w-full border border-gray-300 rounded-lg px-4 py-3" required>
+                </div>
+                <div>
+                    <label for="popupCity" class="sr-only">City</label>
+                    <input type="text" id="popupCity" placeholder="City" aria-label="City" class="w-full border border-gray-300 rounded-lg px-4 py-3">
+                </div>
+                <div>
+                    <label for="popupCourse" class="sr-only">Select Course</label>
+                    <select id="popupCourse" aria-label="Select Course" class="w-full border border-gray-300 rounded-lg px-4 py-3" required>
+                        <option value="">Select Course</option>
+                        <option>AC Repairing Training</option>
+                        <option>Refrigerator Repairing Training</option>
+                        <option>Washing Machine Repairing Training</option>
+                        <option>Mobile Repairing Training</option>
+                        <option>Laptop Repairing Training</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="popupMessage" class="sr-only">Write your query</label>
+                    <textarea id="popupMessage" rows="4" placeholder="Write your query..." aria-label="Write your query" class="w-full border border-gray-300 rounded-lg px-4 py-3"></textarea>
+                </div>
                 <button type="submit" class="w-full bg-[#FACA0A] hover:bg-yellow-500 text-black py-3 rounded-lg font-semibold">
                     Submit Enquiry
                 </button>
@@ -603,7 +630,7 @@
     </script>
 
     <!-- AOS Animation Script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 1. Initialize AOS
@@ -675,6 +702,8 @@
                     cards3d.forEach((_, idx) => {
                         const dot = document.createElement('button');
                         dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-yellow-400 w-8' : 'bg-white/40 hover:bg-white/80'}`;
+                        dot.setAttribute('type', 'button');
+                        dot.setAttribute('aria-label', `Go to slide ${idx + 1}`);
                         dot.addEventListener('click', () => update3dGallery(idx));
                         dotsContainer.appendChild(dot);
                     });
@@ -699,7 +728,7 @@
                         card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg)`;
                         card.style.opacity = opacity;
                         card.style.zIndex = Math.round(100 - Math.abs(offset) * 10);
-                        card.style.filter = offset === 0 ? 'none' : 'brightness(0.6) blur(1px)';
+                        card.style.filter = 'none';
                     });
 
                     // Update Dots

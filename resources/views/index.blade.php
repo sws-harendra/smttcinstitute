@@ -22,12 +22,12 @@
     @if(isset($sliders) && count($sliders) > 0)
         @foreach($sliders as $index => $slider)
             <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 {{ $index === 0 ? 'opacity-100' : 'opacity-0' }}">
-              <img src="{{ Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url) }}" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
+              <img src="{{ Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url) }}" width="1600" height="716" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
             </div>
         @endforeach
     @else
         <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 opacity-100">
-          <img src="{{ asset('assets/images/hero1.webp') }}" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
+          <img src="{{ asset('assets/images/hero1.webp') }}" width="1600" height="716" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
         </div>
     @endif
   </div>
@@ -177,7 +177,7 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <a href="{{ route('courses.ac') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.ac') }}" aria-label="View AC Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
@@ -232,7 +232,7 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <a href="{{ route('courses.washing') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.washing') }}" aria-label="View Washing Machine Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
@@ -287,7 +287,7 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <a href="{{ route('courses.fridge') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.fridge') }}" aria-label="View Fridge Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
@@ -342,7 +342,7 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <a href="{{ route('courses.mobile') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.mobile') }}" aria-label="View Mobile Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
@@ -397,7 +397,7 @@
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-          <a href="{{ route('courses.laptop') }}" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
+          <a href="{{ route('courses.laptop') }}" aria-label="View Laptop Repairing Course Details" class="text-slate-700 hover:text-amber-600 font-bold text-xs sm:text-sm flex items-center gap-1 transition">
             <span>Course Details</span> <i class="fa-solid fa-arrow-right text-[11px]"></i>
           </a>
           <a href="{{ route('feestructure') }}" class="px-4 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-extrabold text-xs transition flex items-center gap-1.5 shadow-2xs">
@@ -454,7 +454,7 @@
       </ul>
     </div>
     <div data-aos="fade-left">
-      <img src="{{ asset('assets/images/lab.webp') }}" class="rounded-xl shadow-lg transform hover:scale-105 transition duration-500 w-full h-auto object-cover max-h-[400px]" alt="practical training image"/>
+      <img src="{{ asset('assets/images/lab.webp') }}" width="821" height="576" loading="lazy" class="rounded-xl shadow-lg transform hover:scale-105 transition duration-500 w-full h-auto object-cover max-h-[400px]" alt="practical training image"/>
     </div>
   </div>
 </section>
@@ -521,9 +521,9 @@
         
         <div class="gallery-3d-card" data-index="0">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/g1.webp') }}" alt="AC Repairing Lab">
+            <img src="{{ asset('assets/images/g1.webp') }}" width="440" height="310" loading="lazy" alt="AC Repairing Lab">
             <div class="card-caption">
-              <h4>AC Repairing Lab</h4>
+              <h3>AC Repairing Lab</h3>
               <p>Real faulty ACs & Live Servicing Bench</p>
             </div>
           </div>
@@ -531,9 +531,9 @@
 
         <div class="gallery-3d-card" data-index="1">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/g2.webp') }}" alt="Washing Machine Lab">
+            <img src="{{ asset('assets/images/g2.webp') }}" width="440" height="310" loading="lazy" alt="Washing Machine Lab">
             <div class="card-caption">
-              <h4>Washing Machine Setup</h4>
+              <h3>Washing Machine Setup</h3>
               <p>Automatic & Semi-Automatic Troubleshooting</p>
             </div>
           </div>
@@ -541,9 +541,9 @@
 
         <div class="gallery-3d-card" data-index="2">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/g3.webp') }}" alt="Mobile Repairing Desk">
+            <img src="{{ asset('assets/images/g3.webp') }}" width="440" height="310" loading="lazy" alt="Mobile Repairing Desk">
             <div class="card-caption">
-              <h4>Mobile Repairing Desk</h4>
+              <h3>Mobile Repairing Desk</h3>
               <p>Hardware Micro-soldering & IC Replacement</p>
             </div>
           </div>
@@ -551,9 +551,9 @@
 
         <div class="gallery-3d-card" data-index="3">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/lab.webp') }}" alt="Practical Lab Practice">
+            <img src="{{ asset('assets/images/lab.webp') }}" width="440" height="310" loading="lazy" alt="Practical Lab Practice">
             <div class="card-caption">
-              <h4>Practical Lab Practice</h4>
+              <h3>Practical Lab Practice</h3>
               <p>Individual Student Workstations</p>
             </div>
           </div>
@@ -561,9 +561,9 @@
 
         <div class="gallery-3d-card" data-index="4">
           <div class="inner-card">
-            <img src="{{ asset('assets/images/hero1.webp') }}" alt="Expert Guidance Session">
+            <img src="{{ asset('assets/images/hero1.webp') }}" width="440" height="310" loading="lazy" alt="Expert Guidance Session">
             <div class="card-caption">
-              <h4>Expert Guidance Session</h4>
+              <h3>Expert Guidance Session</h3>
               <p>Step-by-step Technical Mentorship</p>
             </div>
           </div>
@@ -620,7 +620,7 @@
         @foreach($blogs as $index => $blog)
             <div data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}" class="bg-white rounded-xl shadow-md overflow-hidden card-hover-lift flex flex-col justify-between">
                 <div>
-                    <img src="{{ $blog->image_url ? (Str::startsWith($blog->image_url, '/uploads') ? asset($blog->image_url) : asset($blog->image_url)) : asset('assets/images/default-blog.webp') }}" alt="{{ $blog->title }}" class="w-full h-48 object-cover bg-gray-200">
+                    <img src="{{ $blog->image_url ? (Str::startsWith($blog->image_url, '/uploads') ? asset($blog->image_url) : asset($blog->image_url)) : asset('assets/images/default-blog.webp') }}" width="400" height="192" loading="lazy" alt="{{ $blog->title }}" class="w-full h-48 object-cover bg-gray-200">
                     <div class="p-5 sm:p-6">
                         <p class="text-xs text-gray-500 mb-2">{{ $blog->created_at->format('M d, Y') }}</p>
                         <h3 class="text-lg sm:text-xl font-bold mb-3 line-clamp-2">{{ $blog->title }}</h3>
