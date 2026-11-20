@@ -968,7 +968,7 @@
                             <span id="createBoysCalculatedBadge" class="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-md">Final: ₹--</span>
                         </div>
                         <div class="relative">
-                            <input type="number" name="discount_boys" id="createDiscountBoysInput" min="0" max="100" placeholder="e.g. 20" oninput="calculateFeeDiscounts('create')" class="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-xs font-bold text-blue-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition">
+                            <input type="number" name="discount_boys" id="createDiscountBoysInput" min="0" max="100" value="20" placeholder="e.g. 20" oninput="calculateFeeDiscounts('create')" class="w-full bg-white border border-blue-200 rounded-lg px-3 py-2 text-xs font-bold text-blue-900 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition">
                             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 font-bold text-xs">% OFF</span>
                         </div>
                     </div>
@@ -982,7 +982,7 @@
                             <span id="createGirlsCalculatedBadge" class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-md">Final: ₹--</span>
                         </div>
                         <div class="relative">
-                            <input type="number" name="discount_girls" id="createDiscountGirlsInput" min="0" max="100" placeholder="e.g. 40" oninput="calculateFeeDiscounts('create')" class="w-full bg-white border border-purple-200 rounded-lg px-3 py-2 text-xs font-bold text-purple-900 focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition">
+                            <input type="number" name="discount_girls" id="createDiscountGirlsInput" min="0" max="100" value="40" placeholder="e.g. 40" oninput="calculateFeeDiscounts('create')" class="w-full bg-white border border-purple-200 rounded-lg px-3 py-2 text-xs font-bold text-purple-900 focus:outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition">
                             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-purple-400 font-bold text-xs">% OFF</span>
                         </div>
                     </div>
@@ -1069,20 +1069,20 @@
                                     @endif
                                 </td>
                                 <td class="p-4">
-                                    @if($fee->hasDiscount() && $fee->discount_boys > 0)
+                                    @if($fee->hasDiscount() && $fee->effective_discount_boys > 0)
                                         <div class="font-extrabold text-blue-700 text-sm">{{ $fee->boys_discounted_fee }}</div>
                                         <span class="text-[10px] font-bold text-blue-600 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded">
-                                            {{ $fee->discount_boys }}% OFF
+                                            {{ $fee->effective_discount_boys }}% OFF
                                         </span>
                                     @else
                                         <span class="text-slate-600 font-medium">{{ $fee->course_fee }}</span>
                                     @endif
                                 </td>
                                 <td class="p-4">
-                                    @if($fee->hasDiscount() && $fee->discount_girls > 0)
+                                    @if($fee->hasDiscount() && $fee->effective_discount_girls > 0)
                                         <div class="font-extrabold text-purple-700 text-sm">{{ $fee->girls_discounted_fee }}</div>
                                         <span class="text-[10px] font-bold text-purple-600 bg-purple-50 border border-purple-100 px-1.5 py-0.5 rounded">
-                                            {{ $fee->discount_girls }}% Scholarship
+                                            {{ $fee->effective_discount_girls }}% Scholarship
                                         </span>
                                     @else
                                         <span class="text-slate-600 font-medium">{{ $fee->course_fee }}</span>

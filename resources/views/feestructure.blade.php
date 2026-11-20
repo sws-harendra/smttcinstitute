@@ -214,14 +214,14 @@
                                     <span class="text-[11px] font-black text-blue-900 flex items-center gap-1">
                                         👦 Boys Fee
                                     </span>
-                                    @if($hasDisc && $fee->discount_boys > 0)
+                                    @if($hasDisc && $fee->effective_discount_boys > 0)
                                         <span class="text-[9px] font-extrabold bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">
-                                            {{ $fee->discount_boys }}% OFF
+                                            {{ $fee->effective_discount_boys }}% OFF
                                         </span>
                                     @endif
                                 </div>
                                 <div class="text-base sm:text-lg font-black text-blue-900">
-                                    {{ $hasDisc && $fee->discount_boys > 0 ? $fee->boys_discounted_fee : $fee->course_fee }}
+                                    {{ $hasDisc && $fee->effective_discount_boys > 0 ? $fee->boys_discounted_fee : $fee->course_fee }}
                                 </div>
                                 <span class="block text-[10px] text-slate-400">Regular batch discount</span>
                             </div>
@@ -232,14 +232,14 @@
                                     <span class="text-[11px] font-black text-purple-900 flex items-center gap-1">
                                         👧 Girls Fee
                                     </span>
-                                    @if($hasDisc && $fee->discount_girls > 0)
+                                    @if($hasDisc && $fee->effective_discount_girls > 0)
                                         <span class="text-[9px] font-extrabold bg-purple-600 text-white px-1.5 py-0.5 rounded shadow-2xs">
-                                            {{ $fee->discount_girls }}% OFF
+                                            {{ $fee->effective_discount_girls }}% OFF
                                         </span>
                                     @endif
                                 </div>
                                 <div class="text-base sm:text-lg font-black text-purple-900">
-                                    {{ $hasDisc && $fee->discount_girls > 0 ? $fee->girls_discounted_fee : $fee->course_fee }}
+                                    {{ $hasDisc && $fee->effective_discount_girls > 0 ? $fee->girls_discounted_fee : $fee->course_fee }}
                                 </div>
                                 <span class="block text-[10px] text-purple-600 font-bold">★ Special Scholarship</span>
                             </div>
@@ -344,17 +344,17 @@
                                 @endif
                             </td>
                             <td class="p-4 sm:p-5 bg-blue-50/30 font-black text-blue-900 whitespace-nowrap">
-                                @if($fee->hasDiscount() && $fee->discount_boys > 0)
+                                @if($fee->hasDiscount() && $fee->effective_discount_boys > 0)
                                     <div>{{ $fee->boys_discounted_fee }}</div>
-                                    <span class="text-[10px] font-bold text-blue-600">({{ $fee->discount_boys }}% OFF)</span>
+                                    <span class="text-[10px] font-bold text-blue-600">({{ $fee->effective_discount_boys }}% OFF)</span>
                                 @else
                                     <span>{{ $fee->course_fee }}</span>
                                 @endif
                             </td>
                             <td class="p-4 sm:p-5 bg-purple-50/30 font-black text-purple-900 whitespace-nowrap">
-                                @if($fee->hasDiscount() && $fee->discount_girls > 0)
+                                @if($fee->hasDiscount() && $fee->effective_discount_girls > 0)
                                     <div>{{ $fee->girls_discounted_fee }}</div>
-                                    <span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-1.5 py-0.5 rounded">({{ $fee->discount_girls }}% Scholarship)</span>
+                                    <span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-1.5 py-0.5 rounded">({{ $fee->effective_discount_girls }}% Scholarship)</span>
                                 @else
                                     <span>{{ $fee->course_fee }}</span>
                                 @endif

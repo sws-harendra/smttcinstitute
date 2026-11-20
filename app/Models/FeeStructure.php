@@ -44,7 +44,29 @@ class FeeStructure extends Model
      */
     public function hasDiscount(): bool
     {
-        return $this->offer_active && (($this->discount_boys && $this->discount_boys > 0) || ($this->discount_girls && $this->discount_girls > 0));
+        return $this->offer_active !== false && $this->offer_active !== 0;
+    }
+
+    /**
+     * Get effective Boys discount percentage (default: 20%)
+     */
+    public function getEffectiveDiscountBoysAttribute(): int
+    {
+        if ($this->discount_boys !== null && (int)$this->discount_boys > 0) {
+            return (int)$this->discount_boys;
+        }
+        return 20;
+    }
+
+    /**
+     * Get effective Girls scholarship percentage (default: 40%)
+     */
+    public function getEffectiveDiscountGirlsAttribute(): int
+    {
+        if ($this->discount_girls !== null && (int)$this->discount_girls > 0) {
+            return (int)$this->discount_girls;
+        }
+        return 40;
     }
 
     /**
@@ -56,8 +78,9 @@ class FeeStructure extends Model
             return $this->boys_fee;
         }
 
-        if ($this->hasDiscount() && $this->discount_boys > 0 && $this->numeric_fee > 0) {
-            $discountAmount = ($this->numeric_fee * $this->discount_boys) / 100;
+        $disc = $this->effective_discount_boys;
+        if ($this->hasDiscount() && $disc > 0 && $this->numeric_fee > 0) {
+            $discountAmount = ($this->numeric_fee * $disc) / 100;
             $final = round($this->numeric_fee - $discountAmount);
             return '₹' . number_format($final);
         }
@@ -74,8 +97,9 @@ class FeeStructure extends Model
             return $this->girls_fee;
         }
 
-        if ($this->hasDiscount() && $this->discount_girls > 0 && $this->numeric_fee > 0) {
-            $discountAmount = ($this->numeric_fee * $this->discount_girls) / 100;
+        $disc = $this->effective_discount_girls;
+        if ($this->hasDiscount() && $disc > 0 && $this->numeric_fee > 0) {
+            $discountAmount = ($this->numeric_fee * $disc) / 100;
             $final = round($this->numeric_fee - $discountAmount);
             return '₹' . number_format($final);
         }
