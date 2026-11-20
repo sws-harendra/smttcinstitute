@@ -689,9 +689,28 @@
                     </h3>
                     <p class="text-xs text-slate-400 mt-0.5">Manage, update content, adjust cover images or delete articles.</p>
                 </div>
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="blogSearchInput" onkeyup="filterBlogTable()" placeholder="Search articles by title..." class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs w-64 md:w-72 focus:outline-none focus:border-indigo-500 transition">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <!-- Page Size Selector -->
+                    <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl shadow-2xs">
+                        <span class="text-slate-400">Show:</span>
+                        <select id="blogPageSize" class="bg-transparent font-bold text-slate-800 focus:outline-none cursor-pointer">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span class="text-slate-400">articles</span>
+                    </div>
+
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="blogSearchInput" placeholder="Search articles by title..." class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs w-56 sm:w-64 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition font-semibold text-slate-800 placeholder-slate-400">
+                        <button type="button" onclick="document.getElementById('blogSearchInput').value=''; if(window.blogPaginator) window.blogPaginator.filter('');" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs w-4 h-4 flex items-center justify-center rounded-full hover:bg-slate-200" title="Clear Search">&times;</button>
+                    </div>
+
+                    <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3.5 py-1.5 rounded-full border border-indigo-200 whitespace-nowrap shadow-2xs" id="blogTotalBadge">
+                        {{ count($blogs) }} Articles
+                    </span>
                 </div>
             </div>
 
@@ -717,7 +736,7 @@
                                 <td class="p-4">
                                     <h4 class="font-bold text-slate-900 leading-snug blog-title-cell hover:text-indigo-600 transition">
                                         <a href="{{ route('blog.show', $blog->slug ?? $blog->id) }}" target="_blank">
-                                            {{ $blog->title }}
+                                             {{ $blog->title }}
                                         </a>
                                     </h4>
                                     <div class="flex items-center gap-2 mt-1 flex-wrap">
@@ -760,15 +779,32 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr>
+                            <tr id="blogInitialEmptyRow">
                                 <td colspan="5" class="text-center py-12 text-slate-400 text-sm font-medium">
                                     <i class="fa-regular fa-folder-open text-2xl mb-2 block text-slate-300"></i>
                                     No blog posts published yet. Create your first technical guide above!
                                 </td>
                             </tr>
                         @endforelse
+                        <tr id="blogEmptySearchRow" style="display: none;">
+                            <td colspan="5" class="text-center py-12 text-slate-400 text-sm">
+                                <i class="fa-solid fa-magnifying-glass text-3xl mb-2 block text-slate-300"></i>
+                                <span>Koi matching blog article nahi mila.</span>
+                                <button type="button" onclick="document.getElementById('blogSearchInput').value=''; if(window.blogPaginator) window.blogPaginator.filter('');" class="block mx-auto mt-2 text-xs font-bold text-indigo-600 hover:text-indigo-700 underline cursor-pointer">
+                                    Clear Search Filter
+                                </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+
+                <!-- Blogs Pagination Footer -->
+                <div class="p-4 sm:p-6 border-t border-slate-100 bg-slate-50/60 flex flex-col sm:flex-row items-center justify-between gap-4" id="blogPaginationContainer">
+                    <div class="text-xs font-medium text-slate-500" id="blogPaginationInfo">
+                        Showing <strong class="text-slate-800">1</strong> to <strong class="text-slate-800">10</strong> of <strong class="text-slate-800">{{ count($blogs) }}</strong> articles
+                    </div>
+                    <div class="flex items-center gap-1.5 flex-wrap" id="blogPaginationNav"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -1879,6 +1915,17 @@
 
             <!-- Filter Tabs -->
             <div class="flex items-center gap-2 flex-wrap">
+                <!-- Page Size Selector -->
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl shadow-2xs">
+                    <span class="text-slate-400">Show:</span>
+                    <select id="adminGalleryPageSize" class="bg-transparent font-bold text-slate-800 focus:outline-none cursor-pointer">
+                        <option value="12" selected>12</option>
+                        <option value="24">24</option>
+                        <option value="48">48</option>
+                    </select>
+                    <span class="text-slate-400">cards</span>
+                </div>
+
                 <!-- Type Filter Pills -->
                 <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold" id="adminMediaFilterPills">
                     <button type="button" onclick="filterAdminGalleryType('all', this)" class="gal-type-filter active px-3 py-1.5 rounded-lg bg-white text-blue-700 shadow-2xs transition">All ({{ count($galleries) }})</button>
@@ -1897,8 +1944,13 @@
                 <!-- Search Input -->
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="adminGallerySearchInput" onkeyup="filterAdminGalleryCatalog()" placeholder="Search title or tag..." class="bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:border-blue-600 w-44 sm:w-56 shadow-2xs">
+                    <input type="text" id="adminGallerySearchInput" onkeyup="filterAdminGalleryCatalog()" placeholder="Search title or tag..." class="bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-8 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:border-blue-600 w-44 sm:w-56 shadow-2xs">
+                    <button type="button" onclick="document.getElementById('adminGallerySearchInput').value=''; filterAdminGalleryCatalog();" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs w-4 h-4 flex items-center justify-center rounded-full hover:bg-slate-200" title="Clear Search">&times;</button>
                 </div>
+
+                <span class="text-xs font-bold text-blue-700 bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-200 whitespace-nowrap shadow-2xs" id="adminGalleryTotalBadge">
+                    {{ count($galleries) }} Media
+                </span>
             </div>
         </div>
 
@@ -1997,7 +2049,7 @@
                     </div>
                 </div>
             @empty
-                <div class="col-span-full py-16 text-center bg-slate-50/60 rounded-3xl border border-dashed border-slate-200 space-y-3">
+                <div class="col-span-full py-16 text-center bg-slate-50/60 rounded-3xl border border-dashed border-slate-200 space-y-3" id="galleryInitialEmpty">
                     <div class="w-14 h-14 mx-auto rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center text-2xl shadow-inner">
                         <i class="fa-solid fa-photo-film"></i>
                     </div>
@@ -2005,6 +2057,24 @@
                     <p class="text-xs text-slate-400 max-w-sm mx-auto">Upload training photos or add YouTube practical videos above to showcase student workbench work.</p>
                 </div>
             @endforelse
+            <div id="galleryEmptySearchState" style="display: none;" class="col-span-full py-16 text-center bg-slate-50/60 rounded-3xl border border-dashed border-slate-200 space-y-3">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-2xl shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-700">Koi matching media nahi mila</h4>
+                <p class="text-xs text-slate-400 max-w-sm mx-auto">Aapke search filter se match karta hua koi photo ya video nahi mila.</p>
+                <button type="button" onclick="document.getElementById('adminGallerySearchInput').value=''; document.getElementById('adminGalleryCategoryFilter').value='all'; filterAdminGalleryType('all', document.querySelector('.gal-type-filter'));" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition cursor-pointer">
+                    Reset All Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Gallery Media Pagination Footer -->
+        <div class="p-4 sm:p-6 border-t border-slate-100 bg-slate-50/60 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 mt-6" id="galleryPaginationContainer">
+            <div class="text-xs font-medium text-slate-500" id="galleryPaginationInfo">
+                Showing <strong class="text-slate-800">1</strong> to <strong class="text-slate-800">12</strong> of <strong class="text-slate-800">{{ count($galleries) }}</strong> media items
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap" id="galleryPaginationNav"></div>
         </div>
     </section>
     </div>
@@ -2111,13 +2181,43 @@
 
     <!-- List -->
     <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div class="p-6 md:p-8 border-b border-slate-100 flex items-center justify-between">
-            <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-list text-slate-400"></i> Issued Certificates
-            </h2>
+        <div class="p-6 md:p-8 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                    <i class="fa-solid fa-award text-yellow-500 text-2xl"></i> Issued Certificates
+                </h2>
+                <p class="text-xs text-slate-400 font-medium mt-1">Search, view, print, or edit official student course completion certificates.</p>
+            </div>
+
+            <div class="flex items-center gap-3 flex-wrap">
+                <!-- Page Size Selector -->
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl shadow-2xs">
+                    <span class="text-slate-400">Show:</span>
+                    <select id="certPageSize" class="bg-transparent font-bold text-slate-800 focus:outline-none cursor-pointer">
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="text-slate-400">entries</span>
+                </div>
+
+                <!-- Live Search Box -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="certSearchInput" placeholder="Search Regd No, Name, Course..." class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 transition w-56 sm:w-64">
+                    <button type="button" onclick="document.getElementById('certSearchInput').value=''; if(window.certPaginator) window.certPaginator.filter('');" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs w-4 h-4 flex items-center justify-center rounded-full hover:bg-slate-200" title="Clear Search">&times;</button>
+                </div>
+
+                <!-- Total Count Badge -->
+                <span class="text-xs font-bold text-yellow-800 bg-yellow-50 px-3.5 py-1.5 rounded-full border border-yellow-200 whitespace-nowrap shadow-2xs" id="certTotalBadge">
+                    {{ count($certificates ?? []) }} Certificates
+                </span>
+            </div>
         </div>
+
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="w-full text-left" id="certificatesTable">
                 <thead class="bg-slate-50 border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
                     <tr>
                         <th class="p-4">Regd No.</th>
@@ -2129,10 +2229,10 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-sm">
                     @forelse($certificates ?? [] as $cert)
-                        <tr class="hover:bg-slate-50/80 transition duration-150">
-                            <td class="p-4 font-bold text-indigo-600">{{ $cert->regd_no }}</td>
+                        <tr class="hover:bg-slate-50/80 transition duration-150 cert-row">
+                            <td class="p-4 font-bold text-indigo-600 font-mono">{{ $cert->regd_no }}</td>
                             <td class="p-4 font-bold text-slate-900">{{ $cert->name }}</td>
-                            <td class="p-4 text-slate-600">{{ $cert->course }}</td>
+                            <td class="p-4 text-slate-600 font-medium">{{ $cert->course }}</td>
                             <td class="p-4 text-slate-600">{{ $cert->issued_date ? $cert->issued_date->format('M d, Y') : '-' }}</td>
                             <td class="p-4 text-right flex justify-end gap-2">
                                 <a href="{{ route('certificate.view', $cert->regd_no) }}" target="_blank" class="px-3.5 py-1.5 rounded-lg border border-blue-200 text-blue-600 hover:bg-blue-50 font-bold text-xs transition flex items-center gap-1.5" title="View/Print Certificate">
@@ -2169,12 +2269,29 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
+                        <tr id="certInitialEmptyRow">
                             <td colspan="5" class="text-center py-10 text-slate-400 text-sm font-medium">No certificates generated yet.</td>
                         </tr>
                     @endforelse
+                    <tr id="certEmptySearchRow" style="display: none;">
+                        <td colspan="5" class="text-center py-12 text-slate-400 text-sm">
+                            <i class="fa-solid fa-magnifying-glass text-3xl mb-2 block text-slate-300"></i>
+                            <span>Koi matching certificate nahi mila.</span>
+                            <button type="button" onclick="document.getElementById('certSearchInput').value=''; if(window.certPaginator) window.certPaginator.filter('');" class="block mx-auto mt-2 text-xs font-bold text-yellow-600 hover:text-yellow-700 underline cursor-pointer">
+                                Clear Search Filter
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Certificates Pagination Footer -->
+        <div class="p-4 sm:p-6 border-t border-slate-100 bg-slate-50/60 flex flex-col sm:flex-row items-center justify-between gap-4" id="certPaginationContainer">
+            <div class="text-xs font-medium text-slate-500" id="certPaginationInfo">
+                Showing <strong class="text-slate-800">1</strong> to <strong class="text-slate-800">10</strong> of <strong class="text-slate-800">{{ count($certificates ?? []) }}</strong> certificates
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap" id="certPaginationNav"></div>
         </div>
     </section>
 </div>
@@ -2183,17 +2300,43 @@
 <div id="tab-admissions" class="hidden space-y-8 animate-fade-in">
     <!-- List -->
     <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div class="p-6 md:p-8 border-b border-slate-100 flex items-center justify-between">
+        <div class="p-6 md:p-8 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
-                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-user-graduate text-indigo-500"></i> Student Admissions
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
+                    <i class="fa-solid fa-user-graduate text-indigo-600 text-2xl"></i> Student Admissions
                 </h2>
-                <p class="text-xs text-slate-400 font-medium mt-1">View and manage all student admission applications.</p>
+                <p class="text-xs text-slate-400 font-medium mt-1">View, search, filter and approve student admission applications.</p>
             </div>
-            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">{{ count($admissions ?? []) }} Applications</span>
+
+            <div class="flex items-center gap-3 flex-wrap">
+                <!-- Page Size Selector -->
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl shadow-2xs">
+                    <span class="text-slate-400">Show:</span>
+                    <select id="admPageSize" class="bg-transparent font-bold text-slate-800 focus:outline-none cursor-pointer">
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="text-slate-400">entries</span>
+                </div>
+
+                <!-- Live Search Box -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="admSearchInput" placeholder="Search Enrollment, Name, Phone..." class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition w-56 sm:w-64">
+                    <button type="button" onclick="document.getElementById('admSearchInput').value=''; if(window.admPaginator) window.admPaginator.filter('');" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs w-4 h-4 flex items-center justify-center rounded-full hover:bg-slate-200" title="Clear Search">&times;</button>
+                </div>
+
+                <!-- Total Count Badge -->
+                <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3.5 py-1.5 rounded-full border border-indigo-200 whitespace-nowrap shadow-2xs" id="admTotalBadge">
+                    {{ count($admissions ?? []) }} Applications
+                </span>
+            </div>
         </div>
+
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="w-full text-left" id="admissionsTable">
                 <thead class="bg-slate-50 border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
                     <tr>
                         <th class="p-4">Enrollment No.</th>
@@ -2206,11 +2349,11 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100 text-sm">
                     @forelse($admissions ?? [] as $admission)
-                        <tr class="hover:bg-slate-50/80 transition duration-150">
-                            <td class="p-4 font-bold text-indigo-600">{{ $admission->enrollment_no }}</td>
+                        <tr class="hover:bg-slate-50/80 transition duration-150 admission-row">
+                            <td class="p-4 font-bold text-indigo-600 font-mono">{{ $admission->enrollment_no }}</td>
                             <td class="p-4 font-bold text-slate-900">{{ $admission->name }}</td>
                             <td class="p-4 text-slate-600">{{ $admission->course }}</td>
-                            <td class="p-4 text-slate-600">{{ $admission->mobile_no }}</td>
+                            <td class="p-4 text-slate-600 font-mono">{{ $admission->mobile_no }}</td>
                             <td class="p-4 text-center">
                                 @if($admission->photo)
                                     @php
@@ -2272,12 +2415,29 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
+                        <tr id="admInitialEmptyRow">
                             <td colspan="6" class="text-center py-10 text-slate-400 text-sm font-medium">No admission applications received yet.</td>
                         </tr>
                     @endforelse
+                    <tr id="admEmptySearchRow" style="display: none;">
+                        <td colspan="6" class="text-center py-12 text-slate-400 text-sm">
+                            <i class="fa-solid fa-magnifying-glass text-3xl mb-2 block text-slate-300"></i>
+                            <span>Koi matching admission application nahi mili.</span>
+                            <button type="button" onclick="document.getElementById('admSearchInput').value=''; if(window.admPaginator) window.admPaginator.filter('');" class="block mx-auto mt-2 text-xs font-bold text-indigo-600 hover:text-indigo-700 underline cursor-pointer">
+                                Clear Search Filter
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Admissions Pagination Footer -->
+        <div class="p-4 sm:p-6 border-t border-slate-100 bg-slate-50/60 flex flex-col sm:flex-row items-center justify-between gap-4" id="admPaginationContainer">
+            <div class="text-xs font-medium text-slate-500" id="admPaginationInfo">
+                Showing <strong class="text-slate-800">1</strong> to <strong class="text-slate-800">10</strong> of <strong class="text-slate-800">{{ count($admissions ?? []) }}</strong> applications
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap" id="admPaginationNav"></div>
         </div>
     </section>
 </div>
@@ -2451,19 +2611,34 @@
 
     <!-- Issued ID Cards List Table -->
     <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-        <div class="p-6 md:p-8 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="p-6 md:p-8 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2.5">
-                    <i class="fa-solid fa-id-card-clip text-purple-600"></i> Issued Student ID Cards
+                    <i class="fa-solid fa-id-card-clip text-purple-600 text-2xl"></i> Issued Student ID Cards
                 </h2>
-                <p class="text-xs text-slate-400 font-medium mt-1">Manage, view, and print official identity cards for students.</p>
+                <p class="text-xs text-slate-400 font-medium mt-1">Manage, search, view, and print official identity cards for students.</p>
             </div>
-            <div class="flex items-center gap-3">
-                <div class="relative">
-                    <input type="text" id="searchIdCardsInput" onkeyup="filterIdCardsTable()" placeholder="Search student name, ID..." class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500 w-56">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+            <div class="flex items-center gap-3 flex-wrap">
+                <!-- Page Size Selector -->
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-200/80 px-3 py-1.5 rounded-xl shadow-2xs">
+                    <span class="text-slate-400">Show:</span>
+                    <select id="idCardPageSize" class="bg-transparent font-bold text-slate-800 focus:outline-none cursor-pointer">
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span class="text-slate-400">entries</span>
                 </div>
-                <span class="text-xs font-bold text-purple-700 bg-purple-50 px-3 py-1.5 rounded-full border border-purple-200 whitespace-nowrap">
+
+                <!-- Live Search Box -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="searchIdCardsInput" placeholder="Search student name, ID, phone..." class="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition w-56 sm:w-64">
+                    <button type="button" onclick="document.getElementById('searchIdCardsInput').value=''; if(window.idCardPaginator) window.idCardPaginator.filter('');" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs w-4 h-4 flex items-center justify-center rounded-full hover:bg-slate-200" title="Clear Search">&times;</button>
+                </div>
+
+                <span class="text-xs font-bold text-purple-700 bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-200 whitespace-nowrap shadow-2xs" id="idCardTotalBadge">
                     {{ count($idcards ?? []) }} ID Cards
                 </span>
             </div>
@@ -2550,8 +2725,25 @@
                             </td>
                         </tr>
                     @endforelse
+                    <tr id="idCardEmptySearchRow" style="display: none;">
+                        <td colspan="8" class="text-center py-12 text-slate-400 text-sm">
+                            <i class="fa-solid fa-magnifying-glass text-3xl mb-2 block text-slate-300"></i>
+                            <span>Koi matching student ID card nahi mila.</span>
+                            <button type="button" onclick="document.getElementById('searchIdCardsInput').value=''; if(window.idCardPaginator) window.idCardPaginator.filter('');" class="block mx-auto mt-2 text-xs font-bold text-purple-600 hover:text-purple-700 underline cursor-pointer">
+                                Clear Search Filter
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- ID Cards Pagination Footer -->
+        <div class="p-4 sm:p-6 border-t border-slate-100 bg-slate-50/60 flex flex-col sm:flex-row items-center justify-between gap-4" id="idCardPaginationContainer">
+            <div class="text-xs font-medium text-slate-500" id="idCardPaginationInfo">
+                Showing <strong class="text-slate-800">1</strong> to <strong class="text-slate-800">10</strong> of <strong class="text-slate-800">{{ count($idcards ?? []) }}</strong> ID cards
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap" id="idCardPaginationNav"></div>
         </div>
     </section>
 </div>
@@ -6207,16 +6399,16 @@ function updateGalleryFileName(input) {
 }
 
 function filterBlogTable() {
-    const query = document.getElementById('blogSearchInput').value.toLowerCase();
-    const rows = document.querySelectorAll('.blog-row');
-    rows.forEach(row => {
-        const title = row.querySelector('.blog-title-cell').innerText.toLowerCase();
-        if (title.includes(query)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
+    if (window.Paginators && window.Paginators.blog) {
+        window.Paginators.blog.filter(document.getElementById('blogSearchInput')?.value || '');
+    } else {
+        const query = (document.getElementById('blogSearchInput')?.value || '').toLowerCase();
+        const rows = document.querySelectorAll('.blog-row');
+        rows.forEach(row => {
+            const title = row.querySelector('.blog-title-cell')?.innerText.toLowerCase() || '';
+            row.style.display = title.includes(query) ? '' : 'none';
+        });
+    }
 }
 
 // =============================================================================
@@ -6334,30 +6526,36 @@ function filterAdminGalleryType(type, btn) {
 }
 
 function filterAdminGalleryCatalog() {
-    const catFilter = (document.getElementById('adminGalleryCategoryFilter')?.value || 'all').toLowerCase();
-    const query = (document.getElementById('adminGallerySearchInput')?.value || '').trim().toLowerCase();
-    const cards = document.querySelectorAll('.gallery-card-item');
-    let visibleCount = 0;
+    if (window.Paginators && window.Paginators.gallery) {
+        window.Paginators.gallery.filter(document.getElementById('adminGallerySearchInput')?.value || '');
+        const countEl = document.getElementById('visibleGalleryCount');
+        if (countEl) countEl.innerText = window.Paginators.gallery.filteredItems.length;
+    } else {
+        const catFilter = (document.getElementById('adminGalleryCategoryFilter')?.value || 'all').toLowerCase();
+        const query = (document.getElementById('adminGallerySearchInput')?.value || '').trim().toLowerCase();
+        const cards = document.querySelectorAll('.gallery-card-item');
+        let visibleCount = 0;
 
-    cards.forEach(card => {
-        const itemType = card.getAttribute('data-type') || 'image';
-        const itemCat = (card.getAttribute('data-category') || '').toLowerCase();
-        const itemSearch = (card.getAttribute('data-search') || '').toLowerCase();
+        cards.forEach(card => {
+            const itemType = card.getAttribute('data-type') || 'image';
+            const itemCat = (card.getAttribute('data-category') || '').toLowerCase();
+            const itemSearch = (card.getAttribute('data-search') || '').toLowerCase();
 
-        const matchType = (currentAdminGalFilterType === 'all') || (itemType === currentAdminGalFilterType);
-        const matchCat = (catFilter === 'all') || (itemCat === catFilter) || itemCat.includes(catFilter);
-        const matchSearch = (!query) || itemSearch.includes(query);
+            const matchType = (currentAdminGalFilterType === 'all') || (itemType === currentAdminGalFilterType);
+            const matchCat = (catFilter === 'all') || (itemCat === catFilter) || itemCat.includes(catFilter);
+            const matchSearch = (!query) || itemSearch.includes(query);
 
-        if (matchType && matchCat && matchSearch) {
-            card.style.display = '';
-            visibleCount++;
-        } else {
-            card.style.display = 'none';
-        }
-    });
+            if (matchType && matchCat && matchSearch) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
 
-    const countEl = document.getElementById('visibleGalleryCount');
-    if (countEl) countEl.innerText = visibleCount;
+        const countEl = document.getElementById('visibleGalleryCount');
+        if (countEl) countEl.innerText = visibleCount;
+    }
 }
 
 function parseGalleryData(el) {
@@ -6833,16 +7031,397 @@ function closeEditIdCardModal() {
 }
 
 function filterIdCardsTable() {
-    const filter = (document.getElementById('searchIdCardsInput').value || '').toLowerCase();
-    const rows = document.querySelectorAll('.idcard-row');
-    rows.forEach(r => {
-        const text = r.innerText.toLowerCase();
-        if (text.includes(filter)) {
-            r.style.display = '';
+    if (window.Paginators && window.Paginators.idcard) {
+        window.Paginators.idcard.filter(document.getElementById('searchIdCardsInput')?.value || '');
+    } else {
+        const filter = (document.getElementById('searchIdCardsInput')?.value || '').toLowerCase();
+        const rows = document.querySelectorAll('.idcard-row');
+        rows.forEach(r => {
+            const text = r.innerText.toLowerCase();
+            r.style.display = text.includes(filter) ? '' : 'none';
+        });
+    }
+}
+
+// =============================================================================
+// PROFESSIONAL SMART PAGINATION ENGINE FOR ALL ADMIN TABLES & GRIDS
+// =============================================================================
+class SmartPaginator {
+    constructor(config) {
+        this.instanceName = config.instanceName;
+        this.containerSelector = config.container;
+        this.itemSelector = config.itemSelector;
+        this.pageSize = parseInt(config.pageSize || 10, 10);
+        this.currentPage = 1;
+        this.searchInputId = config.searchInputId;
+        this.pageSizeSelectId = config.pageSizeSelectId;
+        this.infoElId = config.infoElId;
+        this.navElId = config.navElId;
+        this.containerNavId = config.containerNavId;
+        this.emptySearchRowId = config.emptySearchRowId;
+        this.initialEmptyRowId = config.initialEmptyRowId;
+        this.totalBadgeId = config.totalBadgeId;
+        this.unitName = config.unitName || 'entries';
+        this.themeColor = config.themeColor || 'indigo';
+        this.customFilter = config.customFilter || null;
+
+        this.init();
+    }
+
+    init() {
+        const container = document.querySelector(this.containerSelector);
+        if (!container) return;
+
+        this.allItems = Array.from(container.querySelectorAll(this.itemSelector));
+        this.filteredItems = [...this.allItems];
+
+        const pageSizeSelect = document.getElementById(this.pageSizeSelectId);
+        if (pageSizeSelect) {
+            pageSizeSelect.value = String(this.pageSize);
+            pageSizeSelect.addEventListener('change', (e) => {
+                this.setPageSize(e.target.value);
+            });
+        }
+
+        const searchInput = document.getElementById(this.searchInputId);
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.filter(e.target.value);
+            });
+        }
+
+        this.render();
+    }
+
+    refresh() {
+        const container = document.querySelector(this.containerSelector);
+        if (!container) return;
+        this.allItems = Array.from(container.querySelectorAll(this.itemSelector));
+        const searchInput = document.getElementById(this.searchInputId);
+        const query = searchInput ? searchInput.value : '';
+        this.filter(query);
+    }
+
+    setPageSize(size) {
+        this.pageSize = parseInt(size, 10) || 10;
+        this.currentPage = 1;
+        this.render();
+    }
+
+    filter(query) {
+        const q = (query || '').trim().toLowerCase();
+        this.filteredItems = this.allItems.filter(item => {
+            if (this.customFilter && !this.customFilter(item)) {
+                return false;
+            }
+            if (!q) return true;
+            const text = (item.innerText || item.textContent || '').toLowerCase();
+            return text.includes(q);
+        });
+
+        this.currentPage = 1;
+        this.render();
+    }
+
+    goToPage(page) {
+        const totalPages = Math.ceil(this.filteredItems.length / this.pageSize) || 1;
+        this.currentPage = Math.max(1, Math.min(page, totalPages));
+        this.render();
+
+        const container = document.querySelector(this.containerSelector);
+        if (container) {
+            const rect = container.getBoundingClientRect();
+            if (rect.top < 60) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }
+
+    render() {
+        const totalItems = this.filteredItems.length;
+        const totalAll = this.allItems.length;
+        const totalPages = Math.ceil(totalItems / this.pageSize) || 1;
+
+        if (this.currentPage > totalPages) {
+            this.currentPage = totalPages;
+        }
+
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = Math.min(startIndex + this.pageSize, totalItems);
+
+        // Hide all items first
+        this.allItems.forEach(item => {
+            item.style.display = 'none';
+        });
+
+        // Show page range items
+        for (let i = startIndex; i < endIndex; i++) {
+            if (this.filteredItems[i]) {
+                this.filteredItems[i].style.display = '';
+            }
+        }
+
+        // Empty search row
+        const emptyRow = document.getElementById(this.emptySearchRowId);
+        const initialEmptyRow = document.getElementById(this.initialEmptyRowId);
+
+        if (totalAll === 0) {
+            if (initialEmptyRow) initialEmptyRow.style.display = '';
+            if (emptyRow) emptyRow.style.display = 'none';
+        } else if (totalItems === 0) {
+            if (initialEmptyRow) initialEmptyRow.style.display = 'none';
+            if (emptyRow) emptyRow.style.display = '';
         } else {
-            r.style.display = 'none';
+            if (initialEmptyRow) initialEmptyRow.style.display = 'none';
+            if (emptyRow) emptyRow.style.display = 'none';
+        }
+
+        // Info container
+        const infoEl = document.getElementById(this.infoElId);
+        if (infoEl) {
+            if (totalAll === 0) {
+                infoEl.innerHTML = `<span class="text-slate-400">0 ${this.unitName}</span>`;
+            } else if (totalItems === 0) {
+                infoEl.innerHTML = `<span class="text-rose-500 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-circle-exclamation"></i> 0 matching ${this.unitName} found</span>`;
+            } else {
+                const isFiltered = totalItems < totalAll;
+                let html = `Showing <strong class="text-slate-900 font-bold">${startIndex + 1}</strong> to <strong class="text-slate-900 font-bold">${endIndex}</strong> of <strong class="text-slate-900 font-bold">${totalItems}</strong> ${this.unitName}`;
+                if (isFiltered) {
+                    html += ` <span class="text-slate-400 font-normal">(filtered from ${totalAll} total)</span>`;
+                }
+                infoEl.innerHTML = html;
+            }
+        }
+
+        // Total badge
+        const totalBadge = document.getElementById(this.totalBadgeId);
+        if (totalBadge) {
+            if (totalAll === 0) {
+                totalBadge.innerText = `0 ${this.unitName}`;
+            } else if (totalItems < totalAll) {
+                totalBadge.innerText = `${totalItems} / ${totalAll} ${this.unitName}`;
+            } else {
+                totalBadge.innerText = `${totalAll} ${this.unitName}`;
+            }
+        }
+
+        // Pagination Container visibility
+        const containerNav = document.getElementById(this.containerNavId);
+        if (containerNav) {
+            if (totalAll === 0) {
+                containerNav.style.display = 'none';
+            } else {
+                containerNav.style.display = '';
+            }
+        }
+
+        this.renderNav(totalPages);
+    }
+
+    renderNav(totalPages) {
+        const navEl = document.getElementById(this.navElId);
+        if (!navEl) return;
+
+        if (totalPages <= 1) {
+            navEl.innerHTML = '';
+            return;
+        }
+
+        let activeColor = 'bg-indigo-600 text-white font-black shadow-xs ring-2 ring-indigo-500/30';
+        if (this.themeColor === 'yellow') activeColor = 'bg-yellow-500 text-white font-black shadow-xs ring-2 ring-yellow-400/40';
+        if (this.themeColor === 'purple') activeColor = 'bg-purple-600 text-white font-black shadow-xs ring-2 ring-purple-500/30';
+        if (this.themeColor === 'blue') activeColor = 'bg-blue-600 text-white font-black shadow-xs ring-2 ring-blue-500/30';
+
+        const baseBtn = 'min-w-[34px] h-[34px] px-2.5 rounded-xl text-xs font-bold transition-all duration-150 flex items-center justify-center select-none cursor-pointer';
+        const inactiveBtn = 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs hover:border-slate-300';
+        const disabledBtn = 'opacity-30 cursor-not-allowed bg-slate-100 text-slate-400 border border-slate-200 pointer-events-none';
+
+        let html = '';
+
+        // First button if totalPages > 5
+        if (totalPages > 5) {
+            const isFirstDisabled = this.currentPage === 1;
+            html += `<button type="button" onclick="${this.instanceName}.goToPage(1)" class="${baseBtn} ${isFirstDisabled ? disabledBtn : inactiveBtn}" title="First Page">
+                <i class="fa-solid fa-angles-left text-[10px]"></i>
+            </button>`;
+        }
+
+        // Previous button
+        const isPrevDisabled = this.currentPage === 1;
+        html += `<button type="button" onclick="${this.instanceName}.goToPage(${this.currentPage - 1})" class="${baseBtn} ${isPrevDisabled ? disabledBtn : inactiveBtn}" title="Previous Page">
+            <i class="fa-solid fa-chevron-left text-[10px] mr-1"></i> Prev
+        </button>`;
+
+        // Page buttons with smart ellipsis
+        const pages = this.generatePageNumbers(this.currentPage, totalPages);
+        pages.forEach(p => {
+            if (p === '...') {
+                html += `<span class="min-w-[28px] h-[34px] flex items-center justify-center text-xs font-black text-slate-400 select-none">&hellip;</span>`;
+            } else {
+                const isActive = p === this.currentPage;
+                html += `<button type="button" onclick="${this.instanceName}.goToPage(${p})" class="${baseBtn} ${isActive ? activeColor : inactiveBtn}">
+                    ${p}
+                </button>`;
+            }
+        });
+
+        // Next button
+        const isNextDisabled = this.currentPage === totalPages;
+        html += `<button type="button" onclick="${this.instanceName}.goToPage(${this.currentPage + 1})" class="${baseBtn} ${isNextDisabled ? disabledBtn : inactiveBtn}" title="Next Page">
+            Next <i class="fa-solid fa-chevron-right text-[10px] ml-1"></i>
+        </button>`;
+
+        // Last button if totalPages > 5
+        if (totalPages > 5) {
+            const isLastDisabled = this.currentPage === totalPages;
+            html += `<button type="button" onclick="${this.instanceName}.goToPage(${totalPages})" class="${baseBtn} ${isLastDisabled ? disabledBtn : inactiveBtn}" title="Last Page">
+                <i class="fa-solid fa-angles-right text-[10px]"></i>
+            </button>`;
+        }
+
+        navEl.innerHTML = html;
+    }
+
+    generatePageNumbers(current, total) {
+        if (total <= 7) {
+            return Array.from({ length: total }, (_, i) => i + 1);
+        }
+
+        const pages = [];
+        if (current <= 4) {
+            for (let i = 1; i <= 5; i++) pages.push(i);
+            pages.push('...');
+            pages.push(total);
+        } else if (current >= total - 3) {
+            pages.push(1);
+            pages.push('...');
+            for (let i = total - 4; i <= total; i++) pages.push(i);
+        } else {
+            pages.push(1);
+            pages.push('...');
+            pages.push(current - 1);
+            pages.push(current);
+            pages.push(current + 1);
+            pages.push('...');
+            pages.push(total);
+        }
+        return pages;
+    }
+}
+
+// Global Paginators Registry
+window.Paginators = {};
+
+function initDashboardPaginators() {
+    // 1. Certificates Table
+    window.Paginators.cert = new SmartPaginator({
+        instanceName: 'window.Paginators.cert',
+        container: '#certificatesTable tbody',
+        itemSelector: '.cert-row',
+        pageSize: 10,
+        pageSizeSelectId: 'certPageSize',
+        searchInputId: 'certSearchInput',
+        infoElId: 'certPaginationInfo',
+        navElId: 'certPaginationNav',
+        containerNavId: 'certPaginationContainer',
+        emptySearchRowId: 'certEmptySearchRow',
+        initialEmptyRowId: 'certInitialEmptyRow',
+        totalBadgeId: 'certTotalBadge',
+        unitName: 'certificates',
+        themeColor: 'yellow'
+    });
+    window.certPaginator = window.Paginators.cert;
+
+    // 2. Admissions Table
+    window.Paginators.admission = new SmartPaginator({
+        instanceName: 'window.Paginators.admission',
+        container: '#admissionsTable tbody',
+        itemSelector: '.admission-row',
+        pageSize: 10,
+        pageSizeSelectId: 'admPageSize',
+        searchInputId: 'admSearchInput',
+        infoElId: 'admPaginationInfo',
+        navElId: 'admPaginationNav',
+        containerNavId: 'admPaginationContainer',
+        emptySearchRowId: 'admEmptySearchRow',
+        initialEmptyRowId: 'admInitialEmptyRow',
+        totalBadgeId: 'admTotalBadge',
+        unitName: 'applications',
+        themeColor: 'indigo'
+    });
+    window.admPaginator = window.Paginators.admission;
+
+    // 3. ID Cards Table
+    window.Paginators.idcard = new SmartPaginator({
+        instanceName: 'window.Paginators.idcard',
+        container: '#idCardsTable tbody',
+        itemSelector: '.idcard-row',
+        pageSize: 10,
+        pageSizeSelectId: 'idCardPageSize',
+        searchInputId: 'searchIdCardsInput',
+        infoElId: 'idCardPaginationInfo',
+        navElId: 'idCardPaginationNav',
+        containerNavId: 'idCardPaginationContainer',
+        emptySearchRowId: 'idCardEmptySearchRow',
+        initialEmptyRowId: 'noIdCardsRow',
+        totalBadgeId: 'idCardTotalBadge',
+        unitName: 'ID cards',
+        themeColor: 'purple'
+    });
+    window.idCardPaginator = window.Paginators.idcard;
+
+    // 4. Blogs Table
+    window.Paginators.blog = new SmartPaginator({
+        instanceName: 'window.Paginators.blog',
+        container: '#blogsTable tbody',
+        itemSelector: '.blog-row',
+        pageSize: 10,
+        pageSizeSelectId: 'blogPageSize',
+        searchInputId: 'blogSearchInput',
+        infoElId: 'blogPaginationInfo',
+        navElId: 'blogPaginationNav',
+        containerNavId: 'blogPaginationContainer',
+        emptySearchRowId: 'blogEmptySearchRow',
+        initialEmptyRowId: 'blogInitialEmptyRow',
+        totalBadgeId: 'blogTotalBadge',
+        unitName: 'articles',
+        themeColor: 'indigo'
+    });
+    window.blogPaginator = window.Paginators.blog;
+
+    // 5. Gallery Catalog Grid
+    window.Paginators.gallery = new SmartPaginator({
+        instanceName: 'window.Paginators.gallery',
+        container: '#adminGalleryGrid',
+        itemSelector: '.gallery-card-item',
+        pageSize: 12,
+        pageSizeSelectId: 'adminGalleryPageSize',
+        searchInputId: 'adminGallerySearchInput',
+        infoElId: 'galleryPaginationInfo',
+        navElId: 'galleryPaginationNav',
+        containerNavId: 'galleryPaginationContainer',
+        emptySearchRowId: 'galleryEmptySearchState',
+        initialEmptyRowId: 'galleryInitialEmpty',
+        totalBadgeId: 'adminGalleryTotalBadge',
+        unitName: 'media items',
+        themeColor: 'blue',
+        customFilter: function(card) {
+            const catFilter = (document.getElementById('adminGalleryCategoryFilter')?.value || 'all').toLowerCase();
+            const itemType = card.getAttribute('data-type') || 'image';
+            const itemCat = (card.getAttribute('data-category') || '').toLowerCase();
+            const matchType = (currentAdminGalFilterType === 'all') || (itemType === currentAdminGalFilterType);
+            const matchCat = (catFilter === 'all') || (itemCat === catFilter) || itemCat.includes(catFilter);
+            return matchType && matchCat;
         }
     });
+    window.galleryPaginator = window.Paginators.gallery;
+}
+
+// Auto-initialize paginators on DOM load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDashboardPaginators);
+} else {
+    initDashboardPaginators();
 }
 </script>
 @endsection

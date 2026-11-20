@@ -171,6 +171,14 @@
 
         window.location.hash = tabName;
 
+        if (window.Paginators) {
+            if (tabName === 'certificates' && window.Paginators.cert) window.Paginators.cert.refresh();
+            if (tabName === 'admissions' && window.Paginators.admission) window.Paginators.admission.refresh();
+            if (tabName === 'idcards' && window.Paginators.idcard) window.Paginators.idcard.refresh();
+            if (tabName === 'blogs' && window.Paginators.blog) window.Paginators.blog.refresh();
+            if (tabName === 'galleries' && window.Paginators.gallery) window.Paginators.gallery.refresh();
+        }
+
         const sidebar = document.getElementById('sidebar');
         const backdrop = document.getElementById('sidebarBackdrop');
         if (sidebar && backdrop && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 768) {

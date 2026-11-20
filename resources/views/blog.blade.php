@@ -215,6 +215,12 @@
             @endforeach
         </div>
 
+        <!-- Public Blog Pagination Footer -->
+        <div id="publicBlogPagination" class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-gray-100">
+            <div id="publicBlogPageInfo" class="text-xs font-semibold text-gray-500"></div>
+            <div id="publicBlogPageNav" class="flex items-center gap-1.5 flex-wrap"></div>
+        </div>
+
         <!-- No Search Results Found (Hidden initially) -->
         <div id="noResultsState" class="hidden text-center py-20 bg-gray-50 rounded-3xl border border-gray-200/80 p-8 space-y-4">
             <div class="w-16 h-16 mx-auto rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-2xl shadow-inner">
@@ -289,9 +295,13 @@ function filterByTopic(topic, btn) {
     applyCombinedFilters(query, topic);
 }
 
+let currentPublicBlogPage = 1;
+const publicBlogPageSize = 9;
+let currentFilteredCards = [];
+
 function applyCombinedFilters(query, topic) {
-    const items = document.querySelectorAll('.blog-card-item');
-    let visibleCount = 0;
+    const items = Array.from(document.querySelectorAll('.blog-card-item'));
+    currentFilteredCards = [];
 
     items.forEach(card => {
         const title = card.getAttribute('data-title') || '';
@@ -308,25 +318,101 @@ function applyCombinedFilters(query, topic) {
         }
 
         if (matchesQuery && matchesTopic) {
-            card.style.display = '';
-            visibleCount++;
+            currentFilteredCards.push(card);
         } else {
             card.style.display = 'none';
         }
     });
 
+    currentPublicBlogPage = 1;
+    renderPublicBlogPage();
+
     const countEl = document.getElementById('visibleBlogCount');
-    if (countEl) countEl.innerText = visibleCount;
+    if (countEl) countEl.innerText = currentFilteredCards.length;
 
     const noResults = document.getElementById('noResultsState');
     if (noResults) {
-        if (visibleCount === 0 && items.length > 0) {
+        if (currentFilteredCards.length === 0 && items.length > 0) {
             noResults.classList.remove('hidden');
         } else {
             noResults.classList.add('hidden');
         }
     }
 }
+
+function goToPublicBlogPage(page) {
+    const totalPages = Math.ceil(currentFilteredCards.length / publicBlogPageSize) || 1;
+    currentPublicBlogPage = Math.max(1, Math.min(page, totalPages));
+    renderPublicBlogPage();
+
+    const grid = document.getElementById('articlesGrid');
+    if (grid) {
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function renderPublicBlogPage() {
+    const totalItems = currentFilteredCards.length;
+    const totalPages = Math.ceil(totalItems / publicBlogPageSize) || 1;
+
+    if (currentPublicBlogPage > totalPages) {
+        currentPublicBlogPage = totalPages;
+    }
+
+    const start = (currentPublicBlogPage - 1) * publicBlogPageSize;
+    const end = Math.min(start + publicBlogPageSize, totalItems);
+
+    currentFilteredCards.forEach((card, index) => {
+        if (index >= start && index < end) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    const infoEl = document.getElementById('publicBlogPageInfo');
+    const navEl = document.getElementById('publicBlogPageNav');
+    const paginationContainer = document.getElementById('publicBlogPagination');
+
+    if (paginationContainer) {
+        paginationContainer.style.display = totalPages <= 1 ? 'none' : '';
+    }
+
+    if (infoEl) {
+        infoEl.innerHTML = `Showing <strong class="text-gray-900">${start + 1}</strong> to <strong class="text-gray-900">${end}</strong> of <strong class="text-gray-900">${totalItems}</strong> articles`;
+    }
+
+    if (navEl) {
+        if (totalPages <= 1) {
+            navEl.innerHTML = '';
+            return;
+        }
+
+        const baseBtn = 'min-w-[34px] h-[34px] px-3 rounded-xl text-xs font-bold transition flex items-center justify-center cursor-pointer';
+        const inactiveBtn = 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200 shadow-2xs';
+        const activeBtn = 'bg-[#FACA0A] text-slate-950 font-black shadow-xs ring-2 ring-yellow-400/50';
+        const disabledBtn = 'opacity-30 cursor-not-allowed bg-gray-100 text-gray-400 border border-gray-200 pointer-events-none';
+
+        let html = '';
+        const prevDisabled = currentPublicBlogPage === 1;
+        html += `<button type="button" onclick="goToPublicBlogPage(${currentPublicBlogPage - 1})" class="${baseBtn} ${prevDisabled ? disabledBtn : inactiveBtn}"><i class="fa-solid fa-chevron-left text-[10px] mr-1"></i> Prev</button>`;
+
+        for (let i = 1; i <= totalPages; i++) {
+            const isActive = i === currentPublicBlogPage;
+            html += `<button type="button" onclick="goToPublicBlogPage(${i})" class="${baseBtn} ${isActive ? activeBtn : inactiveBtn}">${i}</button>`;
+        }
+
+        const nextDisabled = currentPublicBlogPage === totalPages;
+        html += `<button type="button" onclick="goToPublicBlogPage(${currentPublicBlogPage + 1})" class="${baseBtn} ${nextDisabled ? disabledBtn : inactiveBtn}">Next <i class="fa-solid fa-chevron-right text-[10px] ml-1"></i></button>`;
+
+        navEl.innerHTML = html;
+    }
+}
+
+// Initial run
+document.addEventListener('DOMContentLoaded', () => {
+    applyCombinedFilters('', 'all');
+});
 </script>
 
 @endsection
