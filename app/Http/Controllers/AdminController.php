@@ -52,7 +52,7 @@ class AdminController extends Controller
         }
 
         $blogs = Blog::latest()->get();
-        $sliders = SliderImage::latest()->get();
+        $sliders = SliderImage::getOrderedSliders();
         $fees = \App\Models\FeeStructure::all();
         $galleries = \App\Models\GalleryImage::latest()->get();
         $certificates = \App\Models\Certificate::latest()->get();

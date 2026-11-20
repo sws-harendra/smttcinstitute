@@ -21,7 +21,11 @@
 <section class="relative w-full min-h-[80vh] py-12 md:py-20 flex items-center overflow-hidden">
   <!-- Dynamic Slider Container -->
   <div id="dynamic-slider-container" class="absolute inset-0 w-full h-full overflow-hidden">
-    @if(isset($sliders) && count($sliders) > 0)
+    @php
+      $hasMultipleSliders = isset($sliders) && count($sliders) > 1;
+      $hasCustomSingleSlider = isset($sliders) && count($sliders) === 1 && !str_contains($sliders->first()->image_url ?? '', 'hero1.webp');
+    @endphp
+    @if($hasMultipleSliders)
         @foreach($sliders as $index => $slider)
             @php
                 $sliderSrc = Str::startsWith($slider->image_url, '/uploads') ? asset($slider->image_url) : asset($slider->image_url);
@@ -38,6 +42,14 @@
               @endif
             </div>
         @endforeach
+    @elseif($hasCustomSingleSlider)
+        @php
+            $singleSlider = $sliders->first();
+            $singleSliderSrc = Str::startsWith($singleSlider->image_url, '/uploads') ? asset($singleSlider->image_url) : asset($singleSlider->image_url);
+        @endphp
+        <div class="carousel-slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-100 z-[1]">
+          <img src="{{ $singleSliderSrc }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="Smart Technical Training Institute Banner" loading="eager" fetchpriority="high"/>
+        </div>
     @else
         <div class="carousel-slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-100 z-[1]">
           <picture class="w-full h-full block">
@@ -87,7 +99,13 @@
   <!-- Dots -->
   <div id="hero-slider-dots" class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 z-20">
     @php
-      $slideCount = (isset($sliders) && count($sliders) > 0) ? count($sliders) : 4;
+      if ($hasMultipleSliders) {
+          $slideCount = count($sliders);
+      } elseif ($hasCustomSingleSlider) {
+          $slideCount = 1;
+      } else {
+          $slideCount = 4;
+      }
     @endphp
     @for($i = 0; $i < $slideCount; $i++)
       <button type="button" aria-label="Go to slide {{ $i + 1 }}" data-slide-index="{{ $i }}" class="dot h-2.5 sm:h-3 rounded-full transition-all duration-300 {{ $i === 0 ? 'bg-amber-400 w-6 sm:w-8 opacity-100' : 'bg-white/60 hover:bg-white w-2.5 sm:w-3 opacity-60' }}"></button>

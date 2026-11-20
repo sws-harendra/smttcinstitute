@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $sliders = SliderImage::orderBy('id', 'asc')->get();
+        $sliders = SliderImage::getOrderedSliders();
         $blogs = Blog::latest()->take(6)->get();
         $fees = \App\Models\FeeStructure::all();
 
