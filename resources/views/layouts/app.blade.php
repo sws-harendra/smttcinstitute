@@ -7,9 +7,12 @@
     
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('build.css') }}">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Non-blocking Font Awesome with Preload -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
     <script>
         function openMenu(){var m=document.getElementById("mobileMenu");if(m)m.classList.remove("hidden");}
         function closeMenu(){var m=document.getElementById("mobileMenu");if(m)m.classList.add("hidden");var s=document.getElementById("servicesMenu");if(s)s.classList.add("hidden");var a=document.getElementById("serviceArrow");if(a)a.classList.remove("rotate-180");}
@@ -22,10 +25,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"></noscript>
     
-    <!-- Premium Google Fonts (Outfit + Dancing Script & Caveat Cursive Fonts) -->
+    <!-- Preconnect Critical Origins for Fast Mobile TLS Handshake -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://ad.doubleclick.net">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -727,7 +732,7 @@
                     dotsContainer.innerHTML = '';
                     cards3d.forEach((_, idx) => {
                         const dot = document.createElement('button');
-                        dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-yellow-400 w-8' : 'bg-white/40 hover:bg-white/80'}`;
+                        dot.className = `w-3 h-3 rounded-full transition-[width,background-color] duration-300 ${idx === 0 ? 'bg-yellow-400 w-8' : 'bg-white/40 hover:bg-white/80'}`;
                         dot.setAttribute('type', 'button');
                         dot.setAttribute('aria-label', `Go to slide ${idx + 1}`);
                         dot.addEventListener('click', () => update3dGallery(idx));
@@ -761,9 +766,9 @@
                     if (dotsContainer) {
                         Array.from(dotsContainer.children).forEach((dot, idx) => {
                             if (idx === activeIndex) {
-                                dot.className = 'w-8 h-3 rounded-full bg-yellow-400 transition-all duration-300 shadow-md shadow-yellow-400/50';
+                                dot.className = 'w-8 h-3 rounded-full bg-yellow-400 transition-[width,background-color] duration-300';
                             } else {
-                                dot.className = 'w-3 h-3 rounded-full bg-white/40 hover:bg-white/80 transition-all duration-300';
+                                dot.className = 'w-3 h-3 rounded-full bg-white/40 hover:bg-white/80 transition-[width,background-color] duration-300';
                             }
                         });
                     }

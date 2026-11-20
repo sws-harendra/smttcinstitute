@@ -11,7 +11,8 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ route('home') }}" />
     <meta property="og:image" content="{{ asset('assets/images/logonewblack.webp') }}" />
-    <link rel="preload" as="image" href="{{ asset('assets/images/hero1.webp') }}" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('assets/images/hero1-mobile.webp') }}" type="image/webp" media="(max-width: 640px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('assets/images/hero1.webp') }}" type="image/webp" media="(min-width: 641px)" fetchpriority="high">
 @endsection
 
 @section('content')
@@ -28,7 +29,10 @@
         @endforeach
     @else
         <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 opacity-100">
-          <img src="{{ asset('assets/images/hero1.webp') }}" width="1600" height="716" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
+          <picture>
+            <source media="(max-width: 640px)" srcset="{{ asset('assets/images/hero1-mobile.webp') }}" type="image/webp">
+            <img src="{{ asset('assets/images/hero1.webp') }}" width="1280" height="573" class="w-full h-full object-cover scale-105" alt="hero image" loading="eager" fetchpriority="high"/>
+          </picture>
         </div>
     @endif
   </div>
