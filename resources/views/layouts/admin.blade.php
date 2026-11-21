@@ -107,7 +107,7 @@
     }
 
     function showTab(tabName) {
-        const tabs = ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'];
+        const tabs = ['overview', 'blogs', 'seopages', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'];
         
         tabs.forEach(t => {
             const el = document.getElementById('tab-' + t);
@@ -148,6 +148,9 @@
             } else if (tabName === 'blogs') {
                 titleEl.innerText = 'Blog Posts Management';
                 subTitleEl.innerText = 'Publish news, announcements, and technical guides';
+            } else if (tabName === 'seopages') {
+                titleEl.innerText = 'AI Location Blogs (SEO Pages)';
+                subTitleEl.innerText = 'AI-powered local student landing pages with live SEO score & anti-AI humanizer';
             } else if (tabName === 'sliders') {
                 titleEl.innerText = 'Hero Sliders Management';
                 subTitleEl.innerText = 'Upload banner photos for homepage carousel';
@@ -198,9 +201,9 @@
 
         const serverTab = "{{ (session('blog_success') || session('blog_error') || $errors->has('title') || $errors->has('content') || $errors->has('image') || $errors->has('slug')) ? 'blogs' : (session('slider_success') || session('slider_error') ? 'sliders' : (session('fee_success') || session('fee_error') ? 'fees' : (session('gallery_success') || session('gallery_error') ? 'galleries' : (session('cert_success') || session('cert_error') ? 'certificates' : (session('idcard_success') || session('idcard_error') ? 'idcards' : ''))))) }}";
         const hash = window.location.hash.replace('#', '');
-        if (serverTab && ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'].includes(serverTab)) {
+        if (serverTab && ['overview', 'blogs', 'seopages', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'].includes(serverTab)) {
             showTab(serverTab);
-        } else if (hash && ['overview', 'blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'].includes(hash)) {
+        } else if (hash && ['overview', 'blogs', 'seopages', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'idcards'].includes(hash)) {
             showTab(hash);
         } else {
             showTab('overview');

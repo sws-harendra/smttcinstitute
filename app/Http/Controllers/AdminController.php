@@ -70,7 +70,18 @@ class AdminController extends Controller
             ? \App\Models\IdCard::latest()->get()
             : collect();
 
-        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'beforeAfters', 'successfulStudents', 'successVideos', 'idcards'));
+        $seoPages = \Illuminate\Support\Facades\Schema::hasTable('seo_location_pages')
+            ? \App\Models\SeoLocationPage::latest()->get()
+            : collect();
+
+        $seoPageStats = [
+            'total' => $seoPages->count(),
+            'published' => $seoPages->where('status', 'published')->count(),
+            'draft' => $seoPages->where('status', 'draft')->count(),
+            'aiGenerated' => $seoPages->where('is_ai_generated', true)->count(),
+        ];
+
+        return view('admin.dashboard', compact('blogs', 'sliders', 'fees', 'galleries', 'certificates', 'admissions', 'beforeAfters', 'successfulStudents', 'successVideos', 'idcards', 'seoPages', 'seoPageStats'));
     }
 
     public function logout()

@@ -481,7 +481,7 @@
     <!-- FOOTER -->
     <footer class="bg-gray-900 text-gray-300 pt-16 sm:pt-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 pb-12 sm:pb-16 border-b border-gray-700">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-8 pb-12 sm:pb-16 border-b border-gray-700">
           <div>
             <div class="flex gap-1 items-center">
               <img class="w-[80px]" width="80" height="80" src="{{ asset('assets/images/logonewblackNew.webp') }}" alt="logo" loading="lazy">
@@ -511,6 +511,36 @@
               <li><a href="{{ route('courses.fridge') }}" class="footer-link hover:text-[#FACA0A]">Fridge Repairing</a></li>
               <li><a href="{{ route('courses.mobile') }}" class="footer-link hover:text-[#FACA0A]">Mobile Phone Repairing</a></li>
               <li><a href="{{ route('courses.laptop') }}" class="footer-link hover:text-[#FACA0A]">Laptop Repairing</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Training in Patna & Areas (Dynamic AI SEO Locations) -->
+          <div>
+            <h4 class="footer-title font-bold pb-6 text-white text-lg flex items-center gap-1.5">
+              <span>Courses in Patna</span>
+            </h4>
+            <ul class="space-y-3 text-sm">
+              @if(isset($footerLocationPages) && $footerLocationPages->count() > 0)
+                @foreach($footerLocationPages as $fPage)
+                  <li>
+                    <a href="{{ url($fPage->slug) }}" class="footer-link hover:text-[#FACA0A] transition truncate block" title="{{ $fPage->h1_heading ?: ($fPage->service_name . ' in ' . $fPage->location_name) }}">
+                      {{ $fPage->h1_heading ?: ($fPage->service_name . ' in ' . $fPage->location_name) }}
+                    </a>
+                  </li>
+                @endforeach
+              @else
+                <li><a href="{{ route('courses.mobile') }}" class="footer-link hover:text-[#FACA0A]">Mobile Repairing in Patna</a></li>
+                <li><a href="{{ route('courses.ac') }}" class="footer-link hover:text-[#FACA0A]">AC Repairing in Danapur</a></li>
+                <li><a href="{{ route('courses.laptop') }}" class="footer-link hover:text-[#FACA0A]">Laptop Repairing in Patna</a></li>
+                <li><a href="{{ route('courses.washing') }}" class="footer-link hover:text-[#FACA0A]">Washing Machine in Patna</a></li>
+                <li><a href="{{ route('courses.fridge') }}" class="footer-link hover:text-[#FACA0A]">Fridge Repairing in Bihar</a></li>
+              @endif
+              <li class="pt-1.5">
+                <a href="{{ route('locations.index') }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#FACA0A] hover:underline">
+                  <span>View All Locations</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </a>
+              </li>
             </ul>
           </div>
 

@@ -38,6 +38,15 @@
                 <span class="sidebar-text bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">{{ \App\Models\Blog::count() }}</span>
             </button>
 
+            <!-- AI Location Blogs (SEO Pages) Link -->
+            <button id="nav-seopages" onclick="showTab('seopages')" title="AI Location Blogs" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-wand-magic-sparkles text-lg text-purple-600 shrink-0"></i>
+                    <span class="sidebar-text truncate">AI Location Blogs</span>
+                </div>
+                <span class="sidebar-text bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 shadow-xs">{{ \Illuminate\Support\Facades\Schema::hasTable('seo_location_pages') ? \App\Models\SeoLocationPage::count() : 0 }}</span>
+            </button>
+
             <!-- Hero Sliders Link -->
             <button id="nav-sliders" onclick="showTab('sliders')" title="Hero Sliders" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
                 <div class="flex items-center gap-3 overflow-hidden">

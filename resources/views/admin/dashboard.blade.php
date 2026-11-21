@@ -86,7 +86,7 @@
 <div id="tab-overview" class="space-y-8 animate-fade-in">
     
     <!-- METRIC STAT CARDS GRID -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
 
         <!-- Card 1: Total Blogs -->
         <div onclick="showTab('blogs')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
@@ -102,7 +102,21 @@
             </div>
         </div>
 
-        <!-- Card 2: Hero Sliders -->
+        <!-- Card 2: AI Location Blogs -->
+        <div onclick="showTab('seopages')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">AI Location Blogs</p>
+                <h3 class="text-3xl font-extrabold text-slate-900 mt-2">{{ count($seoPages ?? []) }}</h3>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-600 mt-1">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated
+                </span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white flex items-center justify-center text-2xl font-bold shadow-md shadow-indigo-200">
+                <i class="fa-solid fa-earth-asia"></i>
+            </div>
+        </div>
+
+        <!-- Card 3: Hero Sliders -->
         <div onclick="showTab('sliders')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
             <div>
                 <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Hero Sliders</p>
@@ -116,7 +130,7 @@
             </div>
         </div>
 
-        <!-- Card 3: Gallery -->
+        <!-- Card 4: Gallery -->
         <div onclick="showTab('galleries')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
             <div>
                 <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Gallery Images</p>
@@ -130,7 +144,7 @@
             </div>
         </div>
 
-        <!-- Card 4: Certificates -->
+        <!-- Card 5: Certificates -->
         <div onclick="showTab('certificates')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
             <div>
                 <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Certificates</p>
@@ -144,7 +158,7 @@
             </div>
         </div>
 
-        <!-- Card 5: ID Cards -->
+        <!-- Card 6: ID Cards -->
         <div onclick="showTab('idcards')" class="cursor-pointer bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 flex items-center justify-between">
             <div>
                 <p class="text-xs font-bold uppercase tracking-wider text-slate-400">ID Cards</p>
@@ -2747,6 +2761,9 @@
         </div>
     </section>
 </div>
+
+<!-- ================= TAB: AI LOCATION BLOGS (SEO PAGES) ================= -->
+@include('admin.partials.seopages')
 
 @endsection
 

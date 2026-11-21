@@ -7,6 +7,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SeoLocationPageController;
 
 // Public Homepage & Alias
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -98,6 +99,19 @@ Route::post('/admin/id-cards', [AdminController::class, 'storeIdCard'])->name('a
 Route::post('/admin/id-cards/update/{id}', [AdminController::class, 'updateIdCard'])->name('admin.idcards.update');
 Route::post('/admin/id-cards/delete/{id}', [AdminController::class, 'deleteIdCard'])->name('admin.idcards.delete');
 
+// Admin AI Location Blogs (SEO Pages) Routes
+Route::get('/admin/seo-pages', [SeoLocationPageController::class, 'index'])->name('admin.seopages.index');
+Route::post('/admin/seo-pages', [SeoLocationPageController::class, 'store'])->name('admin.seopages.store');
+Route::get('/admin/seo-pages/{id}', [SeoLocationPageController::class, 'show'])->name('admin.seopages.show');
+Route::post('/admin/seo-pages/update/{id}', [SeoLocationPageController::class, 'update'])->name('admin.seopages.update');
+Route::post('/admin/seo-pages/delete/{id}', [SeoLocationPageController::class, 'destroy'])->name('admin.seopages.delete');
+Route::post('/admin/seo-pages/bulk-delete', [SeoLocationPageController::class, 'bulkDelete'])->name('admin.seopages.bulkDelete');
+Route::post('/admin/seo-pages/toggle-status/{id}', [SeoLocationPageController::class, 'toggleStatus'])->name('admin.seopages.toggleStatus');
+Route::post('/admin/seo-pages/generate-ai', [SeoLocationPageController::class, 'generateAi'])->name('admin.seopages.generateAi');
+Route::post('/admin/seo-pages/humanize', [SeoLocationPageController::class, 'humanize'])->name('admin.seopages.humanize');
+Route::get('/admin/seo-pages/ai-settings', [SeoLocationPageController::class, 'getAiSettings'])->name('admin.seopages.getAiSettings');
+Route::post('/admin/seo-pages/ai-settings', [SeoLocationPageController::class, 'saveAiSettings'])->name('admin.seopages.saveAiSettings');
+
 // Student Portal Routes
 Route::get('/student/login', [StudentController::class, 'loginView'])->name('student.login');
 Route::post('/student/login', [StudentController::class, 'login'])->name('student.login.submit');
@@ -188,4 +202,12 @@ Route::get('/id-card/{id}', function($id) {
 })->name('idcard.view');
 
 Route::post('/id-card/upload-photo/{id}', [AdminController::class, 'uploadIdCardPhoto'])->name('idcard.uploadPhoto');
+
+// Public Locations Directory & Landing Pages
+Route::get('/locations', [SeoLocationPageController::class, 'locationsIndex'])->name('locations.index');
+Route::get('/location/{slug}', [SeoLocationPageController::class, 'showPublic'])->name('location.show');
+
+// Wildcard dynamic URL for published SEO location pages (e.g. /mobile-repairing-course-in-patna)
+Route::get('/{slug}', [SeoLocationPageController::class, 'showPublic'])->where('slug', '[a-zA-Z0-9\-_]+')->name('location.slug');
+
 

@@ -134,6 +134,31 @@ class SitemapService
             Log::warning('SitemapService blog fetch notice: ' . $e->getMessage());
         }
 
+        // Append /locations directory and all published AI SEO Location Pages
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('seo_location_pages')) {
+                $pages[] = [
+                    'url' => $baseUrl . '/locations',
+                    'lastmod' => $now,
+                    'changefreq' => 'weekly',
+                    'priority' => '0.8'
+                ];
+
+                $seoPages = \App\Models\SeoLocationPage::where('status', 'published')->latest()->get();
+                foreach ($seoPages as $sp) {
+                    $lastmod = $sp->updated_at ? $sp->updated_at->toIso8601String() : ($sp->created_at ? $sp->created_at->toIso8601String() : $now);
+                    $pages[] = [
+                        'url' => $baseUrl . '/' . $sp->slug,
+                        'lastmod' => $lastmod,
+                        'changefreq' => 'weekly',
+                        'priority' => '0.9'
+                    ];
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::warning('SitemapService seo pages fetch notice: ' . $e->getMessage());
+        }
+
         // Build valid W3C standard XML
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xml .= "<urlset\n";

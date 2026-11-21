@@ -18,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin/logout',
             'admin/blogs',
             'admin/blogs/*',
+            'admin/seo-pages',
+            'admin/seo-pages/*',
             'admin/sliders',
             'admin/sliders/*',
         ]);
