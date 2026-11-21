@@ -43,7 +43,14 @@ class PageController extends Controller
 
     public function sitemap()
     {
-        return view('sitemap');
+        $blogs = \App\Models\Blog::latest()->get();
+        return view('sitemap', compact('blogs'));
+    }
+
+    public function sitemapXml()
+    {
+        $xml = \App\Services\SitemapService::getXml();
+        return response($xml, 200)->header('Content-Type', 'application/xml; charset=utf-8');
     }
 
     public function admissionForm()

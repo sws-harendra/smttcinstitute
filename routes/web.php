@@ -24,6 +24,7 @@ Route::post('/student/register', [PageController::class, 'storeAdmission'])->nam
 Route::get('/feestructure', [PageController::class, 'feestructure'])->name('feestructure');
 
 Route::get('/sitemap', [PageController::class, 'sitemap'])->name('sitemap');
+Route::get('/sitemap.xml', [PageController::class, 'sitemapXml'])->name('sitemap.xml');
 
 // Blog Pages
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

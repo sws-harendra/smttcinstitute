@@ -213,6 +213,9 @@ class AdminController extends Controller
                 'author_name' => $request->author_name,
             ]);
 
+            // Auto-update real-time sitemap
+            \App\Services\SitemapService::generateSitemapXml();
+
             return redirect()->to(route('admin.dashboard') . '#blogs')
                 ->with('blog_success', 'Blog article successfully publish ho gaya!');
         } catch (\Throwable $e) {
@@ -297,6 +300,9 @@ class AdminController extends Controller
 
             $blog->save();
 
+            // Auto-update real-time sitemap
+            \App\Services\SitemapService::generateSitemapXml();
+
             return redirect()->to(route('admin.dashboard') . '#blogs')
                 ->with('blog_success', 'Blog article successfully update ho gaya!');
         } catch (\Throwable $e) {
@@ -316,6 +322,10 @@ class AdminController extends Controller
         try {
             $blog = Blog::findOrFail($id);
             $blog->delete();
+
+            // Auto-update real-time sitemap
+            \App\Services\SitemapService::generateSitemapXml();
+
             return redirect()->to(route('admin.dashboard') . '#blogs')
                 ->with('blog_success', 'Blog article delete ho gaya!');
         } catch (\Throwable $e) {
