@@ -849,15 +849,69 @@ PROMPT;
 
     public function locationsIndex()
     {
-        $pages = SeoLocationPage::where('status', 'published')
+        $allPages = SeoLocationPage::where('status', 'published')
             ->orderBy('views', 'desc')
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        // Group by Location and Course
-        $locations = $pages->groupBy('location_name');
-        $courses = $pages->groupBy('service_name');
+        // Group dynamically by location_name
+        $grouped = $allPages->groupBy(function ($item) {
+            return trim($item->location_name);
+        });
 
-        return view('locations-index', compact('pages', 'locations', 'courses'));
+        $locations = [];
+        $themes = ['theme-blue', 'theme-emerald', 'theme-purple', 'theme-pink', 'theme-amber', 'theme-cyan', 'theme-indigo'];
+        $idx = 0;
+
+        foreach ($grouped as $locName => $items) {
+            $locations[] = [
+                'name' => $locName,
+                'slug' => Str::slug($locName),
+                'state' => 'Bihar, India',
+                'description' => "Certified technical training and practical lab courses across {$locName}.",
+                'serviceCount' => $items->count(),
+                'theme' => $themes[$idx % count($themes)],
+                'courses' => $items,
+            ];
+            $idx++;
+        }
+
+        return view('locations-index', compact('locations'));
+    }
+
+    public function locationCourses($locationSlug)
+    {
+        $allPublished = SeoLocationPage::where('status', 'published')
+            ->orderBy('views', 'desc')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $isAllOrBihar = in_array(strtolower(trim($locationSlug)), ['all', 'bihar', 'all-locations']);
+
+        if ($isAllOrBihar) {
+            $locationName = 'Bihar';
+            $courses = $allPublished;
+        } else {
+            $matched = $allPublished->filter(function ($item) use ($locationSlug) {
+                return Str::slug($item->location_name) === strtolower($locationSlug);
+            });
+
+            if ($matched->isEmpty()) {
+                $locName = str_replace('-', ' ', $locationSlug);
+                $matched = $allPublished->filter(function ($item) use ($locName) {
+                    return stripos($item->location_name, $locName) !== false;
+                });
+            }
+
+            $locationName = $matched->isNotEmpty() ? $matched->first()->location_name : ucwords(str_replace('-', ' ', $locationSlug));
+            $courses = $matched;
+        }
+
+        return view('location-courses', compact('locationName', 'locationSlug', 'courses', 'allPublished'));
+    }
+
+    public function allCoursesByLocation()
+    {
+        return $this->locationCourses('bihar');
     }
 }

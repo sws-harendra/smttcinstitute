@@ -1,97 +1,407 @@
 @extends('layouts.app')
 
-@section('title', 'Technical Training Courses by Location in Patna & Bihar | SMTTC Institute')
+@section('title', 'Locations We Serve | SMTTC Technical Training Institute')
 
 @section('meta')
-    <meta name="description" content="Explore SMTTC Technical Training Institute courses across Patna, Danapur, Bailey Road, Kankarbagh, and all districts of Bihar. 100% practical lab training for mobile, AC, and laptop repairing.">
+    <meta name="description" content="Explore all cities and localities served by SMTTC Institute across Bihar including Patna, Danapur, Kankarbagh, Boring Road, and more. 100% practical chip-level lab training.">
     <link rel="canonical" href="{{ url('/locations') }}">
 @endsection
 
 @section('content')
-<div class="bg-slate-50 min-h-screen py-10 sm:py-16 text-slate-800">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
 
-        <!-- Breadcrumb -->
-        <nav class="flex items-center gap-2 text-xs font-semibold text-slate-500">
-            <a href="{{ route('home') }}" class="hover:text-indigo-600 transition flex items-center gap-1.5">
-                <i class="fa-solid fa-house"></i> Home
-            </a>
-            <span>/</span>
-            <span class="text-indigo-600 font-bold">Locations</span>
-        </nav>
+<style>
+/* ==========================================================================
+   LOCATIONS STYLES - 100% MATCHING REPAIR SAATHI (SCREENSHOT 2)
+   ========================================================================== */
+.locations-page-wrapper {
+  padding-top: 60px;
+  padding-bottom: 90px;
+  min-height: 85vh;
+  position: relative;
+  z-index: 1;
+  background: radial-gradient(circle at 50% -10%, rgba(224, 231, 255, 0.45) 0%, rgba(243, 232, 255, 0.25) 35%, rgba(255, 255, 255, 0) 70%);
+}
 
-        <!-- Header -->
-        <div class="text-center max-w-2xl mx-auto space-y-3">
-            <span class="inline-block px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-black uppercase tracking-wider">
-                REGIONAL TRAINING DIRECTORY
-            </span>
-            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                Courses by Area & Location in Bihar
-            </h1>
-            <p class="text-sm sm:text-base text-slate-500 leading-relaxed">
-                Find specialized chip-level technical courses available across Patna, Danapur, Bailey Road, and neighboring towns.
-            </p>
-        </div>
+.locations-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
 
-        @if(isset($pages) && count($pages) > 0)
-            <!-- Search / Filter on client side -->
-            <div class="max-w-md mx-auto">
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text" id="locSearchInput" onkeyup="filterLocationCards()" placeholder="Search your town, area, or course..." class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
-                </div>
+.locations-hero-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 46px auto;
+}
+
+.locations-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: rgba(59, 130, 246, 0.09);
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  border-radius: 9999px;
+  color: #2563eb;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  margin-bottom: 16px;
+}
+
+.locations-hero-title {
+  font-size: 42px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.18;
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+}
+
+.locations-hero-desc {
+  font-size: 15px;
+  color: #64748b;
+  line-height: 1.68;
+  max-width: 680px;
+  margin: 0 auto 26px auto;
+}
+
+/* SEARCH BOX */
+.locations-search-wrap {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.locations-search-wrap i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+  font-size: 15px;
+}
+
+.locations-search-input {
+  width: 100%;
+  padding: 13px 18px 13px 44px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  font-size: 14px;
+  color: #0f172a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.locations-search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* GRID */
+.locations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+@media (max-width: 1024px) {
+  .locations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .locations-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .locations-hero-title {
+    font-size: 32px;
+  }
+}
+
+/* LOCATION CARD */
+.location-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 22px;
+  padding: 28px 26px 22px 26px;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: 270px;
+}
+
+.location-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--card-accent, #3b82f6);
+  opacity: 0.65;
+  transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+.location-card::after {
+  content: "";
+  position: absolute;
+  top: -1px; right: -1px;
+  width: 48px; height: 48px;
+  border-top: 2.5px solid var(--card-accent, #3b82f6);
+  border-right: 2.5px solid var(--card-accent, #3b82f6);
+  border-top-right-radius: 22px;
+  opacity: 0.35;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.location-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--card-accent, #3b82f6);
+  box-shadow: 0 20px 38px -10px var(--card-glow, rgba(59, 130, 246, 0.2)),
+              0 6px 16px rgba(0, 0, 0, 0.03);
+}
+
+.location-card:hover::before {
+  height: 3.5px;
+  opacity: 1;
+}
+
+.location-card:hover::after {
+  width: 64px;
+  height: 64px;
+  opacity: 1;
+}
+
+/* THEME COLORS */
+.theme-blue {
+  --card-accent: #3b82f6;
+  --card-glow: rgba(59, 130, 246, 0.2);
+  --icon-bg: #eff6ff;
+  --icon-border: #dbeafe;
+  --icon-color: #2563eb;
+}
+.theme-emerald {
+  --card-accent: #10b981;
+  --card-glow: rgba(16, 185, 129, 0.2);
+  --icon-bg: #ecfdf5;
+  --icon-border: #d1fae5;
+  --icon-color: #059669;
+}
+.theme-purple {
+  --card-accent: #8b5cf6;
+  --card-glow: rgba(139, 92, 246, 0.2);
+  --icon-bg: #faf5ff;
+  --icon-border: #f3e8ff;
+  --icon-color: #7c3aed;
+}
+.theme-pink {
+  --card-accent: #ec4899;
+  --card-glow: rgba(236, 72, 153, 0.2);
+  --icon-bg: #fdf2f8;
+  --icon-border: #fce7f3;
+  --icon-color: #db2777;
+}
+.theme-amber {
+  --card-accent: #f59e0b;
+  --card-glow: rgba(245, 158, 11, 0.2);
+  --icon-bg: #fffbeb;
+  --icon-border: #fef3c7;
+  --icon-color: #d97706;
+}
+.theme-cyan {
+  --card-accent: #06b6d4;
+  --card-glow: rgba(6, 182, 212, 0.2);
+  --icon-bg: #ecfeff;
+  --icon-border: #cffafe;
+  --icon-color: #0891b2;
+}
+.theme-indigo {
+  --card-accent: #6366f1;
+  --card-glow: rgba(99, 102, 241, 0.2);
+  --icon-bg: #eef2ff;
+  --icon-border: #e0e7ff;
+  --icon-color: #4f46e5;
+}
+
+/* CARD INNER ELEMENTS */
+.location-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--icon-bg, #eff6ff);
+  border: 1px solid var(--icon-border, #dbeafe);
+  color: var(--icon-color, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  margin-bottom: 18px;
+}
+
+.location-card-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+  text-transform: capitalize;
+}
+
+.location-card-state {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.location-card-desc {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+
+.location-card-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  margin-top: 4px;
+}
+
+.location-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+  margin-top: 16px;
+}
+
+.location-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--icon-color, #2563eb);
+  text-decoration: none;
+  transition: gap 0.2s ease;
+}
+
+.location-card:hover .location-card-link {
+  gap: 10px;
+}
+</style>
+
+<div class="locations-page-wrapper">
+    <div class="locations-container">
+
+        <!-- Hero Header (Matching Screenshot 2) -->
+        <div class="locations-hero-header">
+            <div class="locations-hero-badge">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Training Coverage Network</span>
             </div>
 
-            <!-- Grouped by Location Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="locationsGrid">
-                @foreach($pages as $page)
-                <div class="location-card bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition-all flex flex-col justify-between"
-                     data-text="{{ strtolower($page->service_name . ' ' . $page->location_name . ' ' . $page->h1_heading) }}">
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
-                                <i class="fa-solid fa-location-dot text-[#FACA0A]"></i> {{ $page->location_name }}
-                            </span>
-                            <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">
-                                ISO Certified
-                            </span>
+            <h1 class="locations-hero-title">Locations We Serve</h1>
+
+            <p class="locations-hero-desc">
+                We deliver certified technical training and practical lab solutions to students across Patna, Bihar, and expanding regions.
+            </p>
+
+            <!-- Search box -->
+            <div class="locations-search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                    type="text"
+                    id="locSearchInput"
+                    onkeyup="filterLocations()"
+                    placeholder="Search your locality or city..."
+                    class="locations-search-input"
+                >
+            </div>
+        </div>
+
+        @if(isset($locations) && count($locations) > 0)
+            <!-- Locations Grid (Matching Screenshot 2) -->
+            <div class="locations-grid" id="locationsGridContainer">
+                @foreach($locations as $loc)
+                <div class="location-card {{ $loc['theme'] }}" data-name="{{ strtolower($loc['name'] . ' ' . $loc['state']) }}">
+                    <div>
+                        <!-- Location Icon Badge -->
+                        <div class="location-card-icon">
+                            <i class="fa-solid fa-location-dot"></i>
                         </div>
 
-                        <h3 class="text-base font-bold text-slate-900 leading-snug">
-                            {{ $page->h1_heading ?: ($page->service_name . ' in ' . $page->location_name) }}
-                        </h3>
+                        <!-- Location Title -->
+                        <h2 class="location-card-title">{{ $loc['name'] }}</h2>
 
-                        <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
-                            {{ $page->hero_description }}
-                        </p>
+                        <!-- Region / State -->
+                        <p class="location-card-state">{{ $loc['state'] }}</p>
+
+                        <!-- Description -->
+                        <p class="location-card-desc">{{ $loc['description'] }}</p>
+
+                        <!-- Services/Course Count -->
+                        <div class="location-card-highlight">
+                            <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                            <span>{{ $loc['serviceCount'] }} {{ Str::plural('Course', $loc['serviceCount']) }} Available</span>
+                        </div>
                     </div>
 
-                    <div class="pt-5 mt-4 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-xs font-semibold text-indigo-600">
-                            {{ $page->service_name }}
-                        </span>
-                        <a href="{{ url($page->slug) }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 hover:text-indigo-600 transition">
-                            <span>View Details</span>
-                            <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                    <!-- Footer Link -->
+                    <div class="location-card-footer">
+                        <a href="{{ route('locations.courses', $loc['slug']) }}" class="location-card-link">
+                            <span>View Courses</span>
+                            <i class="fa-solid fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
                 @endforeach
             </div>
+
+            <!-- Empty Search State -->
+            <div id="noSearchMatchBox" style="display: none; text-align: center; padding: 48px 24px; background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; max-width: 460px; margin: 32px auto 0 auto;">
+                <i class="fa-solid fa-location-dot text-3xl text-slate-400 mb-3 block"></i>
+                <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+                    No Locations Found
+                </h3>
+                <p style="font-size: 13.5px; color: #64748b; line-height: 1.6; margin-bottom: 16px;">
+                    We are expanding across all districts of Bihar. Contact our helpline to request batches in your area.
+                </p>
+                <a href="tel:7870516006" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 10px; background: #0f172a; color: #ffffff; font-size: 13px; font-weight: 700; text-decoration: none;">
+                    <i class="fa-solid fa-phone"></i> Call Helpline
+                </a>
+            </div>
         @else
-            <div class="bg-white rounded-3xl p-12 text-center border border-slate-200 max-w-lg mx-auto space-y-4">
-                <div class="w-16 h-16 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto text-2xl">
+            <!-- Empty Database Fallback -->
+            <div style="text-align: center; padding: 48px 24px; background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; max-width: 480px; margin: 32px auto 0 auto;">
+                <div style="width: 56px; height: 56px; border-radius: 16px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px auto;">
                     <i class="fa-solid fa-map-location-dot"></i>
                 </div>
-                <h3 class="text-lg font-bold text-slate-900">Locations Directory Initializing</h3>
-                <p class="text-xs text-slate-500 leading-relaxed">
-                    Our training center is located at Saguna More, Danapur, Patna. Please explore our main courses or contact our helpline directly.
+                <h3 style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+                    Locations Directory Initializing
+                </h3>
+                <p style="font-size: 13.5px; color: #64748b; line-height: 1.6; margin-bottom: 20px;">
+                    Publish location blogs from the admin panel to show them dynamically here!
                 </p>
-                <div class="pt-2">
-                    <a href="{{ route('home') }}" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs inline-block transition">
-                        Back to Homepage
-                    </a>
-                </div>
+                <a href="{{ route('home') }}" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 10px; background: #2563eb; color: #ffffff; font-size: 13px; font-weight: 700; text-decoration: none;">
+                    Back to Homepage
+                </a>
             </div>
         @endif
 
@@ -99,17 +409,26 @@
 </div>
 
 <script>
-function filterLocationCards() {
+function filterLocations() {
     const query = (document.getElementById('locSearchInput').value || '').toLowerCase().trim();
     const cards = document.querySelectorAll('.location-card');
+    let visibleCount = 0;
+
     cards.forEach(card => {
-        const text = card.getAttribute('data-text') || '';
-        if (text.includes(query)) {
+        const text = card.getAttribute('data-name') || '';
+        if (!query || text.includes(query)) {
             card.style.display = '';
+            visibleCount++;
         } else {
             card.style.display = 'none';
         }
     });
+
+    const noMatchBox = document.getElementById('noSearchMatchBox');
+    if (noMatchBox) {
+        noMatchBox.style.display = (visibleCount === 0 && query !== '') ? 'block' : 'none';
+    }
 }
 </script>
+
 @endsection

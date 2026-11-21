@@ -205,6 +205,8 @@ Route::post('/id-card/upload-photo/{id}', [AdminController::class, 'uploadIdCard
 
 // Public Locations Directory & Landing Pages
 Route::get('/locations', [SeoLocationPageController::class, 'locationsIndex'])->name('locations.index');
+Route::get('/courses-by-location', [SeoLocationPageController::class, 'allCoursesByLocation'])->name('locations.allCourses');
+Route::get('/locations/{locationSlug}', [SeoLocationPageController::class, 'locationCourses'])->name('locations.courses');
 Route::get('/location/{slug}', [SeoLocationPageController::class, 'showPublic'])->name('location.show');
 
 // Wildcard dynamic URL for published SEO location pages (e.g. /mobile-repairing-course-in-patna)
