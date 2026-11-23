@@ -149,12 +149,12 @@
                 <div class="inline-flex items-center gap-3 px-3 py-0.5 bg-amber-50/90 border border-amber-300/70 rounded-md text-[9px] shadow-2xs">
                     <div class="flex items-center gap-1">
                         <span class="font-bold text-slate-600">Regd. No. :</span>
-                        <span class="font-black text-[#0c1938]">({{ $student->certificate->regd_no }})</span>
+                        <span class="font-black text-[#0c1938]">(2022-06995)</span>
                     </div>
                     <span class="text-amber-400 font-bold">&#8226;</span>
                     <div class="flex items-center gap-1">
-                        <span class="font-bold text-slate-600">Sl. No. :</span>
-                        <span class="font-black text-[#0c1938]">{{ $student->certificate->sl_no }}</span>
+                        <span class="font-bold text-slate-600">Enroll. No. :</span>
+                        <span class="font-black text-[#0c1938]">({{ $student->certificate->regd_no }})</span>
                     </div>
                 </div>
             </div>
@@ -277,7 +277,7 @@
                             @if($certInchargeSig)
                                 <img src="{{ asset($certInchargeSig) }}" class="max-h-10 object-contain">
                             @else
-                                <span class="font-['Great_Vibes'] text-2xl text-slate-800">Signature</span>
+                                <span class="font-['Great_Vibes'] text-2xl text-slate-800"></span>
                             @endif
                         </div>
                         <div class="w-28 h-[1.5px] bg-slate-600 mt-1"></div>
@@ -305,7 +305,7 @@
                             @if($certSignature)
                                 <img src="{{ asset($certSignature) }}" class="max-h-10 object-contain">
                             @else
-                                <span class="font-['Great_Vibes'] text-2xl text-slate-800">Signature</span>
+                                <span class="font-['Great_Vibes'] text-2xl text-slate-800"></span>
                             @endif
                         </div>
                         <div class="w-28 h-[1.5px] bg-slate-600 mt-1"></div>
