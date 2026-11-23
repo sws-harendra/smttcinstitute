@@ -1019,6 +1019,14 @@ class AdminController extends Controller
             return redirect()->route('admin.login');
         }
 
+        // Handle signature removal if requested
+        if ($request->input('remove_sig') === 'incharge' || $request->has('remove_incharge')) {
+            return $this->removeCertSignature('incharge');
+        }
+        if ($request->input('remove_sig') === 'auth' || $request->has('remove_auth')) {
+            return $this->removeCertSignature('auth');
+        }
+
         if ($request->hasFile('incharge_sig')) {
             $file = $request->file('incharge_sig');
             $filename = 'incharge_sig_' . time() . '.' . $file->getClientOriginalExtension();
@@ -1040,6 +1048,29 @@ class AdminController extends Controller
         }
 
         return back()->with('cert_success', 'Signatures updated successfully!');
+    }
+
+    public function removeCertSignature($type)
+    {
+        if (!session()->has('admin_logged_in')) {
+            return redirect()->route('admin.login');
+        }
+
+        $key = ($type === 'incharge') ? 'cert_incharge_signature' : (($type === 'auth') ? 'cert_signature' : null);
+
+        if ($key) {
+            $setting = \App\Models\Setting::where('key', $key)->first();
+            if ($setting) {
+                if ($setting->value && file_exists(public_path($setting->value))) {
+                    @unlink(public_path($setting->value));
+                }
+                $setting->delete();
+            }
+            $label = ($type === 'incharge') ? 'Training Incharge' : 'Authorised Signatory';
+            return back()->with('cert_success', "{$label} signature removed successfully!");
+        }
+
+        return back()->with('cert_error', 'Invalid signature type.');
     }
 
     public function approveAdmissionCertificate($id)

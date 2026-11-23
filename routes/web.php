@@ -92,6 +92,7 @@ Route::post('/admin/certificates', [AdminController::class, 'storeCertificate'])
 Route::post('/admin/certificates/update/{id}', [AdminController::class, 'updateCertificate'])->name('admin.certificates.update');
 Route::post('/admin/certificates/delete/{id}', [AdminController::class, 'deleteCertificate'])->name('admin.certificates.delete');
 Route::post('/admin/certificates/signatures', [AdminController::class, 'storeCertSignatures'])->name('admin.certificates.signatures');
+Route::post('/admin/certificates/signatures/remove/{type}', [AdminController::class, 'removeCertSignature'])->name('admin.certificates.signatures.remove');
 Route::post('/admin/admissions/approve/{id}', [AdminController::class, 'approveAdmissionCertificate'])->name('admin.admissions.approve');
 
 // Admin ID Cards Management Routes

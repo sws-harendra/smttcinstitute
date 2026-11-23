@@ -2099,20 +2099,36 @@
     <!-- Signature Settings -->
     <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8">
         <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-pen-nib text-indigo-500"></i> Signature Settings</h3>
+        @php
+            $inchargeSigVal = \App\Models\Setting::where('key', 'cert_incharge_signature')->value('value');
+            $authSigVal = \App\Models\Setting::where('key', 'cert_signature')->value('value');
+        @endphp
         <form action="{{ route('admin.certificates.signatures') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @csrf
             <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Training Incharge Signature</label>
                 <input type="file" name="incharge_sig" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                @if(\App\Models\Setting::where('key', 'cert_incharge_signature')->value('value'))
-                    <img src="{{ asset(\App\Models\Setting::where('key', 'cert_incharge_signature')->value('value')) }}" class="h-10 mt-2 object-contain bg-white border border-slate-200 rounded p-1">
+                @if($inchargeSigVal)
+                    <div class="flex items-center gap-3 mt-3 p-2 bg-slate-50 border border-slate-200 rounded-xl w-fit">
+                        <img src="{{ asset($inchargeSigVal) }}" class="h-10 object-contain bg-white border border-slate-200 rounded p-1 shadow-2xs">
+                        <button type="submit" name="remove_sig" value="incharge" formaction="{{ route('admin.certificates.signatures.remove', 'incharge') }}" onclick="return confirm('Are you sure you want to remove the Training Incharge signature?')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700 border border-red-200 rounded-lg transition cursor-pointer" title="Remove signature">
+                            <i class="fa-solid fa-trash-can text-red-500"></i>
+                            <span>Remove</span>
+                        </button>
+                    </div>
                 @endif
             </div>
             <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Authorised Signatory</label>
                 <input type="file" name="auth_sig" accept="image/*" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                @if(\App\Models\Setting::where('key', 'cert_signature')->value('value'))
-                    <img src="{{ asset(\App\Models\Setting::where('key', 'cert_signature')->value('value')) }}" class="h-10 mt-2 object-contain bg-white border border-slate-200 rounded p-1">
+                @if($authSigVal)
+                    <div class="flex items-center gap-3 mt-3 p-2 bg-slate-50 border border-slate-200 rounded-xl w-fit">
+                        <img src="{{ asset($authSigVal) }}" class="h-10 object-contain bg-white border border-slate-200 rounded p-1 shadow-2xs">
+                        <button type="submit" name="remove_sig" value="auth" formaction="{{ route('admin.certificates.signatures.remove', 'auth') }}" onclick="return confirm('Are you sure you want to remove the Authorised Signatory signature?')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700 border border-red-200 rounded-lg transition cursor-pointer" title="Remove signature">
+                            <i class="fa-solid fa-trash-can text-red-500"></i>
+                            <span>Remove</span>
+                        </button>
+                    </div>
                 @endif
             </div>
             <div class="md:col-span-2">
