@@ -19,7 +19,7 @@
 <div id="readingProgressBar" class="fixed top-0 left-0 h-1.5 bg-gradient-to-r from-amber-400 to-[#FACA0A] z-[120] transition-all duration-150" style="width: 0%;"></div>
 
 <section class="py-10 sm:py-16 bg-slate-50 min-h-screen">
-    <div id="blogPageContainer" class="max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 transition-all duration-300">
+    <div id="blogPageContainer" class="max-w-4xl mx-auto px-4 sm:px-6 space-y-8 transition-all duration-300">
         
         <div class="flex items-center justify-between flex-wrap gap-3">
             <!-- Breadcrumbs Navigation -->
@@ -36,11 +36,11 @@
                 <span class="text-[11px] font-bold text-slate-500 px-2 flex items-center gap-1">
                     <i class="fa-solid fa-desktop text-indigo-500"></i> Page View:
                 </span>
-                <button type="button" onclick="setBlogPageWidth('standard')" id="btnWidthStandard" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition" title="Standard width reading mode (1024px)">
+                <button type="button" onclick="setBlogPageWidth('standard')" id="btnWidthStandard" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition" title="Standard width reading mode (Comfortable read)">
                     Standard
                 </button>
-                <button type="button" onclick="setBlogPageWidth('large')" id="btnWidthLarge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition" title="Large spacious canvas (1360px)">
-                    <i class="fa-solid fa-expand text-[10px] mr-1"></i> Large (Wide)
+                <button type="button" onclick="setBlogPageWidth('large')" id="btnWidthLarge" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition" title="Wide canvas">
+                    <i class="fa-solid fa-expand text-[10px] mr-1"></i> Wide
                 </button>
             </div>
         </div>
@@ -634,32 +634,37 @@ function copyArticleLink() {
     });
 }
 
-// 4. Responsive Reading Page Width Switcher (Standard 1024px vs Large 1360px Canvas)
+// 4. Responsive Reading Page Width Switcher (Standard 896px vs Wide 1152px)
 function setBlogPageWidth(mode) {
     const container = document.getElementById('blogPageContainer');
     const btnStd = document.getElementById('btnWidthStandard');
     const btnLrg = document.getElementById('btnWidthLarge');
-    if (!container || !btnStd || !btnLrg) return;
+    if (!container) return;
 
-    if (mode === 'standard') {
-        container.className = 'max-w-5xl mx-auto px-4 sm:px-6 space-y-8 transition-all duration-300';
-        btnStd.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition';
-        btnLrg.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition';
-        localStorage.setItem('smttc_blog_page_width', 'standard');
+    if (mode === 'large') {
+        container.className = 'max-w-5xl xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 transition-all duration-300';
+        if (btnLrg) btnLrg.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition';
+        if (btnStd) btnStd.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition';
+        try { localStorage.setItem('smttc_blog_page_width_v2', 'large'); } catch(e){}
     } else {
-        container.className = 'max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 transition-all duration-300';
-        btnLrg.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition';
-        btnStd.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition';
-        localStorage.setItem('smttc_blog_page_width', 'large');
+        container.className = 'max-w-4xl mx-auto px-4 sm:px-6 space-y-8 transition-all duration-300';
+        if (btnStd) btnStd.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs transition';
+        if (btnLrg) btnLrg.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:text-indigo-600 transition';
+        try { localStorage.setItem('smttc_blog_page_width_v2', 'standard'); } catch(e){}
     }
 }
 
-// Auto-restore saved width preference
-const savedPageWidth = localStorage.getItem('smttc_blog_page_width');
-if (savedPageWidth === 'standard') {
+// Auto-restore saved width preference (defaults cleanly to standard readable width)
+try {
+    localStorage.removeItem('smttc_blog_page_width');
+    const savedPageWidth = localStorage.getItem('smttc_blog_page_width_v2');
+    if (savedPageWidth === 'large') {
+        setBlogPageWidth('large');
+    } else {
+        setBlogPageWidth('standard');
+    }
+} catch (e) {
     setBlogPageWidth('standard');
-} else {
-    setBlogPageWidth('large');
 }
 </script>
 
