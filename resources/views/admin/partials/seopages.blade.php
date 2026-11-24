@@ -4,74 +4,81 @@
     <!-- TOP METRIC STATS CARDS -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Total Pages -->
-        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Location Blogs</p>
-                <h3 class="text-3xl font-extrabold text-slate-900 mt-2" id="statSeoTotal">{{ $seoPageStats['total'] ?? count($seoPages ?? []) }}</h3>
-                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-600 mt-1">
-                    <i class="fa-solid fa-map-pin"></i> Localized Pages
+        <div class="group relative bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-purple-200 shadow-xs hover:shadow-lg transition-all duration-300 flex items-center justify-between overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-purple-500/5 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+            <div class="relative z-10">
+                <p class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Total Location Blogs</p>
+                <h3 class="text-3xl font-black text-slate-900 mt-2 tracking-tight" id="statSeoTotal">{{ $seoPageStats['total'] ?? count($seoPages ?? []) }}</h3>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200/60 mt-2.5">
+                    <i class="fa-solid fa-map-pin text-[10px]"></i> Localized Pages
                 </span>
             </div>
-            <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl font-bold">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white shadow-lg shadow-purple-500/20 flex items-center justify-center text-2xl font-bold group-hover:scale-110 group-hover:rotate-3 transition-transform">
                 <i class="fa-solid fa-earth-asia"></i>
             </div>
         </div>
 
         <!-- Published Pages -->
-        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Published Live</p>
-                <h3 class="text-3xl font-extrabold text-slate-900 mt-2" id="statSeoPublished">{{ $seoPageStats['published'] ?? 0 }}</h3>
-                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 mt-1">
-                    <i class="fa-solid fa-circle-check"></i> Live on Google & Footer
+        <div class="group relative bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-emerald-200 shadow-xs hover:shadow-lg transition-all duration-300 flex items-center justify-between overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+            <div class="relative z-10">
+                <p class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Published Live</p>
+                <h3 class="text-3xl font-black text-slate-900 mt-2 tracking-tight" id="statSeoPublished">{{ $seoPageStats['published'] ?? 0 }}</h3>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/60 mt-2.5">
+                    <i class="fa-solid fa-circle-check text-[10px]"></i> Live on Google & Footer
                 </span>
             </div>
-            <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-bold">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/20 flex items-center justify-center text-2xl font-bold group-hover:scale-110 group-hover:rotate-3 transition-transform">
                 <i class="fa-solid fa-globe"></i>
             </div>
         </div>
 
         <!-- Draft Pages -->
-        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Drafts</p>
-                <h3 class="text-3xl font-extrabold text-slate-900 mt-2" id="statSeoDraft">{{ $seoPageStats['draft'] ?? 0 }}</h3>
-                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 mt-1">
-                    <i class="fa-solid fa-pencil"></i> In Progress
+        <div class="group relative bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-amber-200 shadow-xs hover:shadow-lg transition-all duration-300 flex items-center justify-between overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-500/5 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+            <div class="relative z-10">
+                <p class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Drafts</p>
+                <h3 class="text-3xl font-black text-slate-900 mt-2 tracking-tight" id="statSeoDraft">{{ $seoPageStats['draft'] ?? 0 }}</h3>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200/60 mt-2.5">
+                    <i class="fa-solid fa-pencil text-[10px]"></i> In Progress
                 </span>
             </div>
-            <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-bold">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/20 flex items-center justify-center text-2xl font-bold group-hover:scale-110 group-hover:rotate-3 transition-transform">
                 <i class="fa-solid fa-file-pen"></i>
             </div>
         </div>
 
         <!-- AI Generated Pages -->
-        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">AI Generated</p>
-                <h3 class="text-3xl font-extrabold text-slate-900 mt-2" id="statSeoAi">{{ $seoPageStats['aiGenerated'] ?? 0 }}</h3>
-                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 mt-1">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Gemini AI
+        <div class="group relative bg-white rounded-3xl p-6 border border-slate-200/90 hover:border-indigo-200 shadow-xs hover:shadow-lg transition-all duration-300 flex items-center justify-between overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-500/5 rounded-full blur-xl group-hover:scale-150 transition-transform"></div>
+            <div class="relative z-10">
+                <p class="text-xs font-extrabold uppercase tracking-wider text-slate-400">AI Generated</p>
+                <h3 class="text-3xl font-black text-slate-900 mt-2 tracking-tight" id="statSeoAi">{{ $seoPageStats['aiGenerated'] ?? 0 }}</h3>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mt-2.5">
+                    <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> Gemini AI
                 </span>
             </div>
-            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl font-bold">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/20 flex items-center justify-center text-2xl font-bold group-hover:scale-110 group-hover:rotate-3 transition-transform">
                 <i class="fa-solid fa-bolt-lightning"></i>
             </div>
         </div>
     </div>
 
     <!-- MAIN CARD: LISTING & MANAGEMENT -->
-    <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 md:p-8 space-y-6">
+    <section class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 md:p-8 space-y-6">
 
         <!-- Header Row -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6">
             <div>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center text-lg font-bold shadow-md shadow-indigo-200">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-blue-600 text-white flex items-center justify-center text-xl font-bold shadow-lg shadow-indigo-300 ring-4 ring-indigo-50">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-black text-slate-900">AI Location Blogs & SEO Pages</h2>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xl font-black text-slate-900 tracking-tight">AI Location Blogs & SEO Pages</h2>
+                            <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">PRO ENGINE</span>
+                        </div>
                         <p class="text-xs text-slate-500 mt-0.5">Auto-generate localized student landing pages with Gemini AI & Anti-AI Humanizer.</p>
                     </div>
                 </div>
@@ -79,44 +86,44 @@
 
             <div class="flex flex-wrap items-center gap-2.5">
                 <!-- AI Settings Button -->
-                <button type="button" onclick="openAiSettingsModal()" class="px-3.5 py-2.5 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs transition flex items-center gap-2">
-                    <i class="fa-solid fa-key"></i>
+                <button type="button" onclick="openAiSettingsModal()" class="px-4 py-2.5 rounded-xl border border-purple-200 bg-white hover:bg-purple-50 text-purple-700 font-bold text-xs shadow-xs hover:shadow-md transition-all flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-key text-purple-600"></i>
                     <span>AI Settings</span>
                     <span id="aiKeyIndicatorDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 </button>
 
                 <!-- Bulk Delete Button (Hidden by default) -->
-                <button type="button" id="btnBulkDeleteSeo" onclick="bulkDeleteSeoPages()" class="hidden px-3.5 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs transition items-center gap-2">
-                    <i class="fa-solid fa-trash-can"></i>
+                <button type="button" id="btnBulkDeleteSeo" onclick="bulkDeleteSeoPages()" class="hidden px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-all items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-trash-can text-rose-600"></i>
                     <span id="bulkDeleteCountText">Delete Selected (0)</span>
                 </button>
 
                 <!-- Create New Page Button -->
-                <button type="button" onclick="openCreateSeoModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs transition shadow-md shadow-indigo-300 flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i>
+                <button type="button" onclick="openCreateSeoModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 active:scale-95 transition-all flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-plus text-sm"></i>
                     <span>Create AI Location Blog</span>
                 </button>
             </div>
         </div>
 
         <!-- Filter & Search Toolbar -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-50/70 p-3 rounded-2xl border border-slate-200/70">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-50/80 p-3.5 rounded-2xl border border-slate-200/80">
             <!-- Search Input -->
             <div class="relative flex-1">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                <input type="text" id="seoSearchInput" onkeyup="filterSeoTable()" placeholder="Search by course, location, title, or slug..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                <input type="text" id="seoSearchInput" onkeyup="filterSeoTable()" placeholder="Search by course, location, title, or slug..." class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-xs transition">
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2.5">
                 <!-- Status Filter -->
-                <select id="seoFilterStatus" onchange="filterSeoTable()" class="px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <select id="seoFilterStatus" onchange="filterSeoTable()" class="px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-xs cursor-pointer">
                     <option value="all">All Status</option>
                     <option value="published">Published</option>
                     <option value="draft">Draft</option>
                 </select>
 
                 <!-- Template Filter -->
-                <select id="seoFilterTemplate" onchange="filterSeoTable()" class="px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <select id="seoFilterTemplate" onchange="filterSeoTable()" class="px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-xs cursor-pointer">
                     <option value="all">All Templates</option>
                     <option value="grid">Grid</option>
                     <option value="timeline">Timeline</option>
@@ -127,12 +134,12 @@
         </div>
 
         <!-- Pages Table -->
-        <div class="overflow-x-auto rounded-2xl border border-slate-200/80">
+        <div class="overflow-x-auto rounded-2xl border border-slate-200/90 shadow-xs">
             <table class="w-full text-left border-collapse" id="seoPagesTable">
                 <thead>
-                    <tr class="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                    <tr class="bg-slate-50/90 text-[11px] font-extrabold uppercase tracking-wider text-slate-500 border-b border-slate-200">
                         <th class="p-4 w-10 text-center">
-                            <input type="checkbox" id="selectAllSeoPages" onchange="toggleSelectAllSeoPages(this)" class="rounded border-slate-300 text-purple-600 focus:ring-purple-500">
+                            <input type="checkbox" id="selectAllSeoPages" onchange="toggleSelectAllSeoPages(this)" class="w-4 h-4 rounded border-slate-300 text-purple-600 focus:ring-purple-500 cursor-pointer">
                         </th>
                         <th class="p-4">Course & Location</th>
                         <th class="p-4">H1 Title & Slug</th>
@@ -148,15 +155,15 @@
                     @forelse($seoPages ?? [] as $sp)
                     @php
                         $score = $sp->seo_score ?? 0;
-                        $scoreColor = $score >= 85 ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : ($score >= 70 ? 'text-blue-700 bg-blue-50 border-blue-200' : ($score >= 50 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-red-700 bg-red-50 border-red-200'));
+                        $scoreColor = $score >= 85 ? 'text-emerald-700 bg-emerald-50 border-emerald-300 ring-1 ring-emerald-500/20' : ($score >= 70 ? 'text-blue-700 bg-blue-50 border-blue-300 ring-1 ring-blue-500/20' : ($score >= 50 ? 'text-amber-700 bg-amber-50 border-amber-300 ring-1 ring-amber-500/20' : 'text-rose-700 bg-rose-50 border-rose-300 ring-1 ring-rose-500/20'));
                         $templateColors = [
-                            'grid' => 'bg-blue-100 text-blue-800',
-                            'timeline' => 'bg-emerald-100 text-emerald-800',
-                            'card' => 'bg-purple-100 text-purple-800',
-                            'split' => 'bg-amber-100 text-amber-800',
+                            'grid' => 'bg-blue-50 text-blue-700 border border-blue-200',
+                            'timeline' => 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+                            'card' => 'bg-purple-50 text-purple-700 border border-purple-200',
+                            'split' => 'bg-amber-50 text-amber-700 border border-amber-200',
                         ];
                     @endphp
-                    <tr class="hover:bg-slate-50/70 transition seo-page-row"
+                    <tr class="hover:bg-purple-50/20 transition-colors seo-page-row"
                         data-id="{{ $sp->id }}"
                         data-status="{{ $sp->status }}"
                         data-template="{{ $sp->template }}"
@@ -164,17 +171,17 @@
                         
                         <!-- Checkbox -->
                         <td class="p-4 text-center">
-                            <input type="checkbox" class="seo-row-checkbox rounded border-slate-300 text-purple-600 focus:ring-purple-500" value="{{ $sp->id }}" onchange="handleSeoRowCheck()">
+                            <input type="checkbox" class="seo-row-checkbox w-4 h-4 rounded border-slate-300 text-purple-600 focus:ring-purple-500 cursor-pointer" value="{{ $sp->id }}" onchange="handleSeoRowCheck()">
                         </td>
 
                         <!-- Course & Location -->
                         <td class="p-4">
-                            <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
-                                <i class="fa-solid fa-graduation-cap text-indigo-500"></i>
+                            <div class="font-black text-slate-900 text-xs flex items-center gap-1.5">
+                                <i class="fa-solid fa-graduation-cap text-indigo-600"></i>
                                 <span>{{ $sp->service_name }}</span>
                             </div>
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded-md bg-slate-100 text-slate-700 text-[10px] font-bold">
-                                <i class="fa-solid fa-location-dot text-[#FACA0A]"></i> {{ $sp->location_name }}
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 mt-1.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200/80 text-[10px] font-bold">
+                                <i class="fa-solid fa-location-dot text-amber-500"></i> {{ $sp->location_name }}
                             </span>
                         </td>
 
@@ -183,24 +190,26 @@
                             <p class="font-bold text-slate-800 truncate" title="{{ $sp->h1_heading }}">
                                 {{ $sp->h1_heading }}
                             </p>
-                            <div class="flex items-center gap-1.5 mt-1 text-[11px] font-mono text-slate-400">
-                                <span class="truncate text-indigo-600">/{{ $sp->slug }}</span>
-                                <button type="button" onclick="copySeoPageLink('{{ $sp->slug }}')" title="Copy Link" class="text-slate-400 hover:text-indigo-600 transition">
-                                    <i class="fa-solid fa-copy"></i>
+                            <div class="flex items-center gap-1.5 mt-1.5">
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-indigo-700 font-mono text-[11px] truncate max-w-[200px]">
+                                    /{{ $sp->slug }}
+                                </span>
+                                <button type="button" onclick="copySeoPageLink('{{ $sp->slug }}')" title="Copy Link" class="w-6 h-6 rounded-md hover:bg-indigo-50 text-slate-400 hover:text-indigo-600 transition flex items-center justify-center">
+                                    <i class="fa-solid fa-copy text-xs"></i>
                                 </button>
                             </div>
                         </td>
 
                         <!-- Template -->
                         <td class="p-4 text-center">
-                            <span class="inline-block px-2.5 py-1 rounded-md text-[10px] font-bold uppercase {{ $templateColors[$sp->template] ?? 'bg-slate-100 text-slate-700' }}">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase {{ $templateColors[$sp->template] ?? 'bg-slate-100 text-slate-700' }}">
                                 {{ $sp->template }}
                             </span>
                         </td>
 
                         <!-- SEO Score -->
                         <td class="p-4 text-center">
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black border {{ $scoreColor }}">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black border {{ $scoreColor }}">
                                 <i class="fa-solid fa-chart-line text-[10px]"></i>
                                 <span>{{ $score }}/100</span>
                             </span>
@@ -208,8 +217,8 @@
 
                         <!-- Status Toggle -->
                         <td class="p-4 text-center">
-                            <button type="button" onclick="toggleSeoPageStatus({{ $sp->id }})" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition {{ $sp->status === 'published' ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-slate-200 text-slate-700 hover:bg-slate-300' }}">
-                                <span class="w-1.5 h-1.5 rounded-full {{ $sp->status === 'published' ? 'bg-emerald-600 animate-pulse' : 'bg-slate-400' }}"></span>
+                            <button type="button" onclick="toggleSeoPageStatus({{ $sp->id }})" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold transition shadow-xs {{ $sp->status === 'published' ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200' }}">
+                                <span class="w-2 h-2 rounded-full {{ $sp->status === 'published' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400' }}"></span>
                                 <span>{{ ucfirst($sp->status) }}</span>
                             </button>
                         </td>
@@ -218,13 +227,13 @@
                         <td class="p-4 text-center">
                             <div class="flex flex-col items-center gap-1">
                                 @if($sp->is_ai_generated)
-                                <span class="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                                    <i class="fa-solid fa-sparkles"></i> AI GEN
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs">
+                                    <i class="fa-solid fa-sparkles text-[9px]"></i> AI GEN
                                 </span>
                                 @endif
                                 @if($sp->is_humanized)
-                                <span class="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                    <i class="fa-solid fa-wand-magic"></i> HUMANIZED
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
+                                    <i class="fa-solid fa-shield-halved text-[9px]"></i> HUMANIZED
                                 </span>
                                 @endif
                             </div>
@@ -239,18 +248,18 @@
                         <td class="p-4 text-right whitespace-nowrap">
                             <div class="inline-flex items-center gap-1.5">
                                 <!-- Public Link -->
-                                <a href="{{ url($sp->slug) }}" target="_blank" title="View Public Landing Page" class="p-2 rounded-lg border border-slate-200 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 transition">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                <a href="{{ url($sp->slug) }}" target="_blank" title="View Public Landing Page" class="w-8 h-8 rounded-xl border border-slate-200 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition flex items-center justify-center">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                                 </a>
 
                                 <!-- Edit Button -->
-                                <button type="button" onclick="editSeoPage({{ $sp->id }})" title="Edit Page" class="p-2 rounded-lg border border-slate-200 text-slate-600 hover:text-purple-600 hover:bg-purple-50 transition">
-                                    <i class="fa-solid fa-pen-to-square"></i>
+                                <button type="button" onclick="editSeoPage({{ $sp->id }})" title="Edit Page" class="w-8 h-8 rounded-xl border border-slate-200 text-slate-600 hover:text-purple-600 hover:bg-purple-50 hover:border-purple-200 transition flex items-center justify-center">
+                                    <i class="fa-solid fa-pen-to-square text-xs"></i>
                                 </button>
 
                                 <!-- Delete Button -->
-                                <button type="button" onclick="deleteSeoPage({{ $sp->id }})" title="Delete Page" class="p-2 rounded-lg border border-slate-200 text-slate-600 hover:text-red-600 hover:bg-red-50 transition">
-                                    <i class="fa-solid fa-trash-can"></i>
+                                <button type="button" onclick="deleteSeoPage({{ $sp->id }})" title="Delete Page" class="w-8 h-8 rounded-xl border border-slate-200 text-slate-600 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-200 transition flex items-center justify-center">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
                                 </button>
                             </div>
                         </td>
@@ -258,14 +267,14 @@
                     @empty
                     <tr id="emptySeoPagesRow">
                         <td colspan="9" class="p-12 text-center text-slate-400">
-                            <div class="w-16 h-16 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mx-auto text-2xl mb-3">
+                            <div class="w-16 h-16 rounded-3xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto text-2xl mb-3 shadow-md shadow-purple-500/10">
                                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                             </div>
-                            <h4 class="text-base font-bold text-slate-800">No AI Location Blogs Yet</h4>
+                            <h4 class="text-base font-extrabold text-slate-800">No AI Location Blogs Yet</h4>
                             <p class="text-xs text-slate-400 max-w-sm mx-auto mt-1">
                                 Click "Create AI Location Blog" to auto-generate localized Google-ranked pages for courses in Patna, Danapur, and Bihar!
                             </p>
-                            <button type="button" onclick="openCreateSeoModal()" class="mt-4 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md transition">
+                            <button type="button" onclick="openCreateSeoModal()" class="mt-4 px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-md shadow-indigo-300 transition cursor-pointer">
                                 + Create First AI Page
                             </button>
                         </td>
@@ -277,57 +286,80 @@
     </section>
 </div>
 
+<style>
+.seo-modal-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.seo-modal-scroll::-webkit-scrollbar-track {
+    background: #f8fafc;
+    border-radius: 9999px;
+}
+.seo-modal-scroll::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+.seo-modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+</style>
+
 <!-- ================= MODAL 1: CREATE / EDIT AI LOCATION BLOG ================= -->
-<div id="seoEditorModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
-    <div class="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col my-auto max-h-[94vh] animate-fade-in">
+<div id="seoEditorModal" onclick="if(event.target === this) closeCreateSeoModal()" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-5 md:p-6 bg-slate-950/80 backdrop-blur-md overflow-hidden">
+    <div class="relative w-full max-w-6xl xl:max-w-7xl h-[92vh] max-h-[920px] bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col animate-fade-in">
         
+        <!-- Top Gradient Accent Line -->
+        <div class="h-1.5 w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-500 shrink-0"></div>
+
         <!-- Header -->
         <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white shrink-0">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center font-bold text-base">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-500/20 flex items-center justify-center font-bold text-base">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
                 <div>
-                    <h2 class="text-base font-black text-slate-900" id="seoModalTitle">Create AI Location Blog</h2>
-                    <p class="text-xs text-slate-400">Dynamic Google #1 ranking student landing page writer</p>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-base sm:text-lg font-black text-slate-900 tracking-tight" id="seoModalTitle">Create AI Location Blog</h2>
+                        <span class="hidden sm:inline-flex px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">SEO WRITER</span>
+                    </div>
+                    <p class="text-xs text-slate-400 font-medium">Dynamic Google #1 ranking student landing page writer</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2">
                 <!-- AI Generate Button -->
-                <button type="button" id="btnTriggerAi" onclick="triggerAiGenerate()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs hover:scale-105 active:scale-95 transition-all">
-                    <i class="fa-solid fa-sparkles"></i>
+                <button type="button" id="btnTriggerAi" onclick="triggerAiGenerate()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 text-white shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
                     <span id="btnTriggerAiText">AI Generate</span>
                 </button>
 
                 <!-- Humanize Button -->
-                <button type="button" id="btnTriggerHumanize" onclick="triggerHumanize()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition-all">
-                    <i class="fa-solid fa-wand-magic"></i>
+                <button type="button" id="btnTriggerHumanize" onclick="triggerHumanize()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs hover:shadow-md hover:scale-[1.02] active:scale-95 transition-all cursor-pointer">
+                    <i class="fa-solid fa-shield-halved text-emerald-600"></i>
                     <span id="btnTriggerHumanizeText">Humanize (Anti-AI)</span>
                 </button>
 
                 <!-- Close Modal -->
-                <button type="button" onclick="closeCreateSeoModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition ml-2">
+                <button type="button" onclick="closeCreateSeoModal()" class="w-9 h-9 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition flex items-center justify-center ml-1 cursor-pointer">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Tab Ribbons -->
-        <div class="px-6 border-b border-slate-100 bg-slate-50/50 flex items-center gap-6 shrink-0">
-            <button type="button" id="seoTabBtn-basic" onclick="switchSeoModalTab('basic')" class="py-3 text-xs font-bold border-b-2 border-purple-600 text-purple-600 flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-list-check"></i> Basic Info
+        <!-- Tab Ribbons (Modern Segmented Pills) -->
+        <div class="px-6 py-2.5 border-b border-slate-100 bg-slate-50/70 flex items-center gap-2 shrink-0">
+            <button type="button" id="seoTabBtn-basic" onclick="switchSeoModalTab('basic')" class="px-4 py-2 text-xs font-bold rounded-xl bg-purple-600 text-white shadow-md shadow-purple-500/25 flex items-center gap-2 transition cursor-pointer">
+                <i class="fa-solid fa-sliders"></i> Basic Info
             </button>
-            <button type="button" id="seoTabBtn-content" onclick="switchSeoModalTab('content')" class="py-3 text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-file-lines"></i> Content & Sections
+            <button type="button" id="seoTabBtn-content" onclick="switchSeoModalTab('content')" class="px-4 py-2 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white flex items-center gap-2 transition cursor-pointer">
+                <i class="fa-solid fa-layer-group"></i> Content & Sections
             </button>
-            <button type="button" id="seoTabBtn-seo" onclick="switchSeoModalTab('seo')" class="py-3 text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition">
+            <button type="button" id="seoTabBtn-seo" onclick="switchSeoModalTab('seo')" class="px-4 py-2 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white flex items-center gap-2 transition cursor-pointer">
                 <i class="fa-solid fa-bullseye"></i> SEO & Meta
             </button>
         </div>
 
         <!-- Scrollable Modal Body (Grid: 8 Cols Form, 4 Cols Live SEO Score) -->
-        <div class="flex-1 overflow-y-auto p-6 bg-slate-50/40">
+        <div class="flex-1 min-h-0 overflow-y-auto p-5 sm:p-6 bg-slate-50/50 seo-modal-scroll">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
                 <!-- Left 8 Columns: Form Fields -->
@@ -339,12 +371,14 @@
                         <!-- Course & Location Row -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <!-- Course / Service -->
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Course / Technical Service <span class="text-red-500">*</span>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                                <label class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-graduation-cap text-indigo-500"></i>
+                                    <span>Course / Technical Service</span>
+                                    <span class="text-rose-500">*</span>
                                 </label>
-                                <div class="space-y-1.5">
-                                    <select id="seoFormServiceSelect" onchange="handleServiceSelectChange(this)" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-purple-500">
+                                <div class="space-y-2">
+                                    <select id="seoFormServiceSelect" onchange="handleServiceSelectChange(this)" class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                                         <option value="">-- Choose Course --</option>
                                         <option value="Mobile Phone Repairing Course">Mobile Phone Repairing Course</option>
                                         <option value="AC Repairing Course">AC Repairing Course</option>
@@ -356,17 +390,19 @@
                                         <option value="iPhone Hardware & Software Training">iPhone Hardware & Software Training</option>
                                         <option value="__custom__">+ Enter Custom Course Name</option>
                                     </select>
-                                    <input type="text" id="seoFormServiceCustom" placeholder="Type custom course..." class="hidden w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-purple-500">
+                                    <input type="text" id="seoFormServiceCustom" placeholder="Type custom course..." class="hidden w-full bg-slate-50/70 focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                                 </div>
                             </div>
 
                             <!-- Location / Area -->
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Location / City / Area <span class="text-red-500">*</span>
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                                <label class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-location-dot text-amber-500"></i>
+                                    <span>Location / City / Area</span>
+                                    <span class="text-rose-500">*</span>
                                 </label>
-                                <div class="space-y-1.5">
-                                    <select id="seoFormLocationSelect" onchange="handleLocationSelectChange(this)" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-purple-500">
+                                <div class="space-y-2">
+                                    <select id="seoFormLocationSelect" onchange="handleLocationSelectChange(this)" class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                                         <option value="">-- Choose Location --</option>
                                         <option value="Patna">Patna</option>
                                         <option value="Danapur">Danapur</option>
@@ -389,81 +425,87 @@
                                         <option value="Chhapra">Chhapra</option>
                                         <option value="__custom__">+ Enter Custom Location Name</option>
                                     </select>
-                                    <input type="text" id="seoFormLocationCustom" placeholder="Type custom location/area..." class="hidden w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-purple-500">
+                                    <input type="text" id="seoFormLocationCustom" placeholder="Type custom location/area..." class="hidden w-full bg-slate-50/70 focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                                 </div>
                             </div>
                         </div>
 
                         <!-- H1 Heading -->
-                        <div>
-                            <div class="flex items-center justify-between mb-1.5">
-                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                    Page H1 Heading <span class="text-red-500">*</span>
+                        <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-2xs">
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-heading text-purple-600"></i>
+                                    <span>Page H1 Heading</span>
+                                    <span class="text-rose-500">*</span>
                                 </label>
-                                <span class="text-[10px] text-slate-400">Must include Course & Location</span>
+                                <span class="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-md">Must include Course & Location</span>
                             </div>
-                            <input type="text" id="seoFormH1" oninput="handleH1Input(this.value)" placeholder="e.g. Best Mobile Phone Repairing Course in Patna | 100% Practical Training" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 focus:ring-2 focus:ring-purple-500">
+                            <input type="text" id="seoFormH1" oninput="handleH1Input(this.value)" placeholder="e.g. Best Mobile Phone Repairing Course in Patna | 100% Practical Training" class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-black text-slate-900 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                         </div>
 
                         <!-- URL Slug & Focus Keyword -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    URL Slug
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2">
+                                    <i class="fa-solid fa-link text-indigo-500 mr-1"></i> URL Slug
                                 </label>
                                 <div class="relative">
-                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-mono">/</span>
-                                    <input type="text" id="seoFormSlug" oninput="recalcLiveSeoScore()" placeholder="mobile-repairing-course-in-patna" class="w-full bg-white border border-slate-200 rounded-xl pl-7 pr-3.5 py-2.5 text-xs font-mono focus:ring-2 focus:ring-purple-500">
+                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-mono font-bold">/</span>
+                                    <input type="text" id="seoFormSlug" oninput="recalcLiveSeoScore()" placeholder="mobile-repairing-course-in-patna" class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl pl-7 pr-3.5 py-2.5 text-xs font-mono font-bold text-indigo-700 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                                 </div>
                             </div>
 
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Focus Keyword
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2">
+                                    <i class="fa-solid fa-crosshairs text-rose-500 mr-1"></i> Focus Keyword
                                 </label>
-                                <input type="text" id="seoFormFocusKeyword" oninput="recalcLiveSeoScore()" placeholder="e.g. Mobile Repairing Course in Patna" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-purple-500">
+                                <input type="text" id="seoFormFocusKeyword" oninput="recalcLiveSeoScore()" placeholder="e.g. Mobile Repairing Course in Patna" class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                             </div>
                         </div>
 
                         <!-- Page Template Selector (4 Visual Cards) -->
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                                Landing Page Template Layout
+                        <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-2xs">
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2.5">
+                                <i class="fa-solid fa-palette text-purple-600 mr-1"></i> Landing Page Template Layout
                             </label>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="seoTemplateOptions">
                                 <!-- Grid -->
-                                <div onclick="selectSeoTemplate('grid')" id="tmpl-card-grid" class="cursor-pointer p-3.5 rounded-2xl border-2 border-purple-500 bg-purple-50/50 hover:border-purple-500 transition space-y-1">
-                                    <div class="flex items-center gap-1.5">
+                                <div onclick="selectSeoTemplate('grid')" id="tmpl-card-grid" class="cursor-pointer p-4 rounded-2xl border-2 border-purple-500 bg-purple-50/60 shadow-xs ring-2 ring-purple-500/20 transition-all space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-border-all"></i></div>
                                         <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                                        <strong class="text-xs font-bold text-slate-900">Grid</strong>
                                     </div>
+                                    <strong class="text-xs font-extrabold text-slate-900 block">Grid Layout</strong>
                                     <p class="text-[10px] text-slate-500 leading-tight">Card grid, clean & structured</p>
                                 </div>
 
                                 <!-- Timeline -->
-                                <div onclick="selectSeoTemplate('timeline')" id="tmpl-card-timeline" class="cursor-pointer p-3.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 transition space-y-1">
-                                    <div class="flex items-center gap-1.5">
+                                <div onclick="selectSeoTemplate('timeline')" id="tmpl-card-timeline" class="cursor-pointer p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 hover:bg-emerald-50/20 transition-all space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-timeline"></i></div>
                                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                                        <strong class="text-xs font-bold text-slate-900">Timeline</strong>
                                     </div>
+                                    <strong class="text-xs font-extrabold text-slate-900 block">Timeline Layout</strong>
                                     <p class="text-[10px] text-slate-500 leading-tight">Vertical step-by-step roadmap</p>
                                 </div>
 
                                 <!-- Card -->
-                                <div onclick="selectSeoTemplate('card')" id="tmpl-card-card" class="cursor-pointer p-3.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-purple-400 transition space-y-1">
-                                    <div class="flex items-center gap-1.5">
+                                <div onclick="selectSeoTemplate('card')" id="tmpl-card-card" class="cursor-pointer p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-purple-400 hover:bg-purple-50/20 transition-all space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-id-card"></i></div>
                                         <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
-                                        <strong class="text-xs font-bold text-slate-900">Card</strong>
                                     </div>
+                                    <strong class="text-xs font-extrabold text-slate-900 block">Glass Card</strong>
                                     <p class="text-[10px] text-slate-500 leading-tight">Modern glassmorphism cards</p>
                                 </div>
 
                                 <!-- Split -->
-                                <div onclick="selectSeoTemplate('split')" id="tmpl-card-split" class="cursor-pointer p-3.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-amber-400 transition space-y-1">
-                                    <div class="flex items-center gap-1.5">
+                                <div onclick="selectSeoTemplate('split')" id="tmpl-card-split" class="cursor-pointer p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-amber-400 hover:bg-amber-50/20 transition-all space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-columns"></i></div>
                                         <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                                        <strong class="text-xs font-bold text-slate-900">Split</strong>
                                     </div>
+                                    <strong class="text-xs font-extrabold text-slate-900 block">Split Layout</strong>
                                     <p class="text-[10px] text-slate-500 leading-tight">50/50 alternating split rows</p>
                                 </div>
                             </div>
@@ -471,18 +513,26 @@
                         </div>
 
                         <!-- Status Selection -->
-                        <div class="pt-2">
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                Publication Status
+                        <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-2xs">
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2.5">
+                                <i class="fa-solid fa-toggle-on text-emerald-600 mr-1"></i> Publication Status
                             </label>
-                            <div class="flex items-center gap-4">
-                                <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="seoFormStatus" value="draft" checked class="text-purple-600 focus:ring-purple-500">
-                                    <span class="text-xs font-semibold text-slate-700">Save as Draft</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <label class="cursor-pointer p-3.5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-purple-50/30 hover:border-purple-300 transition-all flex items-center gap-3">
+                                    <input type="radio" name="seoFormStatus" value="draft" checked class="w-4 h-4 text-purple-600 focus:ring-purple-500 cursor-pointer">
+                                    <div>
+                                        <span class="text-xs font-extrabold text-slate-800 block">Save as Draft</span>
+                                        <span class="text-[10px] text-slate-400">Keep private in admin dashboard</span>
+                                    </div>
                                 </label>
-                                <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="seoFormStatus" value="published" class="text-purple-600 focus:ring-purple-500">
-                                    <span class="text-xs font-semibold text-slate-700">Publish Immediately (Visible in Footer & Public URL)</span>
+                                <label class="cursor-pointer p-3.5 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-emerald-50/30 hover:border-emerald-300 transition-all flex items-center gap-3">
+                                    <input type="radio" name="seoFormStatus" value="published" class="w-4 h-4 text-purple-600 focus:ring-purple-500 cursor-pointer">
+                                    <div>
+                                        <span class="text-xs font-extrabold text-emerald-800 block flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Publish Immediately
+                                        </span>
+                                        <span class="text-[10px] text-slate-400">Visible on Google & Footer URL</span>
+                                    </div>
                                 </label>
                             </div>
                         </div>
@@ -493,24 +543,27 @@
                     <div id="seoTabPane-content" class="hidden space-y-6">
                         
                         <!-- Hero Description -->
-                        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 space-y-2">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-2.5">
                             <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                    Hero Description (Intro Overview)
+                                <label class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-align-left text-purple-600"></i>
+                                    <span>Hero Description (Intro Overview)</span>
                                 </label>
-                                <span class="text-[11px] font-semibold text-slate-400" id="heroWordCountText">0 words (25+ recommended)</span>
+                                <span class="text-[11px] font-bold text-slate-400 px-2 py-0.5 rounded-md bg-slate-100" id="heroWordCountText">0 words (25+ recommended)</span>
                             </div>
-                            <textarea id="seoFormHeroDesc" oninput="handleHeroDescInput(this.value)" rows="3" placeholder="Explain course benefits, 100% practical lab training in Patna, ISO certification, and career placement support..." class="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-xs leading-relaxed focus:ring-2 focus:ring-purple-500"></textarea>
+                            <textarea id="seoFormHeroDesc" oninput="handleHeroDescInput(this.value)" rows="3" placeholder="Explain course benefits, 100% practical lab training in Patna, ISO certification, and career placement support..." class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl p-3.5 text-xs font-medium leading-relaxed focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition"></textarea>
                         </div>
 
                         <!-- Content Sections Manager -->
                         <div class="space-y-4">
-                            <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
                                 <div>
-                                    <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Dynamic Content Sections</h4>
-                                    <p class="text-[11px] text-slate-400">Add detailed sections explaining curriculum, practical labs, and placements.</p>
+                                    <h4 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                                        <i class="fa-solid fa-layer-group text-indigo-600"></i> Dynamic Content Sections
+                                    </h4>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Add detailed sections explaining curriculum, practical labs, and placements.</p>
                                 </div>
-                                <button type="button" onclick="addSeoSection()" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs transition flex items-center gap-1.5">
+                                <button type="button" onclick="addSeoSection()" class="px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-xs transition border border-purple-200/60 shadow-2xs flex items-center gap-1.5 cursor-pointer">
                                     <i class="fa-solid fa-plus"></i> Add Section
                                 </button>
                             </div>
@@ -522,12 +575,14 @@
 
                         <!-- FAQs Manager -->
                         <div class="space-y-4 pt-4 border-t border-slate-200">
-                            <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
                                 <div>
-                                    <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Frequently Asked Questions (FAQs)</h4>
-                                    <p class="text-[11px] text-slate-400">Generates Google FAQPage Schema.org rich results in search.</p>
+                                    <h4 class="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                                        <i class="fa-solid fa-circle-question text-amber-500"></i> Frequently Asked Questions (FAQs)
+                                    </h4>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Generates Google FAQPage Schema.org rich snippets in search results.</p>
                                 </div>
-                                <button type="button" onclick="addSeoFaq()" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs transition flex items-center gap-1.5">
+                                <button type="button" onclick="addSeoFaq()" class="px-3.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-xs transition border border-purple-200/60 shadow-2xs flex items-center gap-1.5 cursor-pointer">
                                     <i class="fa-solid fa-plus"></i> Add FAQ
                                 </button>
                             </div>
@@ -543,65 +598,75 @@
                     <div id="seoTabPane-seo" class="hidden space-y-5">
                         
                         <!-- Meta Title -->
-                        <div class="space-y-1">
+                        <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-2">
                             <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                    Meta Title <span class="text-red-500">*</span>
+                                <label class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-heading text-purple-600"></i>
+                                    <span>Meta Title</span>
+                                    <span class="text-rose-500">*</span>
                                 </label>
-                                <span class="text-[11px] font-semibold text-slate-400" id="metaTitleCountText">0/60 chars (40-65 optimal)</span>
+                                <span class="text-[11px] font-bold text-slate-500 px-2 py-0.5 rounded-md bg-slate-100" id="metaTitleCountText">0/60 chars (40-65 optimal)</span>
                             </div>
-                            <input type="text" id="seoFormMetaTitle" oninput="handleMetaTitleInput(this.value)" placeholder="Best Mobile Repairing Course in Patna - SMTTC Institute" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:ring-2 focus:ring-purple-500">
+                            <input type="text" id="seoFormMetaTitle" oninput="handleMetaTitleInput(this.value)" placeholder="Best Mobile Repairing Course in Patna - SMTTC Institute" class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                         </div>
 
                         <!-- Meta Description -->
-                        <div class="space-y-1">
+                        <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-2">
                             <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                                    Meta Description <span class="text-red-500">*</span>
+                                <label class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-paragraph text-indigo-600"></i>
+                                    <span>Meta Description</span>
+                                    <span class="text-rose-500">*</span>
                                 </label>
-                                <span class="text-[11px] font-semibold text-slate-400" id="metaDescCountText">0/160 chars (120-165 optimal)</span>
+                                <span class="text-[11px] font-bold text-slate-500 px-2 py-0.5 rounded-md bg-slate-100" id="metaDescCountText">0/160 chars (120-165 optimal)</span>
                             </div>
-                            <textarea id="seoFormMetaDesc" oninput="handleMetaDescInput(this.value)" rows="3" placeholder="Get 100% practical chip-level training in Patna. ISO certified diploma, advanced lab with SMD workstations, affordable fees & lifetime placement support..." class="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs leading-relaxed focus:ring-2 focus:ring-purple-500"></textarea>
+                            <textarea id="seoFormMetaDesc" oninput="handleMetaDescInput(this.value)" rows="3" placeholder="Get 100% practical chip-level training in Patna. ISO certified diploma, advanced lab with SMD workstations, affordable fees & lifetime placement support..." class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl p-3.5 text-xs font-medium leading-relaxed focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition"></textarea>
                         </div>
 
                         <!-- Meta Keywords -->
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                Meta Keywords (Comma Separated)
+                        <div class="bg-white p-4.5 rounded-2xl border border-slate-200/90 shadow-2xs">
+                            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-tags text-teal-600 mr-1"></i> Meta Keywords (Comma Separated)
                             </label>
-                            <input type="text" id="seoFormMetaKeywords" placeholder="mobile repairing course in patna, chip level training, ac mechanic course patna" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-purple-500">
+                            <input type="text" id="seoFormMetaKeywords" placeholder="mobile repairing course in patna, chip level training, ac mechanic course patna" class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-medium focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                         </div>
 
                         <!-- Canonical URL & OG Image -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    Canonical URL (Optional)
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2">
+                                    <i class="fa-solid fa-globe text-blue-500 mr-1"></i> Canonical URL (Optional)
                                 </label>
-                                <input type="text" id="seoFormCanonicalUrl" placeholder="https://smttcinstitute.com/..." class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-purple-500">
+                                <input type="text" id="seoFormCanonicalUrl" placeholder="https://smttcinstitute.com/..." class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                             </div>
 
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                                    OG Image URL (Social Share)
+                            <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs">
+                                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2">
+                                    <i class="fa-solid fa-image text-purple-500 mr-1"></i> OG Image URL (Social Share)
                                 </label>
-                                <input type="text" id="seoFormOgImage" placeholder="{{ asset('assets/images/logonewblack.webp') }}" class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs focus:ring-2 focus:ring-purple-500">
+                                <input type="text" id="seoFormOgImage" placeholder="{{ asset('assets/images/logonewblack.webp') }}" class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
                             </div>
                         </div>
 
                         <!-- Google SERP Live Snippet Box -->
-                        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-2 mt-4">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Google Search Result Preview</span>
-                            <div class="space-y-1 font-sans">
-                                <div class="text-[11px] text-emerald-800 flex items-center gap-1">
-                                    <span>https://smttcinstitute.com</span>
-                                    <span>›</span>
-                                    <span id="serpPreviewSlug" class="text-slate-600 font-mono">slug</span>
+                        <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs space-y-3 mt-4">
+                            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                                <span class="text-[11px] font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                                    <i class="fa-brands fa-google text-blue-500"></i> Google Search Snippet Preview
+                                </span>
+                                <span class="text-[10px] font-bold text-slate-400">Desktop / Mobile Live</span>
+                            </div>
+                            <div class="space-y-1.5 font-sans p-3 rounded-xl bg-slate-50/50 border border-slate-100">
+                                <div class="text-[11px] text-emerald-800 flex items-center gap-1.5">
+                                    <span class="w-4 h-4 rounded-full bg-slate-200 flex items-center justify-center text-[9px] font-black text-slate-600">S</span>
+                                    <span class="font-semibold">https://smttcinstitute.com</span>
+                                    <span class="text-slate-400">›</span>
+                                    <span id="serpPreviewSlug" class="text-slate-600 font-mono font-bold">slug</span>
                                 </div>
-                                <h3 id="serpPreviewTitle" class="text-base text-blue-700 font-semibold hover:underline cursor-pointer leading-snug">
+                                <h3 id="serpPreviewTitle" class="text-base text-[#1a0dab] hover:underline cursor-pointer font-medium leading-snug">
                                     Page Title Preview
                                 </h3>
-                                <p id="serpPreviewDesc" class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                                <p id="serpPreviewDesc" class="text-xs text-[#4d5156] line-clamp-2 leading-relaxed">
                                     Meta description snippet will preview here...
                                 </p>
                             </div>
@@ -612,72 +677,79 @@
                 </div>
 
                 <!-- Right 4 Columns: LIVE SEO SCORE WIDGET -->
-                <div class="lg:col-span-4 bg-white rounded-3xl border border-slate-200 p-5 shadow-sm space-y-5 sticky top-0">
+                <div class="lg:col-span-4 bg-white rounded-3xl border border-slate-200/90 p-5 shadow-sm space-y-5 sticky top-0">
                     <div class="flex items-center justify-between pb-4 border-b border-slate-100">
                         <div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Live SEO Health</span>
-                            <h3 class="text-base font-extrabold text-slate-900 mt-0.5" id="seoWidgetRating">Evaluating...</h3>
+                            <span class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-chart-pie text-purple-600"></i> Live SEO Health
+                            </span>
+                            <h3 class="text-sm font-extrabold text-slate-900 mt-1" id="seoWidgetRating">Evaluating...</h3>
                         </div>
                         <div class="text-right">
-                            <div class="text-3xl font-black text-purple-600 leading-none" id="seoWidgetScore">0</div>
+                            <div class="text-3xl font-black text-purple-600 leading-none tracking-tight" id="seoWidgetScore">0</div>
                             <span class="text-[10px] font-bold text-slate-400">/100 points</span>
                         </div>
                     </div>
 
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden -mt-2">
+                        <div id="seoWidgetProgressBar" class="h-full bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+
                     <!-- Checklist -->
-                    <div class="space-y-2.5 text-xs" id="seoChecklistContainer">
-                        <div class="flex items-center justify-between" id="chk-h1">
-                            <span class="flex items-center gap-2 text-slate-600">
-                                <i class="fa-solid fa-circle-xmark text-red-400 check-icon"></i> H1 Tag Present
+                    <div class="space-y-2 text-xs" id="seoChecklistContainer">
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between transition-all" id="chk-h1">
+                            <span class="flex items-center gap-2 text-slate-700 font-semibold text-xs">
+                                <i class="fa-solid fa-circle-xmark text-rose-400 check-icon"></i> H1 Tag Present
                             </span>
-                            <span class="font-bold text-slate-400 check-pts">0/15</span>
+                            <span class="font-black text-slate-400 text-xs check-pts">0/15</span>
                         </div>
 
-                        <div class="flex items-center justify-between" id="chk-title">
-                            <span class="flex items-center gap-2 text-slate-600">
-                                <i class="fa-solid fa-circle-xmark text-red-400 check-icon"></i> Meta Title (40-65 chars)
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between transition-all" id="chk-title">
+                            <span class="flex items-center gap-2 text-slate-700 font-semibold text-xs">
+                                <i class="fa-solid fa-circle-xmark text-rose-400 check-icon"></i> Meta Title (40-65 chars)
                             </span>
-                            <span class="font-bold text-slate-400 check-pts">0/15</span>
+                            <span class="font-black text-slate-400 text-xs check-pts">0/15</span>
                         </div>
 
-                        <div class="flex items-center justify-between" id="chk-desc">
-                            <span class="flex items-center gap-2 text-slate-600">
-                                <i class="fa-solid fa-circle-xmark text-red-400 check-icon"></i> Meta Desc (120-165 chars)
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between transition-all" id="chk-desc">
+                            <span class="flex items-center gap-2 text-slate-700 font-semibold text-xs">
+                                <i class="fa-solid fa-circle-xmark text-rose-400 check-icon"></i> Meta Desc (120-165 chars)
                             </span>
-                            <span class="font-bold text-slate-400 check-pts">0/20</span>
+                            <span class="font-black text-slate-400 text-xs check-pts">0/20</span>
                         </div>
 
-                        <div class="flex items-center justify-between" id="chk-loc-h1">
-                            <span class="flex items-center gap-2 text-slate-600">
-                                <i class="fa-solid fa-circle-xmark text-red-400 check-icon"></i> Location in H1
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between transition-all" id="chk-loc-h1">
+                            <span class="flex items-center gap-2 text-slate-700 font-semibold text-xs">
+                                <i class="fa-solid fa-circle-xmark text-rose-400 check-icon"></i> Location in H1
                             </span>
-                            <span class="font-bold text-slate-400 check-pts">0/15</span>
+                            <span class="font-black text-slate-400 text-xs check-pts">0/15</span>
                         </div>
 
-                        <div class="flex items-center justify-between" id="chk-loc-desc">
-                            <span class="flex items-center gap-2 text-slate-600">
-                                <i class="fa-solid fa-circle-xmark text-red-400 check-icon"></i> Location in Meta Desc
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between transition-all" id="chk-loc-desc">
+                            <span class="flex items-center gap-2 text-slate-700 font-semibold text-xs">
+                                <i class="fa-solid fa-circle-xmark text-rose-400 check-icon"></i> Location in Meta Desc
                             </span>
-                            <span class="font-bold text-slate-400 check-pts">0/10</span>
+                            <span class="font-black text-slate-400 text-xs check-pts">0/10</span>
                         </div>
 
-                        <div class="flex items-center justify-between" id="chk-hero">
-                            <span class="flex items-center gap-2 text-slate-600">
-                                <i class="fa-solid fa-circle-xmark text-red-400 check-icon"></i> Hero Description (25+ words)
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between transition-all" id="chk-hero">
+                            <span class="flex items-center gap-2 text-slate-700 font-semibold text-xs">
+                                <i class="fa-solid fa-circle-xmark text-rose-400 check-icon"></i> Hero Description (25+ words)
                             </span>
-                            <span class="font-bold text-slate-400 check-pts">0/10</span>
+                            <span class="font-black text-slate-400 text-xs check-pts">0/10</span>
                         </div>
 
-                        <div class="flex items-center justify-between" id="chk-sections">
-                            <span class="flex items-center gap-2 text-slate-600">
-                                <i class="fa-solid fa-circle-xmark text-red-400 check-icon"></i> Content Sections (3+ added)
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between transition-all" id="chk-sections">
+                            <span class="flex items-center gap-2 text-slate-700 font-semibold text-xs">
+                                <i class="fa-solid fa-circle-xmark text-rose-400 check-icon"></i> Content Sections (3+ added)
                             </span>
-                            <span class="font-bold text-slate-400 check-pts">0/15</span>
+                            <span class="font-black text-slate-400 text-xs check-pts">0/15</span>
                         </div>
                     </div>
 
                     <!-- Micro tip -->
-                    <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-[11px] text-slate-500 text-center" id="seoWidgetTip">
+                    <div class="p-3.5 rounded-2xl bg-gradient-to-br from-purple-50/60 to-indigo-50/60 border border-purple-100 text-[11px] text-slate-600 text-center font-medium shadow-2xs" id="seoWidgetTip">
                         Complete the checklist above to boost Google Page-1 ranking.
                     </div>
                 </div>
@@ -687,15 +759,15 @@
 
         <!-- Footer Actions -->
         <div class="px-6 py-4 bg-white border-t border-slate-100 flex items-center justify-between shrink-0">
-            <button type="button" onclick="closeCreateSeoModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition">
+            <button type="button" onclick="closeCreateSeoModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition cursor-pointer">
                 Cancel
             </button>
 
             <div class="flex items-center gap-3">
-                <button type="button" onclick="saveSeoPage(false)" class="px-5 py-2.5 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold text-xs transition">
+                <button type="button" onclick="saveSeoPage(false)" class="px-5 py-2.5 rounded-xl border border-purple-200 bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-xs transition cursor-pointer">
                     Save as Draft
                 </button>
-                <button type="button" onclick="saveSeoPage(true)" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-md shadow-indigo-200 transition flex items-center gap-2">
+                <button type="button" onclick="saveSeoPage(true)" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-lg shadow-indigo-500/25 active:scale-95 transition-all flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     <span id="btnSaveSeoText">Publish Page</span>
                 </button>
@@ -707,28 +779,31 @@
 </div>
 
 <!-- ================= MODAL 2: AI SETTINGS (API KEY) ================= -->
-<div id="seoAiSettingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-    <div class="bg-white rounded-3xl max-w-md w-full border border-slate-200 shadow-2xl overflow-hidden animate-fade-in">
-        <div class="px-6 py-4 bg-gradient-to-r from-purple-50 via-indigo-50/60 to-white border-b border-slate-100 flex items-center justify-between">
+<div id="seoAiSettingsModal" onclick="if(event.target === this) closeAiSettingsModal()" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full border border-slate-100 shadow-2xl overflow-hidden animate-fade-in">
+        <!-- Top Accent Line -->
+        <div class="h-1.5 w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-500"></div>
+
+        <div class="px-6 py-4 bg-slate-50/70 border-b border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center text-sm font-bold shadow-xs">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-xs">
                     <i class="fa-solid fa-key"></i>
                 </div>
                 <div>
-                    <h3 class="text-sm font-extrabold text-slate-900">Gemini AI Settings</h3>
+                    <h3 class="text-sm font-black text-slate-900">Gemini AI Settings</h3>
                     <p class="text-[11px] text-slate-400">Power your AI blog generator with Google Gemini</p>
                 </div>
             </div>
-            <button type="button" onclick="closeAiSettingsModal()" class="text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark"></i>
+            <button type="button" onclick="closeAiSettingsModal()" class="w-8 h-8 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition flex items-center justify-center cursor-pointer">
+                <i class="fa-solid fa-xmark text-base"></i>
             </button>
         </div>
 
         <div class="p-6 space-y-4">
             <!-- Active Status Box -->
-            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 flex items-center justify-between text-xs">
                 <div>
-                    <span class="text-slate-400 text-[10px] uppercase font-bold block">Current Key Status</span>
+                    <span class="text-slate-400 text-[10px] uppercase font-extrabold block">Current Key Status</span>
                     <span id="aiSettingsMaskedDisplay" class="font-mono font-bold text-slate-800">No key saved</span>
                 </div>
                 <span id="aiSettingsStatusBadge" class="px-2.5 py-1 rounded-full text-[10px] font-black bg-slate-200 text-slate-600">INACTIVE</span>
@@ -738,35 +813,35 @@
             <div class="space-y-1.5">
                 <label class="block text-xs font-bold text-slate-700">Enter Google Gemini API Key</label>
                 <div class="relative">
-                    <input type="password" id="inputGeminiApiKey" placeholder="AIzaSy..." class="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-mono focus:ring-2 focus:ring-purple-500 pr-10">
+                    <input type="password" id="inputGeminiApiKey" placeholder="AIzaSy..." class="w-full bg-slate-50/70 focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-mono focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 pr-10 transition">
                     <button type="button" onclick="toggleApiKeyVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
                         <i id="apiKeyVisIcon" class="fa-solid fa-eye"></i>
                     </button>
                 </div>
                 <div class="flex items-center justify-between pt-1">
-                    <button type="button" onclick="pasteApiKeyFromClipboard()" class="text-[11px] font-bold text-purple-600 hover:underline flex items-center gap-1">
+                    <button type="button" onclick="pasteApiKeyFromClipboard()" class="text-[11px] font-bold text-purple-600 hover:underline flex items-center gap-1 cursor-pointer">
                         <i class="fa-solid fa-paste"></i> Paste from Clipboard
                     </button>
-                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[11px] font-bold text-slate-400 hover:text-slate-600 flex items-center gap-1">
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[11px] font-bold text-slate-400 hover:text-purple-600 flex items-center gap-1">
                         Get free key <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                     </a>
                 </div>
             </div>
 
-            <p class="text-[11px] text-slate-400 leading-relaxed">
+            <p class="text-[11px] text-slate-400 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
                 When an API key is connected, the AI Generator writes full SEO landing pages live with Google Gemini. If offline or no key, it seamlessly uses SMTTC's built-in smart templates.
             </p>
         </div>
 
-        <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-            <button type="button" onclick="removeAiKey()" class="text-xs font-bold text-red-500 hover:text-red-700">
+        <div class="px-6 py-4 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between">
+            <button type="button" onclick="removeAiKey()" class="text-xs font-bold text-rose-500 hover:text-rose-700 cursor-pointer">
                 Remove Key
             </button>
             <div class="flex items-center gap-2">
-                <button type="button" onclick="closeAiSettingsModal()" class="px-3.5 py-2 rounded-xl border border-slate-200 bg-white font-bold text-xs text-slate-600">
+                <button type="button" onclick="closeAiSettingsModal()" class="px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 font-bold text-xs text-slate-600 cursor-pointer">
                     Cancel
                 </button>
-                <button type="button" id="btnSaveAiKey" onclick="saveAiKey()" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md shadow-purple-200 flex items-center gap-1.5">
+                <button type="button" id="btnSaveAiKey" onclick="saveAiKey()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-md shadow-purple-200 flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-check"></i>
                     <span>Test & Save</span>
                 </button>
@@ -817,6 +892,7 @@ async function checkAiKeyStatus() {
 // Open / Close Modal
 function openCreateSeoModal(initialData = null) {
     document.getElementById('seoEditorModal').classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
     switchSeoModalTab('basic');
 
     if (initialData) {
@@ -876,6 +952,7 @@ function openCreateSeoModal(initialData = null) {
 
 function closeCreateSeoModal() {
     document.getElementById('seoEditorModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
 }
 
 // Switch Tabs inside Modal
@@ -886,7 +963,7 @@ function switchSeoModalTab(tabName) {
         const btn = document.getElementById('seoTabBtn-' + t);
         if (pane) pane.classList.add('hidden');
         if (btn) {
-            btn.className = 'py-3 text-xs font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 transition';
+            btn.className = 'px-4 py-2 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 hover:bg-white flex items-center gap-2 transition cursor-pointer';
         }
     });
 
@@ -894,7 +971,7 @@ function switchSeoModalTab(tabName) {
     const activeBtn = document.getElementById('seoTabBtn-' + tabName);
     if (activePane) activePane.classList.remove('hidden');
     if (activeBtn) {
-        activeBtn.className = 'py-3 text-xs font-bold border-b-2 border-purple-600 text-purple-600 flex items-center gap-1.5 transition';
+        activeBtn.className = 'px-4 py-2 text-xs font-bold rounded-xl bg-purple-600 text-white shadow-md shadow-purple-500/25 flex items-center gap-2 transition cursor-pointer';
     }
 }
 
@@ -905,12 +982,12 @@ function selectSeoTemplate(templateName) {
     all.forEach(t => {
         const el = document.getElementById('tmpl-card-' + t);
         if (el) {
-            el.className = 'cursor-pointer p-3.5 rounded-2xl border-2 border-slate-200 bg-white hover:border-purple-300 transition space-y-1';
+            el.className = 'cursor-pointer p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50/20 transition-all space-y-1.5';
         }
     });
     const sel = document.getElementById('tmpl-card-' + templateName);
     if (sel) {
-        sel.className = 'cursor-pointer p-3.5 rounded-2xl border-2 border-purple-500 bg-purple-50/50 shadow-xs transition space-y-1';
+        sel.className = 'cursor-pointer p-4 rounded-2xl border-2 border-purple-500 bg-purple-50/60 shadow-xs ring-2 ring-purple-500/20 transition-all space-y-1.5';
     }
 }
 
@@ -1112,6 +1189,21 @@ function recalcLiveSeoScore() {
     document.getElementById('seoWidgetRating').innerText = rating;
     document.getElementById('seoWidgetTip').innerText = tip;
 
+    // Update Progress Bar
+    const bar = document.getElementById('seoWidgetProgressBar');
+    if (bar) {
+        bar.style.width = Math.min(100, Math.max(0, score)) + '%';
+        if (score >= 85) {
+            bar.className = 'h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500';
+        } else if (score >= 70) {
+            bar.className = 'h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500';
+        } else if (score >= 50) {
+            bar.className = 'h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-500';
+        } else {
+            bar.className = 'h-full bg-gradient-to-r from-rose-500 to-pink-500 rounded-full transition-all duration-500';
+        }
+    }
+
     // Update SERP preview
     document.getElementById('serpPreviewTitle').innerText = metaTitle || h1 || 'Page Title';
     document.getElementById('serpPreviewSlug').innerText = slug || 'your-page-slug';
@@ -1125,10 +1217,12 @@ function updateCheckItem(id, passed, current, max) {
     const pts = el.querySelector('.check-pts');
     if (passed) {
         if (icon) icon.className = 'fa-solid fa-circle-check text-emerald-500 check-icon';
-        if (pts) pts.className = 'font-bold text-emerald-600 check-pts';
+        if (pts) pts.className = 'font-black text-emerald-600 text-xs check-pts';
+        el.className = 'p-2.5 rounded-xl bg-emerald-50/50 border border-emerald-200/70 flex items-center justify-between transition-all';
     } else {
-        if (icon) icon.className = 'fa-solid fa-circle-xmark text-red-400 check-icon';
-        if (pts) pts.className = 'font-bold text-slate-400 check-pts';
+        if (icon) icon.className = 'fa-solid fa-circle-xmark text-rose-400 check-icon';
+        if (pts) pts.className = 'font-black text-slate-400 text-xs check-pts';
+        el.className = 'p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between transition-all';
     }
     if (pts) pts.innerText = `${current}/${max}`;
 }
@@ -1141,8 +1235,10 @@ function renderSeoSections() {
 
     if (currentSeoSections.length === 0) {
         container.innerHTML = `
-            <div class="p-6 text-center rounded-2xl border border-dashed border-slate-200 text-slate-400 text-xs">
-                No sections added yet. Click "+ Add Section" or use "AI Generate" above to create them automatically!
+            <div class="p-8 text-center rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 text-xs bg-slate-50/50 space-y-2">
+                <i class="fa-solid fa-layer-group text-2xl text-purple-400"></i>
+                <p class="font-bold text-slate-600">No content sections added yet</p>
+                <p class="text-[11px] text-slate-400 max-w-sm mx-auto">Click "+ Add Section" or use "AI Generate" above to write curriculum, highlights, and laboratory training modules.</p>
             </div>
         `;
         return;
@@ -1150,15 +1246,15 @@ function renderSeoSections() {
 
     currentSeoSections.forEach((sec, idx) => {
         const div = document.createElement('div');
-        div.className = 'bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-3';
+        div.className = 'bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-3 transition-all hover:border-purple-200';
         
         let bulletsHtml = '';
         (sec.bulletPoints || []).forEach((bp, bIdx) => {
             bulletsHtml += `
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-circle-check text-emerald-500 text-xs shrink-0"></i>
-                    <input type="text" value="${escapeHtml(bp)}" oninput="updateSeoBullet(${idx}, ${bIdx}, this.value)" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs">
-                    <button type="button" onclick="removeSeoBullet(${idx}, ${bIdx})" class="text-slate-400 hover:text-red-500 text-xs p-1">
+                    <input type="text" value="${escapeHtml(bp)}" oninput="updateSeoBullet(${idx}, ${bIdx}, this.value)" class="flex-1 bg-slate-50/70 focus:bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-medium focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition">
+                    <button type="button" onclick="removeSeoBullet(${idx}, ${bIdx})" class="w-7 h-7 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 text-xs flex items-center justify-center transition cursor-pointer">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </div>
@@ -1166,38 +1262,38 @@ function renderSeoSections() {
         });
 
         div.innerHTML = `
-            <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                 <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded">SECTION ${idx + 1}</span>
-                    <input type="text" value="${escapeHtml(sec.badge || '')}" oninput="updateSeoSectionField(${idx}, 'badge', this.value)" placeholder="BADGE (e.g. HIGHLIGHT)" class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-bold text-slate-600 uppercase w-36">
+                    <span class="text-xs font-black text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-200/70">SECTION ${idx + 1}</span>
+                    <input type="text" value="${escapeHtml(sec.badge || '')}" oninput="updateSeoSectionField(${idx}, 'badge', this.value)" placeholder="BADGE (e.g. HIGHLIGHT)" class="bg-slate-50/70 focus:bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] font-black text-slate-700 uppercase w-36 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition">
                 </div>
                 <div class="flex items-center gap-1">
-                    <button type="button" onclick="moveSeoSection(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30">
+                    <button type="button" onclick="moveSeoSection(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="w-7 h-7 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-100 disabled:opacity-30 flex items-center justify-center transition cursor-pointer" title="Move Up">
                         <i class="fa-solid fa-arrow-up text-xs"></i>
                     </button>
-                    <button type="button" onclick="moveSeoSection(${idx}, 1)" ${idx === currentSeoSections.length - 1 ? 'disabled' : ''} class="p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30">
+                    <button type="button" onclick="moveSeoSection(${idx}, 1)" ${idx === currentSeoSections.length - 1 ? 'disabled' : ''} class="w-7 h-7 rounded-lg border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-100 disabled:opacity-30 flex items-center justify-center transition cursor-pointer" title="Move Down">
                         <i class="fa-solid fa-arrow-down text-xs"></i>
                     </button>
-                    <button type="button" onclick="removeSeoSection(${idx})" class="p-1 text-red-500 hover:text-red-700 ml-1">
+                    <button type="button" onclick="removeSeoSection(${idx})" class="w-7 h-7 rounded-lg border border-slate-200 text-rose-500 hover:text-rose-700 hover:bg-rose-50 ml-1 flex items-center justify-center transition cursor-pointer" title="Delete Section">
                         <i class="fa-solid fa-trash-can text-xs"></i>
                     </button>
                 </div>
             </div>
 
             <div>
-                <input type="text" value="${escapeHtml(sec.title || '')}" oninput="updateSeoSectionField(${idx}, 'title', this.value)" placeholder="Section Title..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900">
+                <input type="text" value="${escapeHtml(sec.title || '')}" oninput="updateSeoSectionField(${idx}, 'title', this.value)" placeholder="Section Title..." class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-black text-slate-900 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
             </div>
 
             <div>
-                <textarea oninput="updateSeoSectionField(${idx}, 'content', this.value)" rows="2" placeholder="Section description content..." class="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-2.5 text-xs">${escapeHtml(sec.content || '')}</textarea>
+                <textarea oninput="updateSeoSectionField(${idx}, 'content', this.value)" rows="2" placeholder="Section description content..." class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl p-3 text-xs font-medium leading-relaxed focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">${escapeHtml(sec.content || '')}</textarea>
             </div>
 
             <div class="space-y-2 pt-1">
-                <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase">
-                    <span>Bullet Highlights</span>
-                    <button type="button" onclick="addSeoBullet(${idx})" class="text-purple-600 hover:underline">+ Add Point</button>
+                <div class="flex items-center justify-between text-[11px] font-black text-slate-400 uppercase">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-list-check text-purple-600"></i> Bullet Highlights</span>
+                    <button type="button" onclick="addSeoBullet(${idx})" class="text-purple-600 hover:text-purple-700 font-bold hover:underline cursor-pointer">+ Add Point</button>
                 </div>
-                <div class="space-y-1.5">
+                <div class="space-y-2">
                     ${bulletsHtml}
                 </div>
             </div>
@@ -1270,8 +1366,10 @@ function renderSeoFaqs() {
 
     if (currentSeoFaqs.length === 0) {
         container.innerHTML = `
-            <div class="p-4 text-center rounded-2xl border border-dashed border-slate-200 text-slate-400 text-xs">
-                No FAQs added yet.
+            <div class="p-6 text-center rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 text-xs bg-slate-50/50 space-y-1">
+                <i class="fa-solid fa-circle-question text-xl text-amber-400"></i>
+                <p class="font-bold text-slate-600">No FAQs added yet</p>
+                <p class="text-[11px] text-slate-400">Click "+ Add FAQ" above or use AI Generate to auto-create FAQs.</p>
             </div>
         `;
         return;
@@ -1279,16 +1377,16 @@ function renderSeoFaqs() {
 
     currentSeoFaqs.forEach((faq, idx) => {
         const div = document.createElement('div');
-        div.className = 'bg-white rounded-2xl p-4 border border-slate-200 space-y-2';
+        div.className = 'bg-white rounded-2xl p-4.5 border border-slate-200/90 shadow-2xs space-y-2.5 transition-all hover:border-amber-200';
         div.innerHTML = `
             <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-400">FAQ #${idx + 1}</span>
-                <button type="button" onclick="removeSeoFaq(${idx})" class="text-slate-400 hover:text-red-500 text-xs">
+                <span class="text-[11px] font-black text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-lg border border-amber-200/70">FAQ #${idx + 1}</span>
+                <button type="button" onclick="removeSeoFaq(${idx})" class="w-7 h-7 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 text-xs flex items-center justify-center transition cursor-pointer" title="Delete FAQ">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
-            <input type="text" value="${escapeHtml(faq.question || '')}" oninput="updateSeoFaqField(${idx}, 'question', this.value)" placeholder="Question..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-800">
-            <textarea oninput="updateSeoFaqField(${idx}, 'answer', this.value)" rows="2" placeholder="Answer..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs">${escapeHtml(faq.answer || '')}</textarea>
+            <input type="text" value="${escapeHtml(faq.question || '')}" oninput="updateSeoFaqField(${idx}, 'question', this.value)" placeholder="Question..." class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">
+            <textarea oninput="updateSeoFaqField(${idx}, 'answer', this.value)" rows="2" placeholder="Answer..." class="w-full bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl p-3 text-xs font-medium leading-relaxed focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 shadow-2xs transition">${escapeHtml(faq.answer || '')}</textarea>
         `;
         container.appendChild(div);
     });
@@ -1665,12 +1763,27 @@ function copySeoPageLink(slug) {
 // AI SETTINGS MODAL
 function openAiSettingsModal() {
     document.getElementById('seoAiSettingsModal').classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
     checkAiKeyStatus();
 }
 
 function closeAiSettingsModal() {
     document.getElementById('seoAiSettingsModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
 }
+
+// Global modal close on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const seoModal = document.getElementById('seoEditorModal');
+        const aiModal = document.getElementById('seoAiSettingsModal');
+        if (seoModal && !seoModal.classList.contains('hidden')) {
+            closeCreateSeoModal();
+        } else if (aiModal && !aiModal.classList.contains('hidden')) {
+            closeAiSettingsModal();
+        }
+    }
+});
 
 function toggleApiKeyVisibility() {
     const input = document.getElementById('inputGeminiApiKey');
