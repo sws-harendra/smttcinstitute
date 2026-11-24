@@ -244,6 +244,44 @@
                     margin: 1.5rem 0;
                 }
 
+                .blog-article-content a:has(> img),
+                .blog-article-content a.image-hyperlink {
+                    text-decoration: none !important;
+                    display: inline-block;
+                    position: relative;
+                }
+                .blog-article-content a:has(> img) img,
+                .blog-article-content a.image-hyperlink img {
+                    cursor: pointer !important;
+                    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.2s ease;
+                }
+                .blog-article-content a:has(> img):hover img,
+                .blog-article-content a.image-hyperlink:hover img {
+                    box-shadow: 0 16px 36px -8px rgba(79, 70, 229, 0.28) !important;
+                    transform: translateY(-2px);
+                }
+                .blog-article-content a:has(> img.img-float-left),
+                .blog-article-content a.image-hyperlink-float-left {
+                    float: left !important;
+                    margin: 0.35rem 2rem 1.25rem 0 !important;
+                    max-width: 48% !important;
+                    display: block !important;
+                }
+                .blog-article-content a:has(> img.img-float-right),
+                .blog-article-content a.image-hyperlink-float-right {
+                    float: right !important;
+                    margin: 0.35rem 0 1.25rem 2rem !important;
+                    max-width: 48% !important;
+                    display: block !important;
+                }
+                .blog-article-content a:has(> img.img-center-block) {
+                    display: block !important;
+                    margin: 1.25rem auto !important;
+                    text-align: center !important;
+                    clear: both !important;
+                    float: none !important;
+                }
+
                 .blog-article-content img {
                     max-width: 100%;
                     border-radius: 0.875rem;
@@ -402,6 +440,10 @@
 
                 /* Mobile & Tablet float reset so narrow screens don't choke text */
                 @media (max-width: 768px) {
+                    .blog-article-content a:has(> img.img-float-left),
+                    .blog-article-content a:has(> img.img-float-right),
+                    .blog-article-content a.image-hyperlink-float-left,
+                    .blog-article-content a.image-hyperlink-float-right,
                     .blog-article-content img.img-float-left,
                     .blog-article-content img.img-float-right,
                     .blog-article-content img[style*="float: left"],
@@ -451,13 +493,13 @@
                     $cleanedArticleContent = preg_replace('/<p[^>]*>(?:\s|&nbsp;|<br[^>]*>)*<\/p>/i', '', $cleanedArticleContent);
 
                     // 2. Fix floated images placed inside paragraphs after text:
-                    // Hoist the floated image to the start of that paragraph so text wraps neatly from line 1
+                    // Hoist the floated image (including any hyperlink anchor tag) to the start of that paragraph
                     $cleanedArticleContent = preg_replace_callback(
-                        '/<p([^>]*)>((?:(?!<p|<\/p>).)*?)(<img[^>]+(?:class="[^"]*img-float-(?:left|right)[^"]*"|style="[^"]*float:\s*(?:left|right)[^"]*")[^>]*>)((?:(?!<p|<\/p>).)*?)<\/p>/is',
+                        '/<p([^>]*)>((?:(?!<p|<\/p>).)*?)((?:<a[^>]*>\s*)?<img[^>]+(?:class="[^"]*img-float-(?:left|right)[^"]*"|style="[^"]*float:\s*(?:left|right)[^"]*")[^>]*>(?:\s*<\/a>)?)(.*?)<\/p>/is',
                         function ($matches) {
                             $pAttrs = $matches[1];
                             $beforeImg = trim($matches[2]);
-                            $img = $matches[3];
+                            $imgBlock = $matches[3];
                             $afterImg = trim($matches[4]);
 
                             if (empty($beforeImg)) {
@@ -465,7 +507,7 @@
                             }
 
                             $combinedText = $beforeImg . ($beforeImg && $afterImg ? ' ' : '') . $afterImg;
-                            return '<p' . $pAttrs . '>' . $img . $combinedText . '</p>';
+                            return '<p' . $pAttrs . '>' . $imgBlock . $combinedText . '</p>';
                         },
                         $cleanedArticleContent
                     );
@@ -585,10 +627,16 @@ window.addEventListener('scroll', () => {
     if (bar) bar.style.width = scrolled + '%';
 });
 
-// 2. Lightbox Zoom for Article Images
+// 2. Lightbox Zoom for Article Images (Only for unlinked images; hyperlinked images follow their link)
 document.addEventListener('DOMContentLoaded', () => {
     const contentImages = document.querySelectorAll('#blogContentBody img');
     contentImages.forEach(img => {
+        // If image is wrapped in a link with a valid URL, keep standard link navigation and skip lightbox
+        const parentAnchor = img.closest('a');
+        if (parentAnchor && parentAnchor.getAttribute('href') && parentAnchor.getAttribute('href') !== '#') {
+            return;
+        }
+
         img.addEventListener('click', () => {
             const caption = img.alt || (img.closest('figure') ? img.closest('figure').querySelector('figcaption')?.innerText : '');
             openLightbox(img.src, caption);

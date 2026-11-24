@@ -3386,6 +3386,10 @@
                         <span id="studioNaturalBadge">Natural: -- &times; -- px</span>
                     </div>
 
+                    <div id="studioPreviewLinkPill" class="absolute top-2 right-2 bg-emerald-600/95 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs hidden flex items-center gap-1">
+                        <i class="fa-solid fa-link text-[9px]"></i> <span>Hyperlink Active</span>
+                    </div>
+
                     <div class="absolute bottom-2 right-2 bg-indigo-600/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
                         <span id="studioLiveOutputBadge">Live: Auto</span>
                     </div>
@@ -3644,6 +3648,43 @@
                     </div>
                 </div>
 
+                <!-- Image Hyperlink / Click Action -->
+                <div class="bg-gradient-to-r from-indigo-50/70 via-purple-50/50 to-amber-50/40 p-4 rounded-2xl border border-indigo-200/90 shadow-2xs space-y-3">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <span class="block text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-link text-indigo-600"></i> Image Hyperlink (फोटो पर लिंक / Hyperlink लगाएं)
+                        </span>
+                        <span id="studioLinkStatusBadge" class="text-[10px] font-bold text-slate-400 bg-white border border-slate-200 px-2.5 py-0.5 rounded-md">No Link Attached</span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-[11px] font-bold text-slate-700 flex items-center justify-between flex-wrap gap-1">
+                            <span>Link URL (जब कोई फोटो पर क्लिक करेगा तो यह लिंक खुलेगा):</span>
+                            <span class="text-[10px] text-slate-400 font-normal">e.g. https://smttc.in/courses ya /#courses ya https://wa.me/...</span>
+                        </label>
+                        <div class="flex rounded-xl overflow-hidden border border-slate-300 bg-white shadow-2xs focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100">
+                            <span class="bg-slate-100 text-slate-500 px-3 py-2 text-xs font-bold flex items-center border-r border-slate-200">
+                                <i class="fa-solid fa-globe text-indigo-600 text-xs"></i>
+                            </span>
+                            <input type="text" id="studioLinkUrlInput" placeholder="https://smttc.in/courses ya /#courses ya https://wa.me/91..." oninput="updateStudioLinkStatus(this.value)" class="w-full px-3 py-2 text-xs font-semibold text-slate-800 placeholder:text-slate-400 focus:outline-none">
+                            <button type="button" onclick="testStudioImageLink()" id="studioTestLinkBtn" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 text-xs font-bold flex items-center gap-1 border-l border-slate-200 transition" title="Test entered link in a new tab">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> <span>Test</span>
+                            </button>
+                            <button type="button" onclick="clearStudioImageLink()" id="studioClearLinkBtn" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 text-xs font-bold flex items-center gap-1 border-l border-slate-200 transition" title="Remove link from image">
+                                <i class="fa-solid fa-link-slash text-[10px]"></i> <span>Remove</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-0.5 flex-wrap gap-2 text-xs">
+                        <label class="flex items-center gap-2 cursor-pointer select-none text-slate-700 font-semibold text-[11px]">
+                            <input type="checkbox" id="studioLinkTargetNew" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5">
+                            <span>Open in New Tab (नए टैब में खोलें - <code>target="_blank"</code>)</span>
+                        </label>
+                        <span class="text-[10px] text-indigo-600 font-medium"><i class="fa-solid fa-circle-check mr-1 text-emerald-500"></i> Clickable on Blog</span>
+                    </div>
+                </div>
+
                 <!-- Footer Action Buttons -->
                 <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
                     <button type="button" onclick="closeImageStudioModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition">
@@ -3869,23 +3910,27 @@ function applyImageWrap(editor, imgNode, align = 'float-left') {
     if (!editor || !imgNode) return;
 
     editor.undoManager.transact(() => {
+        const parentAnchor = editor.dom.getParent(imgNode, 'a');
+
         // If wrapped in a figure with no caption, unwrap for clean native 8-point resizing
         const parentFigure = editor.dom.getParent(imgNode, 'figure');
         if (parentFigure && !parentFigure.querySelector('figcaption')) {
-            editor.dom.replace(imgNode, parentFigure);
+            const unwrappedNode = parentAnchor || imgNode;
+            editor.dom.replace(unwrappedNode, parentFigure);
         }
 
         // If wrapped in a P, unwrap it so float works cleanly across the document
-        const parentP = editor.dom.getParent(imgNode, 'p');
+        const nodeToMove = parentAnchor || imgNode;
+        const parentP = editor.dom.getParent(nodeToMove, 'p');
         if (parentP && parentP !== editor.getBody()) {
-            parentP.parentNode.insertBefore(imgNode, parentP);
+            parentP.parentNode.insertBefore(nodeToMove, parentP);
             const remainingText = parentP.textContent.replace(/[\s\u00a0]+/g, '').trim();
             if (!remainingText && !parentP.querySelector('img, iframe, video, audio')) {
                 parentP.remove();
             }
         }
 
-        const targetNode = imgNode;
+        const targetNode = parentAnchor || imgNode;
 
         // Clean previous alignment classes & styles
         imgNode.classList.remove('img-float-left', 'img-float-right', 'img-center-block', 'img-full-width');
@@ -3895,6 +3940,13 @@ function applyImageWrap(editor, imgNode, align = 'float-left') {
         imgNode.style.removeProperty('margin-left');
         imgNode.style.removeProperty('margin-right');
         imgNode.style.removeProperty('max-width'); // Never lock max-width
+
+        if (parentAnchor) {
+            parentAnchor.classList.remove('image-hyperlink-float-left', 'image-hyperlink-float-right');
+            parentAnchor.style.removeProperty('float');
+            parentAnchor.style.removeProperty('display');
+            parentAnchor.style.removeProperty('margin');
+        }
 
         // Remove !important from width/height so native handles work!
         const styleW = imgNode.style.getPropertyValue('width');
@@ -3912,6 +3964,14 @@ function applyImageWrap(editor, imgNode, align = 'float-left') {
             imgNode.style.margin = '8px 24px 16px 0';
             imgNode.style.display = 'block';
             imgNode.style.clear = 'none';
+
+            if (parentAnchor) {
+                parentAnchor.classList.add('image-hyperlink-float-left');
+                parentAnchor.style.float = 'left';
+                parentAnchor.style.display = 'block';
+                parentAnchor.style.margin = '0';
+                parentAnchor.style.clear = 'none';
+            }
 
             // Only set default width if image has none; if user already sized it, KEEP user's exact size!
             let curW = parseInt(imgNode.style.width) || parseInt(imgNode.getAttribute('width')) || 0;
@@ -3948,6 +4008,14 @@ function applyImageWrap(editor, imgNode, align = 'float-left') {
             imgNode.style.display = 'block';
             imgNode.style.clear = 'none';
 
+            if (parentAnchor) {
+                parentAnchor.classList.add('image-hyperlink-float-right');
+                parentAnchor.style.float = 'right';
+                parentAnchor.style.display = 'block';
+                parentAnchor.style.margin = '0';
+                parentAnchor.style.clear = 'none';
+            }
+
             let curW = parseInt(imgNode.style.width) || parseInt(imgNode.getAttribute('width')) || 0;
             if (!curW) {
                 const natW = imgNode.naturalWidth || 380;
@@ -3983,8 +4051,17 @@ function applyImageWrap(editor, imgNode, align = 'float-left') {
             imgNode.style.removeProperty('float');
             imgNode.style.clear = 'both';
 
+            if (parentAnchor) {
+                parentAnchor.classList.remove('image-hyperlink-float-left', 'image-hyperlink-float-right');
+                parentAnchor.style.display = 'block';
+                parentAnchor.style.margin = '0 auto';
+                parentAnchor.style.textAlign = 'center';
+                parentAnchor.style.clear = 'both';
+                parentAnchor.style.removeProperty('float');
+            }
+
             // Also ensure surrounding elements clear float so text flows full-width across page
-            const parent = editor.dom.getParent(imgNode, 'p') || editor.dom.getParent(imgNode, 'figure');
+            const parent = editor.dom.getParent(imgNode, 'p') || editor.dom.getParent(imgNode, 'figure') || parentAnchor;
             if (parent) {
                 parent.style.clear = 'both';
                 parent.style.textAlign = 'center';
@@ -4104,7 +4181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             toolbar: [
                 'selectall undo redo | blocks fontfamily fontsize | bold italic underline strikethrough forecolor backcolor | alignleft aligncenter alignright alignjustify',
-                'img_wrap_left img_wrap_right img_center add_free_line write_below_btn | upload_image_btn free_size_image image media table link | bullist numlist outdent indent | removeformat code fullscreen custom_preview'
+                'img_wrap_left img_wrap_right img_center add_free_line write_below_btn | upload_image_btn free_size_image quick_img_link image media table link | bullist numlist outdent indent | removeformat code fullscreen custom_preview'
             ],
 
             image_class_list: [
@@ -4271,6 +4348,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     color: #64748b;
                     margin-top: 6px;
                     font-style: italic;
+                }
+                a:has(> img), a.image-hyperlink {
+                    text-decoration: none !important;
+                    position: relative;
+                    display: inline-block;
+                }
+                a:has(> img.img-float-left), a.image-hyperlink-float-left {
+                    float: left !important;
+                    margin: 0.25rem 1.75rem 1rem 0 !important;
+                    display: block !important;
+                }
+                a:has(> img.img-float-right), a.image-hyperlink-float-right {
+                    float: right !important;
+                    margin: 0.25rem 0 1rem 1.75rem !important;
+                    display: block !important;
+                }
+                a:has(> img.img-center-block) {
+                    display: block !important;
+                    margin: 1.5rem auto !important;
+                    text-align: center !important;
+                    clear: both !important;
+                }
+                a:has(> img) img, a.image-hyperlink img {
+                    cursor: pointer !important;
+                }
+                a:has(> img)::after {
+                    content: "🔗 Link Active";
+                    position: absolute;
+                    bottom: 8px;
+                    right: 8px;
+                    background: rgba(15, 23, 42, 0.88);
+                    color: #ffffff;
+                    font-size: 10px;
+                    font-weight: 700;
+                    padding: 2px 7px;
+                    border-radius: 6px;
+                    backdrop-filter: blur(4px);
+                    pointer-events: none;
+                    letter-spacing: 0.02em;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                    opacity: 0.88;
+                    transition: opacity 0.15s ease, background 0.15s ease;
+                }
+                a:has(> img):hover::after {
+                    opacity: 1;
+                    background: #4f46e5;
                 }
             `,
 
@@ -4548,6 +4671,32 @@ document.addEventListener('DOMContentLoaded', () => {
                                 .article-live-preview-content img.img-shadow-card {
                                     box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.2) !important;
                                 }
+                                .article-live-preview-content a:has(> img),
+                                .article-live-preview-content a.image-hyperlink {
+                                    text-decoration: none !important;
+                                    display: inline-block;
+                                }
+                                .article-live-preview-content a:has(> img.img-float-left),
+                                .article-live-preview-content a.image-hyperlink-float-left {
+                                    float: left !important;
+                                    margin: 0.25rem 1.75rem 1rem 0 !important;
+                                    display: block !important;
+                                }
+                                .article-live-preview-content a:has(> img.img-float-right),
+                                .article-live-preview-content a.image-hyperlink-float-right {
+                                    float: right !important;
+                                    margin: 0.25rem 0 1rem 1.75rem !important;
+                                    display: block !important;
+                                }
+                                .article-live-preview-content a:has(> img.img-center-block) {
+                                    display: block !important;
+                                    margin: 2rem auto !important;
+                                    text-align: center !important;
+                                    clear: both !important;
+                                }
+                                .article-live-preview-content a:has(> img) img {
+                                    cursor: pointer !important;
+                                }
                                 .article-live-preview-content figure {
                                     margin: 1.5rem auto;
                                     text-align: center;
@@ -4672,6 +4821,73 @@ document.addEventListener('DOMContentLoaded', () => {
                     tooltip: 'Free-Size Image Sizing, Length/Width & Styling',
                     onAction: () => {
                         openImageStudioModal(editor.id);
+                    }
+                });
+
+                // Register Custom Toolbar Button for Image Hyperlink
+                editor.ui.registry.addButton('quick_img_link', {
+                    icon: 'link',
+                    text: '🔗 Link',
+                    tooltip: 'Add / Edit / Remove Hyperlink on this Image (फोटो पर लिंक लगाएं)',
+                    onAction: () => {
+                        const selected = editor.selection.getNode();
+                        let img = null;
+                        if (selected) {
+                            if (selected.nodeName.toLowerCase() === 'img') img = selected;
+                            else img = selected.querySelector('img') || editor.dom.getParent(selected, 'a')?.querySelector('img');
+                        }
+                        if (!img) {
+                            const imgs = editor.dom.select('img');
+                            if (imgs.length > 0) img = imgs[0];
+                        }
+                        if (!img) {
+                            showAdminToast('Please click on or select an image first.', 'info');
+                            return;
+                        }
+
+                        const parentAnchor = editor.dom.getParent(img, 'a');
+                        const currentHref = parentAnchor ? (parentAnchor.getAttribute('href') || '') : '';
+                        
+                        const promptMsg = currentHref
+                            ? 'Current Link: ' + currentHref + '\n\nEnter new URL to update, or leave blank to REMOVE link:'
+                            : 'Enter Hyperlink URL for this image (e.g. https://smttc.in/courses ya /#courses ya https://wa.me/...):';
+                            
+                        const inputUrl = prompt(promptMsg, currentHref);
+                        if (inputUrl === null) return; // User clicked Cancel
+                        
+                        const trimmed = inputUrl.trim();
+                        editor.undoManager.transact(() => {
+                            if (trimmed) {
+                                let finalUrl = trimmed;
+                                if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://') && !finalUrl.startsWith('/') && !finalUrl.startsWith('#') && !finalUrl.startsWith('mailto:') && !finalUrl.startsWith('tel:')) {
+                                    finalUrl = 'https://' + finalUrl;
+                                }
+                                if (parentAnchor) {
+                                    parentAnchor.setAttribute('href', finalUrl);
+                                    parentAnchor.setAttribute('target', '_blank');
+                                    parentAnchor.setAttribute('rel', 'noopener noreferrer');
+                                } else {
+                                    const a = editor.dom.create('a', {
+                                        href: finalUrl,
+                                        target: '_blank',
+                                        rel: 'noopener noreferrer',
+                                        class: 'image-hyperlink'
+                                    });
+                                    editor.dom.replace(a, img);
+                                    a.appendChild(img);
+                                }
+                                editor.save();
+                                updateEditorMetrics(editor);
+                                showAdminToast('Image linked to: ' + finalUrl, 'success');
+                            } else {
+                                if (parentAnchor) {
+                                    editor.dom.replace(img, parentAnchor);
+                                    editor.save();
+                                    updateEditorMetrics(editor);
+                                    showAdminToast('Link removed from image.', 'info');
+                                }
+                            }
+                        });
                     }
                 });
 
@@ -4983,8 +5199,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Contextual Toolbar on Image Selection
                 editor.ui.registry.addContextToolbar('image-free-size-toolbar', {
-                    predicate: (node) => node.nodeName.toLowerCase() === 'img',
-                    items: 'quick_write_beside_right quick_write_beside_left quick_img_center | quick_img_taller quick_img_shorter quick_img_wider quick_img_narrower free_size_image | quick_write_below quick_img_delete',
+                    predicate: (node) => node.nodeName.toLowerCase() === 'img' || (node.nodeName.toLowerCase() === 'a' && node.querySelector('img')),
+                    items: 'quick_write_beside_right quick_write_beside_left quick_img_center | quick_img_taller quick_img_shorter quick_img_wider quick_img_narrower quick_img_link free_size_image | quick_write_below quick_img_delete',
                     position: 'node',
                     scope: 'node'
                 });
@@ -5737,6 +5953,33 @@ function openImageStudioModal(editorId, specificNode = null) {
         document.getElementById('studioCaptionInput').value = '';
     }
 
+    // Check if wrapped in Anchor Link
+    const parentAnchor = editor.dom.getParent(imgNode, 'a');
+    const linkInput = document.getElementById('studioLinkUrlInput');
+    const linkTargetCheck = document.getElementById('studioLinkTargetNew');
+    const linkPill = document.getElementById('studioPreviewLinkPill');
+    const linkBadge = document.getElementById('studioLinkStatusBadge');
+
+    if (parentAnchor) {
+        const currentHref = parentAnchor.getAttribute('href') || '';
+        const currentTarget = parentAnchor.getAttribute('target') || '';
+        if (linkInput) linkInput.value = currentHref;
+        if (linkTargetCheck) linkTargetCheck.checked = (currentTarget === '_blank' || !currentTarget);
+        if (linkBadge) {
+            linkBadge.className = 'text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-md flex items-center gap-1';
+            linkBadge.innerHTML = '<i class="fa-solid fa-link text-[9px]"></i> Link Active';
+        }
+        if (linkPill) linkPill.classList.remove('hidden');
+    } else {
+        if (linkInput) linkInput.value = '';
+        if (linkTargetCheck) linkTargetCheck.checked = true;
+        if (linkBadge) {
+            linkBadge.className = 'text-[10px] font-bold text-slate-400 bg-white border border-slate-200 px-2.5 py-0.5 rounded-md';
+            linkBadge.innerText = 'No Link Attached';
+        }
+        if (linkPill) linkPill.classList.add('hidden');
+    }
+
     // Set Free-Size mode (unlocked ratio) by default for independent length and breadth resizing
     const lockEl = document.getElementById('studioLockRatio');
     if (lockEl) {
@@ -6131,6 +6374,60 @@ function applyStudioImageChanges() {
         if (radius === 'rounded-2xl') targetStudioImageNode.classList.add('img-rounded-lg');
         if (shadow === 'shadow-lg' || shadow === 'shadow-2xl') targetStudioImageNode.classList.add('img-shadow-card');
 
+        // Handle Image Hyperlink
+        const linkUrl = (document.getElementById('studioLinkUrlInput')?.value || '').trim();
+        const linkTargetNew = document.getElementById('studioLinkTargetNew')?.checked ?? true;
+        let parentAnchor = editor.dom.getParent(targetStudioImageNode, 'a');
+
+        if (linkUrl) {
+            let formattedUrl = linkUrl;
+            if (!formattedUrl.startsWith('http://') && 
+                !formattedUrl.startsWith('https://') && 
+                !formattedUrl.startsWith('/') && 
+                !formattedUrl.startsWith('#') && 
+                !formattedUrl.startsWith('mailto:') && 
+                !formattedUrl.startsWith('tel:')) {
+                formattedUrl = 'https://' + formattedUrl;
+            }
+
+            if (parentAnchor) {
+                parentAnchor.setAttribute('href', formattedUrl);
+                parentAnchor.setAttribute('target', linkTargetNew ? '_blank' : '_self');
+                if (linkTargetNew) {
+                    parentAnchor.setAttribute('rel', 'noopener noreferrer');
+                } else {
+                    parentAnchor.removeAttribute('rel');
+                }
+            } else {
+                const a = editor.dom.create('a', {
+                    href: formattedUrl,
+                    target: linkTargetNew ? '_blank' : '_self',
+                    rel: linkTargetNew ? 'noopener noreferrer' : '',
+                    class: 'image-hyperlink'
+                });
+                editor.dom.replace(a, targetStudioImageNode);
+                a.appendChild(targetStudioImageNode);
+                parentAnchor = a;
+            }
+
+            if (studioCurrentAlign === 'float-left') {
+                parentAnchor.classList.add('image-hyperlink-float-left');
+                parentAnchor.style.float = 'left';
+                parentAnchor.style.display = 'block';
+            } else if (studioCurrentAlign === 'float-right') {
+                parentAnchor.classList.add('image-hyperlink-float-right');
+                parentAnchor.style.float = 'right';
+                parentAnchor.style.display = 'block';
+            } else if (studioCurrentAlign === 'center') {
+                parentAnchor.style.display = 'block';
+                parentAnchor.style.margin = '0 auto';
+                parentAnchor.style.textAlign = 'center';
+            }
+        } else if (parentAnchor) {
+            editor.dom.replace(targetStudioImageNode, parentAnchor);
+            parentAnchor = null;
+        }
+
         // Handle Caption & Figure Sync
         const existingFigure = editor.dom.getParent(targetStudioImageNode, 'figure');
         if (existingFigure) {
@@ -6158,6 +6455,7 @@ function applyStudioImageChanges() {
         }
 
         if (caption.length > 0) {
+            const nodeToWrap = parentAnchor || targetStudioImageNode;
             if (existingFigure) {
                 let figcap = existingFigure.querySelector('figcaption');
                 if (!figcap) {
@@ -6168,8 +6466,8 @@ function applyStudioImageChanges() {
                 }
             } else {
                 const figure = editor.dom.create('figure', { class: 'image' });
-                editor.dom.replace(figure, targetStudioImageNode);
-                figure.appendChild(targetStudioImageNode);
+                editor.dom.replace(figure, nodeToWrap);
+                figure.appendChild(nodeToWrap);
                 const figcap = editor.dom.create('figcaption', {}, caption);
                 figure.appendChild(figcap);
             }
@@ -6183,7 +6481,7 @@ function applyStudioImageChanges() {
         // If image is floated left or right, pull it out of its paragraph and place it BEFORE the paragraph.
         // Also if preceded by a paragraph, place it BEFORE that paragraph so text wraps nicely without pushing image down.
         if (studioCurrentAlign === 'float-left' || studioCurrentAlign === 'float-right') {
-            const nodeToMove = editor.dom.getParent(targetStudioImageNode, 'figure') || targetStudioImageNode;
+            const nodeToMove = editor.dom.getParent(targetStudioImageNode, 'figure') || parentAnchor || targetStudioImageNode;
             const parentBlock = editor.dom.getParent(nodeToMove, 'p') || editor.dom.getParent(nodeToMove, 'div');
             
             if (parentBlock && parentBlock !== editor.getBody()) {
@@ -6200,6 +6498,48 @@ function applyStudioImageChanges() {
     });
 
     closeImageStudioModal();
+}
+
+// Helpers for Free-Size Studio Image Link
+function updateStudioLinkStatus(val) {
+    const linkBadge = document.getElementById('studioLinkStatusBadge');
+    const linkPill = document.getElementById('studioPreviewLinkPill');
+    const trimmed = (val || '').trim();
+    if (trimmed) {
+        if (linkBadge) {
+            linkBadge.className = 'text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-md flex items-center gap-1';
+            linkBadge.innerHTML = '<i class="fa-solid fa-link text-[9px]"></i> Link Set';
+        }
+        if (linkPill) linkPill.classList.remove('hidden');
+    } else {
+        if (linkBadge) {
+            linkBadge.className = 'text-[10px] font-bold text-slate-400 bg-white border border-slate-200 px-2.5 py-0.5 rounded-md';
+            linkBadge.innerText = 'No Link Attached';
+        }
+        if (linkPill) linkPill.classList.add('hidden');
+    }
+}
+
+function testStudioImageLink() {
+    const val = (document.getElementById('studioLinkUrlInput')?.value || '').trim();
+    if (!val) {
+        showAdminToast('Please enter a link URL first to test!', 'info');
+        return;
+    }
+    let targetUrl = val;
+    if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://') && !targetUrl.startsWith('/') && !targetUrl.startsWith('#') && !targetUrl.startsWith('mailto:') && !targetUrl.startsWith('tel:')) {
+        targetUrl = 'https://' + targetUrl;
+    }
+    window.open(targetUrl, '_blank');
+}
+
+function clearStudioImageLink() {
+    const input = document.getElementById('studioLinkUrlInput');
+    if (input) {
+        input.value = '';
+        updateStudioLinkStatus('');
+        showAdminToast('Image link cleared. Click "Apply" to remove link.', 'info');
+    }
 }
 
 // -----------------------------------------------------------------------------
